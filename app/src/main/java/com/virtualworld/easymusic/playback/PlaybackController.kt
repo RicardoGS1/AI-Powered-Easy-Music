@@ -159,6 +159,21 @@ class PlaybackController @Inject constructor(
         return mediaController?.currentPosition ?: 0L
     }
 
+    /**
+     * Quita la pista actual de la cola del reproductor sin borrar el archivo.
+     * La lista interna se mantiene alineada por [MediaItem.mediaId].
+     */
+    fun removeCurrentSongFromQueue() {
+        mediaController?.let { controller ->
+            if (controller.mediaItemCount == 0) return@let
+            val idx = controller.currentMediaItemIndex
+            if (idx < 0 || idx >= controller.mediaItemCount) return@let
+            val mediaId = controller.getMediaItemAt(idx).mediaId.toLongOrNull() ?: return@let
+            currentPlaylist = currentPlaylist.filter { it.id != mediaId }
+            controller.removeMediaItem(idx)
+        }
+    }
+
     fun getAudioSessionId(): Int {
         return MusicPlaybackService.audioSessionId
     }
@@ -167,6 +182,7 @@ class PlaybackController @Inject constructor(
         controllerFuture?.let { MediaController.releaseFuture(it) }
         mediaController = null
         controllerFuture = null
+        _audioSessionId.value = 0
         _playerState.update { PlayerState() }
     }
 }

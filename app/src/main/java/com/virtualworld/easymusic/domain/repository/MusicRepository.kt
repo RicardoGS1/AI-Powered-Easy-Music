@@ -12,4 +12,6 @@ interface MusicRepository {
     suspend fun getSongsByAlbum(albumId: Long): List<Song>
     fun getLastPlayedSongId(): Flow<Long?>
     suspend fun saveLastPlayedSongId(songId: Long)
+    suspend fun excludeSongFromLibrary(songId: Long)
+    fun excludedSongIds(): Flow<Set<Long>>
 }

@@ -97,7 +97,8 @@ fun PlayerScreen(
         onSeekTo = { viewModel.seekTo(it) },
         onPrevious = { viewModel.previous() },
         onTogglePlayPause = { viewModel.togglePlayPause() },
-        onNext = { viewModel.next() }
+        onNext = { viewModel.next() },
+        onExcludeCurrentSong = { viewModel.excludeCurrentSongFromLibrary() }
     )
 }
 
@@ -112,6 +113,7 @@ fun PlayerContent(
     onPrevious: () -> Unit,
     onTogglePlayPause: () -> Unit,
     onNext: () -> Unit,
+    onExcludeCurrentSong: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val song = uiState.playerState.currentSong
@@ -307,11 +309,14 @@ fun PlayerContent(
                             tint = TextGray
                         )
                     }
-                    IconButton(onClick = { }) {
+                    IconButton(
+                        onClick = onExcludeCurrentSong,
+                        enabled = song != null
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
-                            contentDescription = "Borrar",
-                            tint = TextGray
+                            contentDescription = "Quitar de la cola y de la biblioteca",
+                            tint = if (song != null) TextGray else TextGray.copy(alpha = 0.4f)
                         )
                     }
                     IconButton(onClick = { }) {
@@ -451,7 +456,8 @@ fun PlayerScreenPreview() {
             onSeekTo = {},
             onPrevious = {},
             onTogglePlayPause = {},
-            onNext = {}
+            onNext = {},
+            onExcludeCurrentSong = {}
         )
     }
 }

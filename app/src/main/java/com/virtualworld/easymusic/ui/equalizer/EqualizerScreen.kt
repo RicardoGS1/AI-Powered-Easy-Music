@@ -20,26 +20,18 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Equalizer
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,21 +40,26 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.virtualworld.easymusic.playback.EqualizerManager
 import com.virtualworld.easymusic.playback.EqualizerState
 import com.virtualworld.easymusic.ui.theme.DarkBackground
 import com.virtualworld.easymusic.ui.theme.DarkCard
 import com.virtualworld.easymusic.ui.theme.DarkSurface
 import com.virtualworld.easymusic.ui.theme.DarkSurfaceVariant
+import com.virtualworld.easymusic.ui.theme.EasyMusicTheme
 import com.virtualworld.easymusic.ui.theme.Teal200
 import com.virtualworld.easymusic.ui.theme.Teal400
 import com.virtualworld.easymusic.ui.theme.Teal700
 import com.virtualworld.easymusic.ui.theme.TextDarkGray
 import com.virtualworld.easymusic.ui.theme.TextGray
 import com.virtualworld.easymusic.ui.theme.TextWhite
+
+private const val StylePresetGridColumns = 3
 
 @Composable
 fun EqualizerScreen(
@@ -120,15 +117,14 @@ fun EqualizerContent(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            if (state.presets.isNotEmpty()) {
-                PresetSelector(
-                    presets = state.presets,
-                    currentPreset = state.currentPreset,
-                    isEnabled = state.isEnabled,
-                    onPresetSelected = onPresetSelected
-                )
-                Spacer(modifier = Modifier.height(24.dp))
-            }
+            StylePresetSelector(
+                presets = state.presets,
+                currentPreset = state.currentPreset,
+                globalEqEnabled = state.isEnabled,
+                bandsReady = state.numberOfBands > 0,
+                onPresetSelected = onPresetSelected
+            )
+            Spacer(modifier = Modifier.height(24.dp))
 
             if (state.numberOfBands > 0) {
                 BandSliders(
@@ -227,80 +223,90 @@ private fun EnableSection(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PresetSelector(
+private fun StylePresetSelector(
     presets: List<String>,
     currentPreset: Int,
-    isEnabled: Boolean,
+    globalEqEnabled: Boolean,
+    bandsReady: Boolean,
     onPresetSelected: (Int) -> Unit
 ) {
-    var expanded by remember { mutableStateOf(false) }
-
+    val names = presets.ifEmpty { EqualizerManager.PRESETS.map { it.name } }
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = "Preset",
+            text = "Estilo musical",
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
             color = TextGray,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 0.dp)
         )
-
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { if (isEnabled) expanded = it }
-        ) {
-            TextField(
-                value = if (currentPreset in presets.indices) presets[currentPreset] else "Personalizado",
-                onValueChange = {},
-                readOnly = true,
-                enabled = isEnabled,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier
-                    .menuAnchor(MenuAnchorType.PrimaryNotEditable)
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp)),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = DarkCard,
-                    unfocusedContainerColor = DarkCard,
-                    disabledContainerColor = DarkCard.copy(alpha = 0.5f),
-                    focusedTextColor = TextWhite,
-                    unfocusedTextColor = TextWhite,
-                    disabledTextColor = TextDarkGray,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                    focusedTrailingIconColor = Teal400,
-                    unfocusedTrailingIconColor = TextGray,
-                    disabledTrailingIconColor = TextDarkGray
-                ),
-                shape = RoundedCornerShape(12.dp)
+        if (!bandsReady) {
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = "Reproduce una canción: el ecualizador se enlaza al audio y podrás aplicar los estilos.",
+                style = MaterialTheme.typography.bodySmall,
+                color = TextDarkGray,
+                modifier = Modifier.padding(horizontal = 24.dp)
             )
-
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                containerColor = DarkCard
-            ) {
-                presets.forEachIndexed { index, preset ->
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = preset,
-                                color = if (index == currentPreset) Teal400 else TextWhite
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(DarkCard)
+                .padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            names.chunked(StylePresetGridColumns).forEachIndexed { rowIndex, row ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    row.forEachIndexed { colIndex, label ->
+                        val index = rowIndex * StylePresetGridColumns + colIndex
+                        val selected = index == currentPreset
+                        FilterChip(
+                            selected = selected,
+                            onClick = { onPresetSelected(index) },
+                            enabled = true,
+                            modifier = Modifier.weight(1f),
+                            label = {
+                                Text(
+                                    text = label,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    style = MaterialTheme.typography.labelMedium,
+                                    maxLines = 2,
+                                    textAlign = TextAlign.Center
+                                )
+                            },
+                            colors = FilterChipDefaults.filterChipColors(
+                                containerColor = DarkSurfaceVariant,
+                                labelColor = TextWhite,
+                                selectedContainerColor = Teal400.copy(alpha = 0.35f),
+                                selectedLabelColor = Teal200,
+                                disabledContainerColor = DarkSurfaceVariant,
+                                disabledLabelColor = TextWhite
                             )
-                        },
-                        onClick = {
-                            onPresetSelected(index)
-                            expanded = false
-                        }
-                    )
+                        )
+                    }
+                    repeat((StylePresetGridColumns - row.size).coerceAtLeast(0)) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
                 }
             }
+        }
+        if (currentPreset !in names.indices && globalEqEnabled && bandsReady) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Curva personalizada (ajusta las bandas)",
+                style = MaterialTheme.typography.bodySmall,
+                color = TextDarkGray,
+                modifier = Modifier.padding(horizontal = 24.dp)
+            )
         }
     }
 }
@@ -498,4 +504,31 @@ private fun BassBoostSection(
 private fun formatFrequency(milliHz: Int): String {
     val hz = milliHz / 1000
     return if (hz >= 1000) "${hz / 1000}k" else "${hz}"
+}
+
+@Preview(showBackground = true)
+@Composable
+fun EqualizerScreenPreview() {
+    EasyMusicTheme {
+        EqualizerContent(
+            state = EqualizerState(
+                isEnabled = true,
+                numberOfBands = 5,
+                bandLevels = listOf(0, 500, 1000, 500, 0),
+                minLevel = -1500,
+                maxLevel = 1500,
+                centerFrequencies = listOf(60000, 230000, 910000, 3600000, 14000000),
+                presets = listOf("Normal", "Pop", "Rock", "Jazz", "Classical"),
+                currentPreset = 1,
+                bassBoostStrength = 500,
+                isBassBoostEnabled = true
+            ),
+            onNavigateBack = {},
+            onEnabledChanged = {},
+            onBandLevelChanged = { _, _ -> },
+            onPresetSelected = {},
+            onBassBoostEnabledChanged = {},
+            onBassBoostStrengthChanged = {}
+        )
+    }
 }

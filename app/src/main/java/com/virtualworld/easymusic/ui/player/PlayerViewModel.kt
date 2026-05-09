@@ -3,6 +3,7 @@ package com.virtualworld.easymusic.ui.player
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.virtualworld.easymusic.domain.model.Song
+import com.virtualworld.easymusic.domain.usecase.ExcludeSongFromLibraryUseCase
 import com.virtualworld.easymusic.domain.usecase.GetLastPlayedUseCase
 import com.virtualworld.easymusic.domain.usecase.GetSongsUseCase
 import com.virtualworld.easymusic.domain.usecase.SaveLastPlayedUseCase
@@ -30,6 +31,7 @@ class PlayerViewModel @Inject constructor(
     private val getSongsUseCase: GetSongsUseCase,
     private val getLastPlayedUseCase: GetLastPlayedUseCase,
     private val saveLastPlayedUseCase: SaveLastPlayedUseCase,
+    private val excludeSongFromLibraryUseCase: ExcludeSongFromLibraryUseCase,
     val playbackController: PlaybackController
 ) : ViewModel() {
 
@@ -41,6 +43,15 @@ class PlayerViewModel @Inject constructor(
         observePlayerState()
         startPositionUpdater()
         loadSongsAndLastPlayed()
+        viewModelScope.launch {
+            excludeSongFromLibraryUseCase.observeExcludedIds().collect {
+                try {
+                    val songs = getSongsUseCase()
+                    _uiState.update { state -> state.copy(songs = songs) }
+                } catch (_: Exception) {
+                }
+            }
+        }
     }
 
     private fun observePlayerState() {
@@ -108,4 +119,12 @@ class PlayerViewModel @Inject constructor(
     fun seekTo(position: Long) = playbackController.seekTo(position)
     fun toggleShuffle() = playbackController.toggleShuffle()
     fun toggleRepeatMode() = playbackController.toggleRepeatMode()
+
+    fun excludeCurrentSongFromLibrary() {
+        viewModelScope.launch {
+            val song = _uiState.value.playerState.currentSong ?: return@launch
+            excludeSongFromLibraryUseCase(song.id)
+            playbackController.removeCurrentSongFromQueue()
+        }
+    }
 }

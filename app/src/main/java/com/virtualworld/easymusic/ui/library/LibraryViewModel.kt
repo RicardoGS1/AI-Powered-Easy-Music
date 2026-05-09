@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.virtualworld.easymusic.domain.model.Album
 import com.virtualworld.easymusic.domain.model.Artist
 import com.virtualworld.easymusic.domain.model.Song
+import com.virtualworld.easymusic.domain.usecase.ExcludeSongFromLibraryUseCase
 import com.virtualworld.easymusic.domain.usecase.GetAlbumsUseCase
 import com.virtualworld.easymusic.domain.usecase.GetArtistsUseCase
 import com.virtualworld.easymusic.domain.usecase.GetSongsUseCase
@@ -30,6 +31,7 @@ class LibraryViewModel @Inject constructor(
     private val getSongsUseCase: GetSongsUseCase,
     private val getAlbumsUseCase: GetAlbumsUseCase,
     private val getArtistsUseCase: GetArtistsUseCase,
+    private val excludeSongFromLibraryUseCase: ExcludeSongFromLibraryUseCase,
     private val playbackController: PlaybackController
 ) : ViewModel() {
 
@@ -37,7 +39,11 @@ class LibraryViewModel @Inject constructor(
     val uiState: StateFlow<LibraryUiState> = _uiState.asStateFlow()
 
     init {
-        loadLibrary()
+        viewModelScope.launch {
+            excludeSongFromLibraryUseCase.observeExcludedIds().collect {
+                loadLibrary()
+            }
+        }
     }
 
     private fun loadLibrary() {
