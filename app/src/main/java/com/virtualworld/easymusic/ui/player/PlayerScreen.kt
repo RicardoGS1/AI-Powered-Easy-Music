@@ -1,6 +1,11 @@
 package com.virtualworld.easymusic.ui.player
 
 import android.net.Uri
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,11 +16,17 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Equalizer
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MusicNote
@@ -26,6 +37,7 @@ import androidx.compose.material.icons.filled.RepeatOne
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.filled.Subtitles
 import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Icon
@@ -37,6 +49,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -68,6 +83,7 @@ import com.virtualworld.easymusic.ui.theme.TextWhite
 @Composable
 fun PlayerScreen(
     onNavigateToLibrary: () -> Unit,
+    onNavigateToEqualizer: () -> Unit,
     viewModel: PlayerViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -75,6 +91,7 @@ fun PlayerScreen(
     PlayerContent(
         uiState = uiState,
         onNavigateToLibrary = onNavigateToLibrary,
+        onNavigateToEqualizer = onNavigateToEqualizer,
         onToggleRepeatMode = { viewModel.toggleRepeatMode() },
         onToggleShuffle = { viewModel.toggleShuffle() },
         onSeekTo = { viewModel.seekTo(it) },
@@ -88,6 +105,7 @@ fun PlayerScreen(
 fun PlayerContent(
     uiState: PlayerUiState,
     onNavigateToLibrary: () -> Unit,
+    onNavigateToEqualizer: () -> Unit,
     onToggleRepeatMode: () -> Unit,
     onToggleShuffle: () -> Unit,
     onSeekTo: (Long) -> Unit,
@@ -97,6 +115,7 @@ fun PlayerContent(
     modifier: Modifier = Modifier
 ) {
     val song = uiState.playerState.currentSong
+    var extraControlsExpanded by remember { mutableStateOf(false) }
 
     Box(
         modifier = modifier
@@ -114,7 +133,9 @@ fun PlayerContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 24.dp)
+                .navigationBarsPadding()
+                .padding(bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(48.dp))
@@ -204,46 +225,109 @@ fun PlayerContent(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.weight(1f))
 
             // Secondary controls
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = { }) {
-                    Icon(
-                        imageVector = Icons.Default.VolumeUp,
-                        contentDescription = "Volumen",
-                        tint = TextGray
-                    )
+                Row(
+                    modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(onClick = { }) {
+                        Icon(
+                            imageVector = Icons.Default.VolumeUp,
+                            contentDescription = "Volumen",
+                            tint = TextGray
+                        )
+                    }
+                    IconButton(onClick = onToggleRepeatMode) {
+                        Icon(
+                            imageVector = when (uiState.playerState.repeatMode) {
+                                Player.REPEAT_MODE_ONE -> Icons.Default.RepeatOne
+                                else -> Icons.Default.Repeat
+                            },
+                            contentDescription = "Repetir",
+                            tint = if (uiState.playerState.repeatMode != Player.REPEAT_MODE_OFF)
+                                Teal400 else TextGray
+                        )
+                    }
+                    IconButton(onClick = onToggleShuffle) {
+                        Icon(
+                            imageVector = Icons.Default.Shuffle,
+                            contentDescription = "Aleatorio",
+                            tint = if (uiState.playerState.shuffleEnabled)
+                                Teal400 else TextGray
+                        )
+                    }
+                    IconButton(onClick = onNavigateToLibrary) {
+                        Icon(
+                            imageVector = Icons.Filled.Folder,
+                            contentDescription = "Biblioteca",
+                            tint = TextGray
+                        )
+                    }
                 }
-                IconButton(onClick = onToggleRepeatMode) {
+                IconButton(onClick = { extraControlsExpanded = !extraControlsExpanded }) {
                     Icon(
-                        imageVector = when (uiState.playerState.repeatMode) {
-                            Player.REPEAT_MODE_ONE -> Icons.Default.RepeatOne
-                            else -> Icons.Default.Repeat
+                        imageVector = if (extraControlsExpanded) {
+                            Icons.Filled.ExpandMore
+                        } else {
+                            Icons.Filled.ExpandLess
                         },
-                        contentDescription = "Repetir",
-                        tint = if (uiState.playerState.repeatMode != Player.REPEAT_MODE_OFF)
-                            Teal400 else TextGray
+                        contentDescription = if (extraControlsExpanded) {
+                            "Ocultar controles extra"
+                        } else {
+                            "Mostrar controles extra"
+                        },
+                        tint = if (extraControlsExpanded) Teal400 else TextGray
                     )
                 }
-                IconButton(onClick = onToggleShuffle) {
-                    Icon(
-                        imageVector = Icons.Default.Shuffle,
-                        contentDescription = "Aleatorio",
-                        tint = if (uiState.playerState.shuffleEnabled)
-                            Teal400 else TextGray
-                    )
-                }
-                IconButton(onClick = onNavigateToLibrary) {
-                    Icon(
-                        imageVector = Icons.Filled.Folder,
-                        contentDescription = "Biblioteca",
-                        tint = TextGray
-                    )
+            }
+
+            AnimatedVisibility(
+                visible = extraControlsExpanded,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut()
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 4.dp, bottom = 4.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(onClick = onNavigateToEqualizer) {
+                        Icon(
+                            imageVector = Icons.Filled.Equalizer,
+                            contentDescription = "Ecualizador",
+                            tint = TextGray
+                        )
+                    }
+                    IconButton(onClick = { }) {
+                        Icon(
+                            imageVector = Icons.Filled.Delete,
+                            contentDescription = "Borrar",
+                            tint = TextGray
+                        )
+                    }
+                    IconButton(onClick = { }) {
+                        Icon(
+                            imageVector = Icons.Filled.Subtitles,
+                            contentDescription = "Subtitulos",
+                            tint = TextGray
+                        )
+                    }
+                    IconButton(onClick = { }) {
+                        Icon(
+                            imageVector = Icons.Filled.AutoAwesome,
+                            contentDescription = "IA",
+                            tint = TextGray
+                        )
+                    }
                 }
             }
 
@@ -283,7 +367,7 @@ fun PlayerContent(
                 )
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Main controls
             Row(
@@ -361,6 +445,7 @@ fun PlayerScreenPreview() {
                 isLoading = false
             ),
             onNavigateToLibrary = {},
+            onNavigateToEqualizer = {},
             onToggleRepeatMode = {},
             onToggleShuffle = {},
             onSeekTo = {},

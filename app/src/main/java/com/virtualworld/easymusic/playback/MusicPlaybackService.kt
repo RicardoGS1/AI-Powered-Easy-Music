@@ -11,6 +11,12 @@ class MusicPlaybackService : MediaSessionService() {
     private var player: ExoPlayer? = null
     private var mediaSession: MediaSession? = null
 
+    companion object {
+        @Volatile
+        var audioSessionId: Int = 0
+            private set
+    }
+
     override fun onCreate() {
         super.onCreate()
         player = ExoPlayer.Builder(this)
@@ -24,6 +30,7 @@ class MusicPlaybackService : MediaSessionService() {
             .setHandleAudioBecomingNoisy(true)
             .build()
 
+        audioSessionId = player!!.audioSessionId
         mediaSession = MediaSession.Builder(this, player!!).build()
     }
 

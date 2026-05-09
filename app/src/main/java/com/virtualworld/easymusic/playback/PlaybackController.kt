@@ -36,6 +36,9 @@ class PlaybackController @Inject constructor(
     private val _playerState = MutableStateFlow(PlayerState())
     val playerState: StateFlow<PlayerState> = _playerState.asStateFlow()
 
+    private val _audioSessionId = MutableStateFlow(0)
+    val audioSessionIdFlow: StateFlow<Int> = _audioSessionId.asStateFlow()
+
     private var mediaController: MediaController? = null
     private var controllerFuture: ListenableFuture<MediaController>? = null
     private var currentPlaylist: List<Song> = emptyList()
@@ -54,6 +57,7 @@ class PlaybackController @Inject constructor(
             }
             mediaController?.let { controller ->
                 _playerState.update { it.copy(isConnected = true) }
+                _audioSessionId.value = MusicPlaybackService.audioSessionId
                 setupPlayerListener(controller)
             }
         }, MoreExecutors.directExecutor())
@@ -88,6 +92,10 @@ class PlaybackController @Inject constructor(
 
             override fun onRepeatModeChanged(repeatMode: Int) {
                 _playerState.update { it.copy(repeatMode = repeatMode) }
+            }
+
+            override fun onAudioSessionIdChanged(audioSessionId: Int) {
+                _audioSessionId.value = audioSessionId
             }
         })
     }
@@ -149,6 +157,10 @@ class PlaybackController @Inject constructor(
 
     fun getCurrentPosition(): Long {
         return mediaController?.currentPosition ?: 0L
+    }
+
+    fun getAudioSessionId(): Int {
+        return MusicPlaybackService.audioSessionId
     }
 
     fun disconnect() {
