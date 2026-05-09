@@ -30,6 +30,7 @@ data class PlayerUiState(
     val isLoading: Boolean = true,
     val lyricsSheetVisible: Boolean = false,
     val lyricsLoading: Boolean = false,
+    val lyricsSearchingAlternatives: Boolean = false,
     val lyricsResult: LyricsResult? = null
 )
 
@@ -74,6 +75,7 @@ class PlayerViewModel @Inject constructor(
                         playerState = state,
                         lyricsSheetVisible = if (songChanged) false else current.lyricsSheetVisible,
                         lyricsLoading = if (songChanged) false else current.lyricsLoading,
+                        lyricsSearchingAlternatives = if (songChanged) false else current.lyricsSearchingAlternatives,
                         lyricsResult = if (songChanged) null else current.lyricsResult
                     )
                 }
@@ -155,6 +157,7 @@ class PlayerViewModel @Inject constructor(
                 it.copy(
                     lyricsSheetVisible = false,
                     lyricsLoading = false,
+                    lyricsSearchingAlternatives = false,
                     lyricsResult = null
                 )
             }
@@ -166,14 +169,32 @@ class PlayerViewModel @Inject constructor(
             it.copy(
                 lyricsSheetVisible = true,
                 lyricsLoading = true,
+                lyricsSearchingAlternatives = false,
                 lyricsResult = null
             )
         }
         lyricsFetchJob = viewModelScope.launch {
-            val result = fetchLyricsUseCase(song)
+            val exact = fetchLyricsUseCase.fetchExact(song)
             if (!isActive) return@launch
-            _uiState.update {
-                it.copy(lyricsLoading = false, lyricsResult = result)
+            if (exact is LyricsResult.NotFound) {
+                _uiState.update { it.copy(lyricsSearchingAlternatives = true) }
+                val searchResult = fetchLyricsUseCase.searchAlternatives(song)
+                if (!isActive) return@launch
+                _uiState.update {
+                    it.copy(
+                        lyricsLoading = false,
+                        lyricsSearchingAlternatives = false,
+                        lyricsResult = searchResult
+                    )
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        lyricsLoading = false,
+                        lyricsSearchingAlternatives = false,
+                        lyricsResult = exact
+                    )
+                }
             }
         }
     }
@@ -184,8 +205,23 @@ class PlayerViewModel @Inject constructor(
             it.copy(
                 lyricsSheetVisible = false,
                 lyricsLoading = false,
+                lyricsSearchingAlternatives = false,
                 lyricsResult = null
             )
+        }
+    }
+
+    fun loadLyricsForLrcLibId(lrcLibId: Long) {
+        lyricsFetchJob?.cancel()
+        _uiState.update {
+            it.copy(lyricsLoading = true, lyricsSearchingAlternatives = false)
+        }
+        lyricsFetchJob = viewModelScope.launch {
+            val result = fetchLyricsUseCase.byLrcLibId(lrcLibId)
+            if (!isActive) return@launch
+            _uiState.update {
+                it.copy(lyricsLoading = false, lyricsResult = result)
+            }
         }
     }
 }

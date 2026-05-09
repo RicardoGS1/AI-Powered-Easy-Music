@@ -1,8 +1,10 @@
 package com.virtualworld.easymusic.data.remote.lrclib
 
 import com.virtualworld.easymusic.domain.model.LyricsResult
+import com.virtualworld.easymusic.domain.model.LyricsSearchCandidate
 import com.virtualworld.easymusic.domain.model.Song
 import java.io.IOException
+import kotlin.math.abs
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,7 +14,7 @@ class LrcLibLyricsDataSource @Inject constructor(
     private val api: LrcLibApi
 ) {
 
-    suspend fun fetchLyrics(song: Song): LyricsResult {
+    suspend fun fetchLyricsExactOnly(song: Song): LyricsResult {
         val durationSec = (song.duration / 1000L).toInt().coerceAtLeast(1)
         val trackName = song.title.ifBlank { "Unknown" }
         val artistName = song.artist.ifBlank { "Unknown" }
@@ -41,6 +43,100 @@ class LrcLibLyricsDataSource @Inject constructor(
         } catch (e: IOException) {
             LyricsResult.Failure(e.message ?: "Sin conexión")
         }
+    }
+
+    suspend fun fetchLyricsViaSearch(song: Song): LyricsResult {
+        val durationSec = (song.duration / 1000L).toInt().coerceAtLeast(1)
+        val trackName = song.title.ifBlank { "Unknown" }
+        val artistName = song.artist.ifBlank { "Unknown" }
+        val albumName = song.album.ifBlank { "Unknown" }
+        return try {
+            searchFallback(durationSec, trackName, artistName, albumName)
+        } catch (e: IOException) {
+            LyricsResult.Failure(e.message ?: "Sin conexión")
+        }
+    }
+
+    suspend fun fetchLyricsById(id: Long): LyricsResult {
+        return try {
+            val response = api.getLyricsById(id)
+            when {
+                response.isSuccessful -> {
+                    val body = response.body() ?: return LyricsResult.NotFound
+                    mapDtoToResult(body)
+                }
+                response.code() == 404 -> LyricsResult.NotFound
+                else -> LyricsResult.Failure(httpMessage(response))
+            }
+        } catch (e: IOException) {
+            LyricsResult.Failure(e.message ?: "Sin conexión")
+        }
+    }
+
+    private suspend fun searchFallback(
+        durationSec: Int,
+        trackName: String,
+        artistName: String,
+        albumName: String
+    ): LyricsResult {
+        var list = searchTracks(trackName = trackName, artistName = artistName)
+        if (list.isEmpty() && albumName.isNotBlank() && albumName != "Unknown") {
+            list = searchTracks(trackName = trackName, artistName = artistName, albumName = albumName)
+        }
+        if (list.isEmpty()) {
+            val q = listOf(artistName, trackName).filter { it.isNotBlank() && it != "Unknown" }
+                .joinToString(" ")
+                .trim()
+            if (q.isNotEmpty()) {
+                list = searchTracks(q = q)
+            }
+        }
+
+        val withId = list.mapNotNull { dto ->
+            val id = dto.id ?: return@mapNotNull null
+            dto to id
+        }
+        if (withId.isEmpty()) return LyricsResult.NotFound
+
+        val sorted = withId
+            .distinctBy { it.second }
+            .sortedBy { (dto, _) ->
+                abs((dto.duration ?: 0) - durationSec)
+            }
+            .map { it.first }
+
+        return when (sorted.size) {
+            1 -> resolveSingleSearchHit(sorted.first())
+            else -> LyricsResult.MultipleCandidates(
+                sorted.map { dto ->
+                    LyricsSearchCandidate(
+                        id = dto.id!!,
+                        trackName = dto.trackName.orEmpty(),
+                        artistName = dto.artistName.orEmpty(),
+                        albumName = dto.albumName.orEmpty(),
+                        durationSeconds = dto.duration ?: 0
+                    )
+                }
+            )
+        }
+    }
+
+    private suspend fun searchTracks(
+        q: String? = null,
+        trackName: String? = null,
+        artistName: String? = null,
+        albumName: String? = null
+    ): List<LrcLibTrackDto> {
+        val response = api.search(q = q, trackName = trackName, artistName = artistName, albumName = albumName)
+        if (!response.isSuccessful) return emptyList()
+        return response.body().orEmpty()
+    }
+
+    private suspend fun resolveSingleSearchHit(dto: LrcLibTrackDto): LyricsResult {
+        val fromDto = mapDtoToResult(dto)
+        if (fromDto !is LyricsResult.NotFound) return fromDto
+        val id = dto.id ?: return LyricsResult.NotFound
+        return fetchLyricsById(id)
     }
 
     private fun mapDtoToResult(dto: LrcLibTrackDto): LyricsResult {

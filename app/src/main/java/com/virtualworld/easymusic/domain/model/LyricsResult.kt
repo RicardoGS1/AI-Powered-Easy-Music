@@ -8,4 +8,5 @@ sealed interface LyricsResult {
     data object Instrumental : LyricsResult
     data object NotFound : LyricsResult
     data class Failure(val message: String) : LyricsResult
+    data class MultipleCandidates(val candidates: List<LyricsSearchCandidate>) : LyricsResult
 }

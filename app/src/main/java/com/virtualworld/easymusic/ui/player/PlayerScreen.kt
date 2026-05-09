@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -82,6 +84,7 @@ import androidx.media3.common.Player
 import coil3.compose.AsyncImage
 import com.virtualworld.easymusic.domain.model.LyricsLine
 import com.virtualworld.easymusic.domain.model.LyricsResult
+import com.virtualworld.easymusic.domain.model.LyricsSearchCandidate
 import com.virtualworld.easymusic.domain.model.Song
 import com.virtualworld.easymusic.playback.PlayerState
 import com.virtualworld.easymusic.ui.components.formatDuration
@@ -114,7 +117,8 @@ fun PlayerScreen(
         onNext = { viewModel.next() },
         onExcludeCurrentSong = { viewModel.excludeCurrentSongFromLibrary() },
         onToggleLyricsSheet = { viewModel.toggleLyricsSheet() },
-        onDismissLyricsSheet = { viewModel.dismissLyricsSheet() }
+        onDismissLyricsSheet = { viewModel.dismissLyricsSheet() },
+        onPickLyricsCandidate = { viewModel.loadLyricsForLrcLibId(it) }
     )
 }
 
@@ -133,6 +137,7 @@ fun PlayerContent(
     onExcludeCurrentSong: () -> Unit,
     onToggleLyricsSheet: () -> Unit,
     onDismissLyricsSheet: () -> Unit,
+    onPickLyricsCandidate: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val song = uiState.playerState.currentSong
@@ -451,8 +456,10 @@ fun PlayerContent(
             ) {
                 LyricsSheetContent(
                     loading = uiState.lyricsLoading,
+                    searchingAlternatives = uiState.lyricsSearchingAlternatives,
                     result = uiState.lyricsResult,
                     positionMs = uiState.currentPosition,
+                    onPickLyricsCandidate = onPickLyricsCandidate,
                     modifier = Modifier
                         .fillMaxWidth()
                         .navigationBarsPadding()
@@ -465,8 +472,10 @@ fun PlayerContent(
 @Composable
 private fun LyricsSheetContent(
     loading: Boolean,
+    searchingAlternatives: Boolean,
     result: LyricsResult?,
     positionMs: Long,
+    onPickLyricsCandidate: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -495,11 +504,32 @@ private fun LyricsSheetContent(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(min = 200.dp),
+                        .heightIn(min = 220.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator(color = Teal400)
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)
+                    ) {
+                        if (searchingAlternatives) {
+                            Text(
+                                text = "No se encontró una letra con coincidencia exacta (título, artista, álbum y duración). Buscando otras coincidencias en LRCLIB…",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = TextGray,
+                                textAlign = TextAlign.Center
+                            )
+                            Spacer(modifier = Modifier.height(20.dp))
+                        }
+                        CircularProgressIndicator(color = Teal400)
+                    }
                 }
+            }
+
+            result is LyricsResult.MultipleCandidates -> {
+                LyricsCandidatePicker(
+                    candidates = result.candidates,
+                    onPick = onPickLyricsCandidate
+                )
             }
 
             result is LyricsResult.Synced -> {
@@ -564,6 +594,79 @@ private fun LyricsSheetContent(
 
             else -> {
                 Spacer(modifier = Modifier.height(24.dp))
+            }
+        }
+    }
+}
+
+@Composable
+private fun LyricsCandidatePicker(
+    candidates: List<LyricsSearchCandidate>,
+    onPick: (Long) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Text(
+            text = "Varias coincidencias en LRCLIB. Elige la pista correcta:",
+            style = MaterialTheme.typography.bodyMedium,
+            color = TextGray,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 12.dp)
+        )
+        if (candidates.isEmpty()) {
+            Text(
+                text = "No hay opciones para mostrar.",
+                style = MaterialTheme.typography.bodyLarge,
+                color = TextGray,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            return
+        }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 480.dp)
+        ) {
+            items(
+                items = candidates,
+                key = { it.id }
+            ) { candidate ->
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .clickable { onPick(candidate.id) },
+                    color = DarkSurfaceVariant,
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp)) {
+                        Text(
+                            text = candidate.trackName.ifBlank { "Sin título" },
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold,
+                            color = TextWhite,
+                            maxLines = 2
+                        )
+                        Text(
+                            text = listOf(candidate.artistName, candidate.albumName)
+                                .filter { it.isNotBlank() }
+                                .joinToString(" · "),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = TextGray,
+                            maxLines = 2,
+                            modifier = Modifier.padding(top = 4.dp)
+                        )
+                        Text(
+                            text = formatDuration(candidate.durationSeconds * 1000L),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = Teal400,
+                            modifier = Modifier.padding(top = 6.dp)
+                        )
+                    }
+                }
             }
         }
     }
@@ -652,7 +755,8 @@ fun PlayerScreenPreview() {
             onNext = {},
             onExcludeCurrentSong = {},
             onToggleLyricsSheet = {},
-            onDismissLyricsSheet = {}
+            onDismissLyricsSheet = {},
+            onPickLyricsCandidate = {}
         )
     }
 }
