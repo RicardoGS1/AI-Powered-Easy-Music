@@ -16,11 +16,17 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Delete
@@ -40,14 +46,19 @@ import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.Subtitles
 import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -69,6 +80,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.Player
 import coil3.compose.AsyncImage
+import com.virtualworld.easymusic.domain.model.LyricsLine
+import com.virtualworld.easymusic.domain.model.LyricsResult
 import com.virtualworld.easymusic.domain.model.Song
 import com.virtualworld.easymusic.playback.PlayerState
 import com.virtualworld.easymusic.ui.components.formatDuration
@@ -80,6 +93,7 @@ import com.virtualworld.easymusic.ui.theme.Teal400
 import com.virtualworld.easymusic.ui.theme.TextGray
 import com.virtualworld.easymusic.ui.theme.TextWhite
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlayerScreen(
     onNavigateToLibrary: () -> Unit,
@@ -98,10 +112,13 @@ fun PlayerScreen(
         onPrevious = { viewModel.previous() },
         onTogglePlayPause = { viewModel.togglePlayPause() },
         onNext = { viewModel.next() },
-        onExcludeCurrentSong = { viewModel.excludeCurrentSongFromLibrary() }
+        onExcludeCurrentSong = { viewModel.excludeCurrentSongFromLibrary() },
+        onToggleLyricsSheet = { viewModel.toggleLyricsSheet() },
+        onDismissLyricsSheet = { viewModel.dismissLyricsSheet() }
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlayerContent(
     uiState: PlayerUiState,
@@ -114,6 +131,8 @@ fun PlayerContent(
     onTogglePlayPause: () -> Unit,
     onNext: () -> Unit,
     onExcludeCurrentSong: () -> Unit,
+    onToggleLyricsSheet: () -> Unit,
+    onDismissLyricsSheet: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val song = uiState.playerState.currentSong
@@ -319,11 +338,11 @@ fun PlayerContent(
                             tint = if (song != null) TextGray else TextGray.copy(alpha = 0.4f)
                         )
                     }
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = onToggleLyricsSheet) {
                         Icon(
                             imageVector = Icons.Filled.Subtitles,
-                            contentDescription = "Subtitulos",
-                            tint = TextGray
+                            contentDescription = "Letra (LRCLIB)",
+                            tint = if (uiState.lyricsSheetVisible) Teal400 else TextGray
                         )
                     }
                     IconButton(onClick = { }) {
@@ -421,9 +440,183 @@ fun PlayerContent(
                 }
             }
         }
+
+        if (uiState.lyricsSheetVisible) {
+            val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+            ModalBottomSheet(
+                onDismissRequest = onDismissLyricsSheet,
+                sheetState = sheetState,
+                containerColor = DarkSurface,
+                contentColor = TextWhite
+            ) {
+                LyricsSheetContent(
+                    loading = uiState.lyricsLoading,
+                    result = uiState.lyricsResult,
+                    positionMs = uiState.currentPosition,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .navigationBarsPadding()
+                )
+            }
+        }
     }
 }
 
+@Composable
+private fun LyricsSheetContent(
+    loading: Boolean,
+    result: LyricsResult?,
+    positionMs: Long,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.padding(horizontal = 20.dp, vertical = 8.dp)
+    ) {
+        Text(
+            text = "Letra",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = Teal400,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = "LRCLIB",
+            style = MaterialTheme.typography.labelSmall,
+            color = TextGray,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 2.dp, bottom = 12.dp),
+            textAlign = TextAlign.Center
+        )
+
+        when {
+            loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 200.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = Teal400)
+                }
+            }
+
+            result is LyricsResult.Synced -> {
+                SyncedLyricsList(
+                    lines = result.lines,
+                    positionMs = positionMs
+                )
+            }
+
+            result is LyricsResult.PlainOnly -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 480.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    Text(
+                        text = result.text,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = TextWhite,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+
+            result is LyricsResult.Instrumental -> {
+                Text(
+                    text = "Esta pista figura como instrumental en LRCLIB.",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = TextGray,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 24.dp)
+                )
+            }
+
+            result is LyricsResult.NotFound -> {
+                Text(
+                    text = "No se encontró letra para esta canción. Comprueba título, artista, álbum y duración en los metadatos.",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = TextGray,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 24.dp)
+                )
+            }
+
+            result is LyricsResult.Failure -> {
+                Text(
+                    text = result.message,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = TextGray,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 24.dp)
+                )
+            }
+
+            else -> {
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+        }
+    }
+}
+
+@Composable
+private fun SyncedLyricsList(
+    lines: List<LyricsLine>,
+    positionMs: Long
+) {
+    val listState = rememberLazyListState()
+    val activeIndex = remember(lines, positionMs) { lyricsLineIndexAt(lines, positionMs) }
+    LaunchedEffect(activeIndex) {
+        if (activeIndex >= 0 && lines.isNotEmpty()) {
+            listState.animateScrollToItem(activeIndex.coerceIn(0, lines.lastIndex))
+        }
+    }
+    LazyColumn(
+        state = listState,
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(max = 480.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        itemsIndexed(
+            items = lines,
+            key = { index, line -> "${line.timeMs}_$index" }
+        ) { index, line ->
+            val highlight = index == activeIndex
+            Text(
+                text = line.text,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 6.dp),
+                textAlign = TextAlign.Center,
+                color = if (highlight) Teal400 else TextGray,
+                fontWeight = if (highlight) FontWeight.SemiBold else FontWeight.Normal,
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+    }
+}
+
+private fun lyricsLineIndexAt(lines: List<LyricsLine>, positionMs: Long): Int {
+    if (lines.isEmpty()) return -1
+    var idx = -1
+    for (i in lines.indices) {
+        if (lines[i].timeMs <= positionMs) idx = i else break
+    }
+    return idx
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun PlayerScreenPreview() {
@@ -457,7 +650,9 @@ fun PlayerScreenPreview() {
             onPrevious = {},
             onTogglePlayPause = {},
             onNext = {},
-            onExcludeCurrentSong = {}
+            onExcludeCurrentSong = {},
+            onToggleLyricsSheet = {},
+            onDismissLyricsSheet = {}
         )
     }
 }

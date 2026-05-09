@@ -3,7 +3,9 @@ package com.virtualworld.easymusic.ui.player
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.virtualworld.easymusic.domain.model.Song
+import com.virtualworld.easymusic.domain.model.LyricsResult
 import com.virtualworld.easymusic.domain.usecase.ExcludeSongFromLibraryUseCase
+import com.virtualworld.easymusic.domain.usecase.FetchLyricsUseCase
 import com.virtualworld.easymusic.domain.usecase.GetLastPlayedUseCase
 import com.virtualworld.easymusic.domain.usecase.GetSongsUseCase
 import com.virtualworld.easymusic.domain.usecase.SaveLastPlayedUseCase
@@ -15,7 +17,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +27,10 @@ data class PlayerUiState(
     val playerState: PlayerState = PlayerState(),
     val currentPosition: Long = 0L,
     val songs: List<Song> = emptyList(),
-    val isLoading: Boolean = true
+    val isLoading: Boolean = true,
+    val lyricsSheetVisible: Boolean = false,
+    val lyricsLoading: Boolean = false,
+    val lyricsResult: LyricsResult? = null
 )
 
 @HiltViewModel
@@ -32,11 +39,13 @@ class PlayerViewModel @Inject constructor(
     private val getLastPlayedUseCase: GetLastPlayedUseCase,
     private val saveLastPlayedUseCase: SaveLastPlayedUseCase,
     private val excludeSongFromLibraryUseCase: ExcludeSongFromLibraryUseCase,
+    private val fetchLyricsUseCase: FetchLyricsUseCase,
     val playbackController: PlaybackController
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PlayerUiState())
     val uiState: StateFlow<PlayerUiState> = _uiState.asStateFlow()
+    private var lyricsFetchJob: Job? = null
 
     init {
         playbackController.connect()
@@ -57,7 +66,17 @@ class PlayerViewModel @Inject constructor(
     private fun observePlayerState() {
         viewModelScope.launch {
             playbackController.playerState.collectLatest { state ->
-                _uiState.update { it.copy(playerState = state) }
+                _uiState.update { current ->
+                    val oldId = current.playerState.currentSong?.id
+                    val newId = state.currentSong?.id
+                    val songChanged = oldId != null && oldId != newId
+                    current.copy(
+                        playerState = state,
+                        lyricsSheetVisible = if (songChanged) false else current.lyricsSheetVisible,
+                        lyricsLoading = if (songChanged) false else current.lyricsLoading,
+                        lyricsResult = if (songChanged) null else current.lyricsResult
+                    )
+                }
                 state.currentSong?.let { song ->
                     saveLastPlayedUseCase(song.id)
                 }
@@ -125,6 +144,48 @@ class PlayerViewModel @Inject constructor(
             val song = _uiState.value.playerState.currentSong ?: return@launch
             excludeSongFromLibraryUseCase(song.id)
             playbackController.removeCurrentSongFromQueue()
+        }
+    }
+
+    fun toggleLyricsSheet() {
+        val snapshot = _uiState.value
+        if (snapshot.lyricsSheetVisible) {
+            lyricsFetchJob?.cancel()
+            _uiState.update {
+                it.copy(
+                    lyricsSheetVisible = false,
+                    lyricsLoading = false,
+                    lyricsResult = null
+                )
+            }
+            return
+        }
+        val song = snapshot.playerState.currentSong ?: return
+        lyricsFetchJob?.cancel()
+        _uiState.update {
+            it.copy(
+                lyricsSheetVisible = true,
+                lyricsLoading = true,
+                lyricsResult = null
+            )
+        }
+        lyricsFetchJob = viewModelScope.launch {
+            val result = fetchLyricsUseCase(song)
+            if (!isActive) return@launch
+            _uiState.update {
+                it.copy(lyricsLoading = false, lyricsResult = result)
+            }
+        }
+    }
+
+    fun dismissLyricsSheet() {
+        lyricsFetchJob?.cancel()
+        _uiState.update {
+            it.copy(
+                lyricsSheetVisible = false,
+                lyricsLoading = false,
+                lyricsResult = null
+            )
         }
     }
 }
