@@ -23,7 +23,8 @@ data class LibraryUiState(
     val albums: List<Album> = emptyList(),
     val artists: List<Artist> = emptyList(),
     val isLoading: Boolean = true,
-    val selectedTab: Int = 0
+    val selectedTab: Int = 0,
+    val searchQuery: String = ""
 )
 
 @HiltViewModel
@@ -70,8 +71,12 @@ class LibraryViewModel @Inject constructor(
         _uiState.update { it.copy(selectedTab = index) }
     }
 
+    fun setSearchQuery(query: String) {
+        _uiState.update { it.copy(searchQuery = query) }
+    }
+
     fun playSong(song: Song) {
-        val songs = _uiState.value.songs
+        val songs = LibrarySearchFilters.songs(_uiState.value.songs, _uiState.value.searchQuery)
         val index = songs.indexOfFirst { it.id == song.id }
         playbackController.playSongs(songs, index.coerceAtLeast(0))
     }

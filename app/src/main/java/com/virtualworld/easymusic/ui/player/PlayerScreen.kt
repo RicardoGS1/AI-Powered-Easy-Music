@@ -1,5 +1,7 @@
 package com.virtualworld.easymusic.ui.player
 
+import android.content.Context
+import android.media.AudioManager
 import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -62,11 +64,13 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
@@ -95,11 +99,13 @@ import com.virtualworld.easymusic.ui.theme.EasyMusicTheme
 import com.virtualworld.easymusic.ui.theme.Teal400
 import com.virtualworld.easymusic.ui.theme.TextGray
 import com.virtualworld.easymusic.ui.theme.TextWhite
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlayerScreen(
     onNavigateToLibrary: () -> Unit,
+    onNavigateToLibrarySearch: () -> Unit,
     onNavigateToEqualizer: () -> Unit,
     viewModel: PlayerViewModel = hiltViewModel()
 ) {
@@ -108,6 +114,7 @@ fun PlayerScreen(
     PlayerContent(
         uiState = uiState,
         onNavigateToLibrary = onNavigateToLibrary,
+        onNavigateToLibrarySearch = onNavigateToLibrarySearch,
         onNavigateToEqualizer = onNavigateToEqualizer,
         onToggleRepeatMode = { viewModel.toggleRepeatMode() },
         onToggleShuffle = { viewModel.toggleShuffle() },
@@ -127,6 +134,7 @@ fun PlayerScreen(
 fun PlayerContent(
     uiState: PlayerUiState,
     onNavigateToLibrary: () -> Unit,
+    onNavigateToLibrarySearch: () -> Unit,
     onNavigateToEqualizer: () -> Unit,
     onToggleRepeatMode: () -> Unit,
     onToggleShuffle: () -> Unit,
@@ -142,6 +150,12 @@ fun PlayerContent(
 ) {
     val song = uiState.playerState.currentSong
     var extraControlsExpanded by remember { mutableStateOf(false) }
+    var volumeBarExpanded by remember { mutableStateOf(false) }
+    var volumeFraction by remember { mutableFloatStateOf(0f) }
+    val context = LocalContext.current
+    val audioManager = remember(context) {
+        context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    }
 
     Box(
         modifier = modifier
@@ -186,7 +200,7 @@ fun PlayerContent(
                     letterSpacing = 2.sp,
                     color = TextWhite
                 )
-                IconButton(onClick = { }) {
+                IconButton(onClick = onNavigateToLibrarySearch) {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "Buscar",
@@ -263,11 +277,22 @@ fun PlayerContent(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(onClick = { }) {
+                    IconButton(
+                        onClick = {
+                            volumeBarExpanded = !volumeBarExpanded
+                            if (volumeBarExpanded) {
+                                val max =
+                                    audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+                                        .coerceAtLeast(1)
+                                val cur = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+                                volumeFraction = cur.toFloat() / max.toFloat()
+                            }
+                        }
+                    ) {
                         Icon(
                             imageVector = Icons.Default.VolumeUp,
                             contentDescription = "Volumen",
-                            tint = TextGray
+                            tint = if (volumeBarExpanded) Teal400 else TextGray
                         )
                     }
                     IconButton(onClick = onToggleRepeatMode) {
@@ -310,6 +335,41 @@ fun PlayerContent(
                             "Mostrar controles extra"
                         },
                         tint = if (extraControlsExpanded) Teal400 else TextGray
+                    )
+                }
+            }
+
+            AnimatedVisibility(
+                visible = volumeBarExpanded,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut()
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Slider(
+                        value = volumeFraction,
+                        onValueChange = { v ->
+                            volumeFraction = v
+                            val max = audioManager
+                                .getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+                                .coerceAtLeast(1)
+                            val index = (v * max).roundToInt().coerceIn(0, max)
+                            audioManager.setStreamVolume(
+                                AudioManager.STREAM_MUSIC,
+                                index,
+                                0
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = SliderDefaults.colors(
+                            thumbColor = Teal400,
+                            activeTrackColor = Teal400,
+                            inactiveTrackColor = DarkSurfaceVariant
+                        )
                     )
                 }
             }
@@ -746,6 +806,7 @@ fun PlayerScreenPreview() {
                 isLoading = false
             ),
             onNavigateToLibrary = {},
+            onNavigateToLibrarySearch = {},
             onNavigateToEqualizer = {},
             onToggleRepeatMode = {},
             onToggleShuffle = {},
