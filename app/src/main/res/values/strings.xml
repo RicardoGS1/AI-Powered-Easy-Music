@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Easy Music</string>
+    <string name="share_app_chooser_title">Compartir app</string>
+    <string name="share_app_text">¡Prueba %1$s!\n%2$s</string>
+    <string name="drawer_share_app">Compartir app</string>
+    <string name="drawer_rate_app">Valorar app</string>
 </resources>

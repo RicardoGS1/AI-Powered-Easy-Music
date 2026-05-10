@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,6 +24,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -45,12 +47,15 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.RepeatOne
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Shuffle
+import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.Subtitles
 import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -58,8 +63,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -68,6 +76,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -75,6 +84,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -82,6 +92,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.Player
@@ -90,6 +101,7 @@ import com.virtualworld.easymusic.domain.model.LyricsLine
 import com.virtualworld.easymusic.domain.model.LyricsResult
 import com.virtualworld.easymusic.domain.model.LyricsSearchCandidate
 import com.virtualworld.easymusic.domain.model.Song
+import com.virtualworld.easymusic.domain.model.SongInsightResult
 import com.virtualworld.easymusic.playback.PlayerState
 import com.virtualworld.easymusic.ui.components.formatDuration
 import com.virtualworld.easymusic.ui.theme.DarkBackground
@@ -99,7 +111,11 @@ import com.virtualworld.easymusic.ui.theme.EasyMusicTheme
 import com.virtualworld.easymusic.ui.theme.Teal400
 import com.virtualworld.easymusic.ui.theme.TextGray
 import com.virtualworld.easymusic.ui.theme.TextWhite
+import com.virtualworld.easymusic.ui.util.openAppPlayStoreListing
+import com.virtualworld.easymusic.ui.util.shareAppPlayStoreLink
+import com.virtualworld.easymusic.R
 import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -125,7 +141,9 @@ fun PlayerScreen(
         onExcludeCurrentSong = { viewModel.excludeCurrentSongFromLibrary() },
         onToggleLyricsSheet = { viewModel.toggleLyricsSheet() },
         onDismissLyricsSheet = { viewModel.dismissLyricsSheet() },
-        onPickLyricsCandidate = { viewModel.loadLyricsForLrcLibId(it) }
+        onPickLyricsCandidate = { viewModel.loadLyricsForLrcLibId(it) },
+        onToggleInsightSheet = { viewModel.toggleInsightSheet() },
+        onDismissInsightSheet = { viewModel.dismissInsightSheet() }
     )
 }
 
@@ -146,6 +164,8 @@ fun PlayerContent(
     onToggleLyricsSheet: () -> Unit,
     onDismissLyricsSheet: () -> Unit,
     onPickLyricsCandidate: (Long) -> Unit,
+    onToggleInsightSheet: () -> Unit,
+    onDismissInsightSheet: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val song = uiState.playerState.currentSong
@@ -156,20 +176,55 @@ fun PlayerContent(
     val audioManager = remember(context) {
         context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     }
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(
-                        DarkSurfaceVariant,
-                        DarkSurface,
-                        DarkBackground
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .wrapContentWidth(align = Alignment.Start),
+                drawerContainerColor = DarkSurface
+            ) {
+                Column(
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    DrawerMenuAction(
+                        icon = Icons.Default.Share,
+                        label = stringResource(R.string.drawer_share_app),
+                        onClick = {
+                            shareAppPlayStoreLink(context)
+                            scope.launch { drawerState.close() }
+                        }
+                    )
+                    DrawerMenuAction(
+                        icon = Icons.Default.StarRate,
+                        label = stringResource(R.string.drawer_rate_app),
+                        onClick = {
+                            openAppPlayStoreListing(context)
+                            scope.launch { drawerState.close() }
+                        }
+                    )
+                }
+            }
+        }
+    ) {
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            DarkSurfaceVariant,
+                            DarkSurface,
+                            DarkBackground
+                        )
                     )
                 )
-            )
-    ) {
+        ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -186,7 +241,7 @@ fun PlayerContent(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = { }) {
+                IconButton(onClick = { scope.launch { drawerState.open() } }) {
                     Icon(
                         imageVector = Icons.Default.Menu,
                         contentDescription = "Menu",
@@ -410,11 +465,18 @@ fun PlayerContent(
                             tint = if (uiState.lyricsSheetVisible) Teal400 else TextGray
                         )
                     }
-                    IconButton(onClick = { }) {
+                    IconButton(
+                        onClick = onToggleInsightSheet,
+                        enabled = song != null
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.AutoAwesome,
-                            contentDescription = "IA",
-                            tint = TextGray
+                            contentDescription = "IA (Gemini)",
+                            tint = when {
+                                song == null -> TextGray.copy(alpha = 0.4f)
+                                uiState.insightSheetVisible -> Teal400
+                                else -> TextGray
+                            }
                         )
                     }
                 }
@@ -526,6 +588,163 @@ fun PlayerContent(
                 )
             }
         }
+
+        if (uiState.insightSheetVisible) {
+            val insightSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+            ModalBottomSheet(
+                onDismissRequest = onDismissInsightSheet,
+                sheetState = insightSheetState,
+                containerColor = DarkSurface,
+                contentColor = TextWhite
+            ) {
+                SongInsightSheetContent(
+                    loading = uiState.insightLoading,
+                    result = uiState.insightResult,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .navigationBarsPadding()
+                )
+            }
+        }
+        }
+    }
+}
+
+@Composable
+private fun DrawerMenuAction(
+    icon: ImageVector,
+    label: String,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(12.dp))
+            .clickable(onClick = onClick)
+            .padding(horizontal = 12.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = TextGray
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            color = TextWhite
+        )
+    }
+}
+
+@Composable
+private fun SongInsightSheetContent(
+    loading: Boolean,
+    result: SongInsightResult?,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.padding(horizontal = 20.dp, vertical = 8.dp)
+    ) {
+        Text(
+            text = "Datos de la canción",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = Teal400,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = "Gemini (metadatos locales)",
+            style = MaterialTheme.typography.labelSmall,
+            color = TextGray,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 2.dp, bottom = 12.dp),
+            textAlign = TextAlign.Center
+        )
+
+        when {
+            loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 200.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = Teal400)
+                }
+            }
+            result is SongInsightResult.Error -> {
+                Text(
+                    text = result.message,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = TextWhite,
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .padding(bottom = 16.dp)
+                )
+            }
+            result is SongInsightResult.Success -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 480.dp)
+                        .verticalScroll(rememberScrollState())
+                        .padding(bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    InsightFieldBlock(label = "Resumen", text = result.insight.resumen)
+                    InsightFieldBlock(label = "Género o estilo", text = result.insight.generoOEstilo)
+                    InsightFieldBlock(label = "Época o contexto", text = result.insight.epocaOContexto)
+                    InsightFieldBlock(label = "Dato curioso", text = result.insight.datoCurioso)
+                    val similares = result.insight.artistasOTemasSimilares.orEmpty()
+                        .map { it.trim() }
+                        .filter { it.isNotEmpty() }
+                    if (similares.isNotEmpty()) {
+                        Text(
+                            text = "Artistas o temas similares",
+                            style = MaterialTheme.typography.titleSmall,
+                            color = Teal400,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        similares.forEach { line ->
+                            Text(
+                                text = "· $line",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = TextGray
+                            )
+                        }
+                    }
+                }
+            }
+            else -> {
+                Text(
+                    text = "Sin datos.",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = TextGray
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun InsightFieldBlock(label: String, text: String?) {
+    val value = text?.trim().orEmpty()
+    if (value.isEmpty()) return
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.titleSmall,
+            color = Teal400,
+            fontWeight = FontWeight.SemiBold
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyMedium,
+            color = TextWhite
+        )
     }
 }
 
@@ -817,7 +1036,9 @@ fun PlayerScreenPreview() {
             onExcludeCurrentSong = {},
             onToggleLyricsSheet = {},
             onDismissLyricsSheet = {},
-            onPickLyricsCandidate = {}
+            onPickLyricsCandidate = {},
+            onToggleInsightSheet = {},
+            onDismissInsightSheet = {}
         )
     }
 }

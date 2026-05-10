@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.virtualworld.easymusic.domain.model.Song
 import com.virtualworld.easymusic.domain.model.LyricsResult
+import com.virtualworld.easymusic.domain.model.SongInsightResult
 import com.virtualworld.easymusic.domain.usecase.ExcludeSongFromLibraryUseCase
+import com.virtualworld.easymusic.domain.usecase.FetchSongInsightUseCase
 import com.virtualworld.easymusic.domain.usecase.FetchLyricsUseCase
 import com.virtualworld.easymusic.domain.usecase.GetLastPlayedUseCase
 import com.virtualworld.easymusic.domain.usecase.GetSongsUseCase
@@ -31,7 +33,10 @@ data class PlayerUiState(
     val lyricsSheetVisible: Boolean = false,
     val lyricsLoading: Boolean = false,
     val lyricsSearchingAlternatives: Boolean = false,
-    val lyricsResult: LyricsResult? = null
+    val lyricsResult: LyricsResult? = null,
+    val insightSheetVisible: Boolean = false,
+    val insightLoading: Boolean = false,
+    val insightResult: SongInsightResult? = null
 )
 
 @HiltViewModel
@@ -41,12 +46,14 @@ class PlayerViewModel @Inject constructor(
     private val saveLastPlayedUseCase: SaveLastPlayedUseCase,
     private val excludeSongFromLibraryUseCase: ExcludeSongFromLibraryUseCase,
     private val fetchLyricsUseCase: FetchLyricsUseCase,
+    private val fetchSongInsightUseCase: FetchSongInsightUseCase,
     val playbackController: PlaybackController
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PlayerUiState())
     val uiState: StateFlow<PlayerUiState> = _uiState.asStateFlow()
     private var lyricsFetchJob: Job? = null
+    private var insightFetchJob: Job? = null
 
     init {
         playbackController.connect()
@@ -71,12 +78,19 @@ class PlayerViewModel @Inject constructor(
                     val oldId = current.playerState.currentSong?.id
                     val newId = state.currentSong?.id
                     val songChanged = oldId != null && oldId != newId
+                    if (songChanged) {
+                        lyricsFetchJob?.cancel()
+                        insightFetchJob?.cancel()
+                    }
                     current.copy(
                         playerState = state,
                         lyricsSheetVisible = if (songChanged) false else current.lyricsSheetVisible,
                         lyricsLoading = if (songChanged) false else current.lyricsLoading,
                         lyricsSearchingAlternatives = if (songChanged) false else current.lyricsSearchingAlternatives,
-                        lyricsResult = if (songChanged) null else current.lyricsResult
+                        lyricsResult = if (songChanged) null else current.lyricsResult,
+                        insightSheetVisible = if (songChanged) false else current.insightSheetVisible,
+                        insightLoading = if (songChanged) false else current.insightLoading,
+                        insightResult = if (songChanged) null else current.insightResult
                     )
                 }
                 state.currentSong?.let { song ->
@@ -165,8 +179,12 @@ class PlayerViewModel @Inject constructor(
         }
         val song = snapshot.playerState.currentSong ?: return
         lyricsFetchJob?.cancel()
+        insightFetchJob?.cancel()
         _uiState.update {
             it.copy(
+                insightSheetVisible = false,
+                insightLoading = false,
+                insightResult = null,
                 lyricsSheetVisible = true,
                 lyricsLoading = true,
                 lyricsSearchingAlternatives = false,
@@ -207,6 +225,53 @@ class PlayerViewModel @Inject constructor(
                 lyricsLoading = false,
                 lyricsSearchingAlternatives = false,
                 lyricsResult = null
+            )
+        }
+    }
+
+    fun toggleInsightSheet() {
+        val snapshot = _uiState.value
+        if (snapshot.insightSheetVisible) {
+            insightFetchJob?.cancel()
+            _uiState.update {
+                it.copy(
+                    insightSheetVisible = false,
+                    insightLoading = false,
+                    insightResult = null
+                )
+            }
+            return
+        }
+        val song = snapshot.playerState.currentSong ?: return
+        insightFetchJob?.cancel()
+        lyricsFetchJob?.cancel()
+        _uiState.update {
+            it.copy(
+                lyricsSheetVisible = false,
+                lyricsLoading = false,
+                lyricsSearchingAlternatives = false,
+                lyricsResult = null,
+                insightSheetVisible = true,
+                insightLoading = true,
+                insightResult = null
+            )
+        }
+        insightFetchJob = viewModelScope.launch {
+            val result = fetchSongInsightUseCase(song)
+            if (!isActive) return@launch
+            _uiState.update {
+                it.copy(insightLoading = false, insightResult = result)
+            }
+        }
+    }
+
+    fun dismissInsightSheet() {
+        insightFetchJob?.cancel()
+        _uiState.update {
+            it.copy(
+                insightSheetVisible = false,
+                insightLoading = false,
+                insightResult = null
             )
         }
     }

@@ -1,6 +1,7 @@
 package com.virtualworld.easymusic.ui.library
 
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,7 +30,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -92,6 +96,7 @@ private fun LibraryScreenContent(
     onArtistClick: (Artist) -> Unit
 ) {
     val searchFieldFocusRequester = remember { FocusRequester() }
+    var searchExpanded by remember { mutableStateOf(false) }
 
     val filteredSongs = remember(uiState.songs, uiState.searchQuery) {
         LibrarySearchFilters.songs(uiState.songs, uiState.searchQuery)
@@ -106,8 +111,23 @@ private fun LibraryScreenContent(
     LaunchedEffect(initialFocusSearch) {
         if (initialFocusSearch) {
             onTabSelected(0)
+            searchExpanded = true
+        }
+    }
+
+    LaunchedEffect(searchExpanded) {
+        if (searchExpanded) {
             searchFieldFocusRequester.requestFocus()
         }
+    }
+
+    fun collapseSearch() {
+        searchExpanded = false
+        onSearchQueryChange("")
+    }
+
+    BackHandler(enabled = searchExpanded) {
+        collapseSearch()
     }
 
     Column(
@@ -117,59 +137,95 @@ private fun LibraryScreenContent(
     ) {
         TopAppBar(
             title = {
-                Text(
-                    text = "Biblioteca",
-                    color = TextWhite
-                )
+                if (searchExpanded) {
+                    OutlinedTextField(
+                        value = uiState.searchQuery,
+                        onValueChange = onSearchQueryChange,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .focusRequester(searchFieldFocusRequester),
+                        placeholder = {
+                            Text(
+                                text = "Buscar canciones, álbumes o artistas",
+                                color = TextGray,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = null,
+                                tint = TextGray,
+                                modifier = Modifier.padding(start = 4.dp)
+                            )
+                        },
+                        singleLine = true,
+                        textStyle = MaterialTheme.typography.bodyMedium.copy(color = TextWhite),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                        shape = MaterialTheme.shapes.small,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = TextWhite,
+                            unfocusedTextColor = TextWhite,
+                            focusedBorderColor = Teal400,
+                            unfocusedBorderColor = TextGray.copy(alpha = 0.5f),
+                            cursorColor = Teal400,
+                            focusedPlaceholderColor = TextGray,
+                            unfocusedPlaceholderColor = TextGray,
+                            focusedLeadingIconColor = Teal400,
+                            unfocusedLeadingIconColor = TextGray
+                        )
+                    )
+                } else {
+                    Text(
+                        text = "Biblioteca",
+                        color = TextWhite,
+                        style = MaterialTheme.typography.titleLarge,
+                        maxLines = 1
+                    )
+                }
             },
             navigationIcon = {
-                IconButton(onClick = onNavigateBack) {
+                IconButton(
+                    onClick = {
+                        if (searchExpanded) {
+                            collapseSearch()
+                        } else {
+                            onNavigateBack()
+                        }
+                    }
+                ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Volver",
+                        contentDescription = if (searchExpanded) {
+                            "Cerrar búsqueda"
+                        } else {
+                            "Volver"
+                        },
                         tint = TextWhite
                     )
                 }
             },
+            actions = {
+                if (!searchExpanded) {
+                    IconButton(onClick = { searchExpanded = true }) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Buscar",
+                            tint = TextWhite
+                        )
+                    }
+                } else {
+                    IconButton(onClick = { collapseSearch() }) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Cerrar búsqueda",
+                            tint = TextWhite
+                        )
+                    }
+                }
+            },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = DarkSurface
-            )
-        )
-
-        OutlinedTextField(
-            value = uiState.searchQuery,
-            onValueChange = onSearchQueryChange,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .focusRequester(searchFieldFocusRequester),
-            placeholder = {
-                Text(
-                    text = "Buscar canciones, álbumes o artistas",
-                    color = TextGray,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = null,
-                    tint = TextGray
-                )
-            },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-            shape = MaterialTheme.shapes.medium,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = TextWhite,
-                unfocusedTextColor = TextWhite,
-                focusedBorderColor = Teal400,
-                unfocusedBorderColor = TextGray,
-                cursorColor = Teal400,
-                focusedPlaceholderColor = TextGray,
-                unfocusedPlaceholderColor = TextGray,
-                focusedLeadingIconColor = Teal400,
-                unfocusedLeadingIconColor = TextGray
             )
         )
 

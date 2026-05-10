@@ -2,6 +2,7 @@ package com.virtualworld.easymusic.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.virtualworld.easymusic.BuildConfig
 import com.virtualworld.easymusic.data.remote.lrclib.LrcLibApi
 import dagger.Module
 import dagger.Provides
@@ -11,6 +12,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -18,6 +20,10 @@ import javax.inject.Singleton
 object NetworkModule {
 
     private const val LRCLIB_BASE_URL = "https://lrclib.net/"
+    @Provides
+    @Singleton
+    @Named("gemini_api_key")
+    fun provideGeminiApiKey(): String = BuildConfig.GEMINI_API_KEY
 
     @Provides
     @Singleton
@@ -48,4 +54,5 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(LrcLibApi::class.java)
+
 }
