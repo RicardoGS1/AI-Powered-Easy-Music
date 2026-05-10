@@ -105,13 +105,4 @@ class LibraryViewModel @Inject constructor(
         const val TAB_FAVORITES = 0
         const val TAB_SONGS = 1
     }
-
-    fun playAlbumSongs(albumId: Long) {
-        viewModelScope.launch {
-            val albumSongs = _uiState.value.songs.filter { it.albumId == albumId }
-            if (albumSongs.isNotEmpty()) {
-                playbackController.playSongs(albumSongs, 0)
-            }
-        }
-    }
 }

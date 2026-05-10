@@ -58,7 +58,19 @@ fun AlbumItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
+                Text(
+                    text = formatAlbumSongCount(album.songCount),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = TextGray,
+                    maxLines = 1,
+                    modifier = Modifier.padding(top = 2.dp)
+                )
             }
         }
     }
+}
+
+private fun formatAlbumSongCount(count: Int): String = when (count) {
+    1 -> "1 canción"
+    else -> "$count canciones"
 }

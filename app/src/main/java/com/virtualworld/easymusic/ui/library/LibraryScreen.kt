@@ -61,6 +61,8 @@ private val tabs = listOf("Favoritos", "Canciones", "Albums", "Artistas")
 fun LibraryScreen(
     initialFocusSearch: Boolean = false,
     onNavigateBack: () -> Unit,
+    onOpenAlbum: (Long) -> Unit = {},
+    onOpenArtist: (Long) -> Unit = {},
     viewModel: LibraryViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -75,11 +77,8 @@ fun LibraryScreen(
             viewModel.playSong(song)
             onNavigateBack()
         },
-        onAlbumClick = { album ->
-            viewModel.playAlbumSongs(album.id)
-            onNavigateBack()
-        },
-        onArtistClick = { }
+        onAlbumClick = { album -> onOpenAlbum(album.id) },
+        onArtistClick = { artist -> onOpenArtist(artist.id) }
     )
 }
 

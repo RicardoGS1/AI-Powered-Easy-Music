@@ -21,11 +21,12 @@ import com.virtualworld.easymusic.ui.theme.TextGray
 fun SongsTab(
     songs: List<Song>,
     onSongClick: (Song) -> Unit,
-    emptyMessage: String = "No se encontraron canciones"
+    emptyMessage: String = "No se encontraron canciones",
+    modifier: Modifier = Modifier.fillMaxSize()
 ) {
     if (songs.isEmpty()) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier,
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -35,7 +36,7 @@ fun SongsTab(
             )
         }
     } else {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(modifier = modifier) {
             items(songs, key = { it.id }) { song ->
                 SongItem(
                     song = song,

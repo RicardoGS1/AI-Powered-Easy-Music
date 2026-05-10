@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.virtualworld.easymusic.ui.equalizer.EqualizerScreen
+import com.virtualworld.easymusic.ui.library.CollectionSongsScreen
 import com.virtualworld.easymusic.ui.library.LibraryScreen
 import com.virtualworld.easymusic.ui.player.PlayerScreen
 
@@ -35,7 +36,27 @@ fun AppNavigation(navController: NavHostController) {
             val openSearch = backStackEntry.arguments?.getBoolean("openSearch") ?: false
             LibraryScreen(
                 initialFocusSearch = openSearch,
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() },
+                onOpenAlbum = { albumId ->
+                    navController.navigate(Routes.collectionAlbum(albumId))
+                },
+                onOpenArtist = { artistId ->
+                    navController.navigate(Routes.collectionArtist(artistId))
+                }
+            )
+        }
+        composable(
+            route = Routes.COLLECTION,
+            arguments = listOf(
+                navArgument("kind") { type = NavType.StringType },
+                navArgument("itemId") { type = NavType.LongType }
+            )
+        ) {
+            CollectionSongsScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onPlaybackStarted = {
+                    navController.popBackStack(Routes.PLAYER, inclusive = false)
+                }
             )
         }
         composable(Routes.EQUALIZER) {
