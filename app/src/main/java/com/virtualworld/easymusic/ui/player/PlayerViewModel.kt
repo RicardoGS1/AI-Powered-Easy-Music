@@ -13,6 +13,7 @@ import com.virtualworld.easymusic.domain.usecase.GetSongsUseCase
 import com.virtualworld.easymusic.domain.usecase.ObserveFavoriteSongIdsUseCase
 import com.virtualworld.easymusic.domain.usecase.SaveLastPlayedUseCase
 import com.virtualworld.easymusic.domain.usecase.ToggleFavoriteSongUseCase
+import com.virtualworld.easymusic.firebase.RemoteConfigValues
 import com.virtualworld.easymusic.playback.PlaybackController
 import com.virtualworld.easymusic.playback.PlayerState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +40,9 @@ data class PlayerUiState(
     val lyricsResult: LyricsResult? = null,
     val insightSheetVisible: Boolean = false,
     val insightLoading: Boolean = false,
-    val insightResult: SongInsightResult? = null
+    val insightResult: SongInsightResult? = null,
+    /** Kill switch vía Firebase Remote Config ([RemoteConfigKeys.ENABLE_AI_INSIGHT]). */
+    val aiInsightEnabled: Boolean = true,
 )
 
 @HiltViewModel
@@ -52,6 +55,7 @@ class PlayerViewModel @Inject constructor(
     private val fetchSongInsightUseCase: FetchSongInsightUseCase,
     private val observeFavoriteSongIdsUseCase: ObserveFavoriteSongIdsUseCase,
     private val toggleFavoriteSongUseCase: ToggleFavoriteSongUseCase,
+    private val remoteConfigValues: RemoteConfigValues,
     val playbackController: PlaybackController
 ) : ViewModel() {
 
@@ -78,6 +82,13 @@ class PlayerViewModel @Inject constructor(
             observeFavoriteSongIdsUseCase().collect { ids ->
                 _uiState.update { it.copy(favoriteSongIds = ids) }
             }
+        }
+        refreshAiInsightRemoteFlag()
+    }
+
+    fun refreshAiInsightRemoteFlag() {
+        _uiState.update {
+            it.copy(aiInsightEnabled = remoteConfigValues.isAiInsightEnabled())
         }
     }
 
@@ -259,6 +270,9 @@ class PlayerViewModel @Inject constructor(
             }
             return
         }
+        val aiEnabled = remoteConfigValues.isAiInsightEnabled()
+        _uiState.update { it.copy(aiInsightEnabled = aiEnabled) }
+        if (!aiEnabled) return
         val song = snapshot.playerState.currentSong ?: return
         insightFetchJob?.cancel()
         lyricsFetchJob?.cancel()

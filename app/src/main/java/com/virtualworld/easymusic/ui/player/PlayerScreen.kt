@@ -130,6 +130,10 @@ fun PlayerScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        viewModel.refreshAiInsightRemoteFlag()
+    }
+
     PlayerContent(
         uiState = uiState,
         onNavigateToLibrary = onNavigateToLibrary,
@@ -498,19 +502,21 @@ fun PlayerContent(
                             tint = if (uiState.lyricsSheetVisible) Teal400 else TextGray
                         )
                     }
-                    IconButton(
-                        onClick = onToggleInsightSheet,
-                        enabled = song != null
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.AutoAwesome,
-                            contentDescription = "IA (Gemini)",
-                            tint = when {
-                                song == null -> TextGray.copy(alpha = 0.4f)
-                                uiState.insightSheetVisible -> Teal400
-                                else -> TextGray
-                            }
-                        )
+                    if (uiState.aiInsightEnabled) {
+                        IconButton(
+                            onClick = onToggleInsightSheet,
+                            enabled = song != null
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.AutoAwesome,
+                                contentDescription = "IA (Gemini)",
+                                tint = when {
+                                    song == null -> TextGray.copy(alpha = 0.4f)
+                                    uiState.insightSheetVisible -> Teal400
+                                    else -> TextGray
+                                }
+                            )
+                        }
                     }
                 }
             }
