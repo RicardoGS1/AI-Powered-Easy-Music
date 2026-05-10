@@ -37,6 +37,18 @@
         </activity>
 
         <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="androidx.appcompat.app.AppLocalesMetadataHolderService" />
+            </intent-filter>
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
+
+        <service
             android:name=".playback.MusicPlaybackService"
             android:exported="true"
             android:foregroundServiceType="mediaPlayback"
