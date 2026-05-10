@@ -20,7 +20,8 @@ import com.virtualworld.easymusic.ui.theme.TextGray
 @Composable
 fun SongsTab(
     songs: List<Song>,
-    onSongClick: (Song) -> Unit
+    onSongClick: (Song) -> Unit,
+    emptyMessage: String = "No se encontraron canciones"
 ) {
     if (songs.isEmpty()) {
         Box(
@@ -28,7 +29,7 @@ fun SongsTab(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "No se encontraron canciones",
+                text = emptyMessage,
                 style = MaterialTheme.typography.bodyLarge,
                 color = TextGray
             )

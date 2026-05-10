@@ -9,6 +9,7 @@ import com.virtualworld.easymusic.domain.usecase.ExcludeSongFromLibraryUseCase
 import com.virtualworld.easymusic.domain.usecase.GetAlbumsUseCase
 import com.virtualworld.easymusic.domain.usecase.GetArtistsUseCase
 import com.virtualworld.easymusic.domain.usecase.GetSongsUseCase
+import com.virtualworld.easymusic.domain.usecase.ObserveFavoriteSongIdsUseCase
 import com.virtualworld.easymusic.playback.PlaybackController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,7 @@ data class LibraryUiState(
     val songs: List<Song> = emptyList(),
     val albums: List<Album> = emptyList(),
     val artists: List<Artist> = emptyList(),
+    val favoriteSongIds: Set<Long> = emptySet(),
     val isLoading: Boolean = true,
     val selectedTab: Int = 0,
     val searchQuery: String = ""
@@ -33,6 +35,7 @@ class LibraryViewModel @Inject constructor(
     private val getAlbumsUseCase: GetAlbumsUseCase,
     private val getArtistsUseCase: GetArtistsUseCase,
     private val excludeSongFromLibraryUseCase: ExcludeSongFromLibraryUseCase,
+    private val observeFavoriteSongIdsUseCase: ObserveFavoriteSongIdsUseCase,
     private val playbackController: PlaybackController
 ) : ViewModel() {
 
@@ -43,6 +46,11 @@ class LibraryViewModel @Inject constructor(
         viewModelScope.launch {
             excludeSongFromLibraryUseCase.observeExcludedIds().collect {
                 loadLibrary()
+            }
+        }
+        viewModelScope.launch {
+            observeFavoriteSongIdsUseCase().collect { ids ->
+                _uiState.update { it.copy(favoriteSongIds = ids) }
             }
         }
     }
@@ -76,9 +84,26 @@ class LibraryViewModel @Inject constructor(
     }
 
     fun playSong(song: Song) {
-        val songs = LibrarySearchFilters.songs(_uiState.value.songs, _uiState.value.searchQuery)
+        val songs = songsQueueForCurrentTab()
         val index = songs.indexOfFirst { it.id == song.id }
         playbackController.playSongs(songs, index.coerceAtLeast(0))
+    }
+
+    private fun songsQueueForCurrentTab(): List<Song> {
+        val state = _uiState.value
+        val baseSongs = if (state.selectedTab == TAB_FAVORITES) {
+            state.songs
+                .filter { it.id in state.favoriteSongIds }
+                .sortedBy { it.title.lowercase() }
+        } else {
+            state.songs
+        }
+        return LibrarySearchFilters.songs(baseSongs, state.searchQuery)
+    }
+
+    companion object {
+        const val TAB_FAVORITES = 0
+        const val TAB_SONGS = 1
     }
 
     fun playAlbumSongs(albumId: Long) {

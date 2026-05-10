@@ -14,4 +14,6 @@ interface MusicRepository {
     suspend fun saveLastPlayedSongId(songId: Long)
     suspend fun excludeSongFromLibrary(songId: Long)
     fun excludedSongIds(): Flow<Set<Long>>
+    suspend fun toggleFavoriteSong(songId: Long)
+    fun favoriteSongIds(): Flow<Set<Long>>
 }

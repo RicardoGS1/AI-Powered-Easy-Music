@@ -39,9 +39,11 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Equalizer
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Repeat
@@ -59,6 +61,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -96,7 +99,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.Player
-import coil3.compose.AsyncImage
+import com.virtualworld.easymusic.ui.components.AlbumArtAsyncImage
 import com.virtualworld.easymusic.domain.model.LyricsLine
 import com.virtualworld.easymusic.domain.model.LyricsResult
 import com.virtualworld.easymusic.domain.model.LyricsSearchCandidate
@@ -143,7 +146,8 @@ fun PlayerScreen(
         onDismissLyricsSheet = { viewModel.dismissLyricsSheet() },
         onPickLyricsCandidate = { viewModel.loadLyricsForLrcLibId(it) },
         onToggleInsightSheet = { viewModel.toggleInsightSheet() },
-        onDismissInsightSheet = { viewModel.dismissInsightSheet() }
+        onDismissInsightSheet = { viewModel.dismissInsightSheet() },
+        onToggleFavoriteCurrentSong = { viewModel.toggleFavoriteCurrentSong() }
     )
 }
 
@@ -166,9 +170,11 @@ fun PlayerContent(
     onPickLyricsCandidate: (Long) -> Unit,
     onToggleInsightSheet: () -> Unit,
     onDismissInsightSheet: () -> Unit,
+    onToggleFavoriteCurrentSong: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val song = uiState.playerState.currentSong
+    val isCurrentFavorite = song != null && song.id in uiState.favoriteSongIds
     var extraControlsExpanded by remember { mutableStateOf(false) }
     var volumeBarExpanded by remember { mutableStateOf(false) }
     var volumeFraction by remember { mutableFloatStateOf(0f) }
@@ -266,18 +272,45 @@ fun PlayerContent(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Album art
+            // Album art (favorito superpuesto arriba a la derecha)
             if (song != null) {
-                AsyncImage(
-                    model = song.albumArtUri,
-                    contentDescription = song.album,
+                Box(
                     modifier = Modifier
                         .fillMaxWidth(0.78f)
                         .aspectRatio(1f)
                         .shadow(24.dp, RoundedCornerShape(16.dp))
-                        .clip(RoundedCornerShape(16.dp)),
-                    contentScale = ContentScale.Crop
-                )
+                        .clip(RoundedCornerShape(16.dp))
+                ) {
+                    AlbumArtAsyncImage(
+                        albumArtUri = song.albumArtUri,
+                        contentDescription = song.album,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                    IconButton(
+                        onClick = onToggleFavoriteCurrentSong,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(6.dp),
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = Color.Black.copy(alpha = 0.45f),
+                            contentColor = if (isCurrentFavorite) Teal400 else Color.White
+                        )
+                    ) {
+                        Icon(
+                            imageVector = if (isCurrentFavorite) {
+                                Icons.Filled.Favorite
+                            } else {
+                                Icons.Outlined.FavoriteBorder
+                            },
+                            contentDescription = if (isCurrentFavorite) {
+                                "Quitar de favoritos"
+                            } else {
+                                "Agregar a favoritos"
+                            }
+                        )
+                    }
+                }
             } else {
                 Surface(
                     modifier = Modifier
@@ -1038,7 +1071,8 @@ fun PlayerScreenPreview() {
             onDismissLyricsSheet = {},
             onPickLyricsCandidate = {},
             onToggleInsightSheet = {},
-            onDismissInsightSheet = {}
+            onDismissInsightSheet = {},
+            onToggleFavoriteCurrentSong = {}
         )
     }
 }

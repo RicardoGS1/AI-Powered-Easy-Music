@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.virtualworld.easymusic.domain.model.Song
 import com.virtualworld.easymusic.ui.theme.TextGray
 
@@ -34,8 +33,8 @@ fun SongItem(
             .padding(horizontal = 16.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AsyncImage(
-            model = song.albumArtUri,
+        AlbumArtAsyncImage(
+            albumArtUri = song.albumArtUri,
             contentDescription = song.album,
             modifier = Modifier
                 .size(50.dp)

@@ -24,6 +24,7 @@ class MusicPreferences @Inject constructor(
     private companion object {
         val LAST_PLAYED_SONG_ID = longPreferencesKey("last_played_song_id")
         val EXCLUDED_SONG_IDS = stringSetPreferencesKey("excluded_song_ids")
+        val FAVORITE_SONG_IDS = stringSetPreferencesKey("favorite_song_ids")
     }
 
     fun getLastPlayedSongId(): Flow<Long?> =
@@ -53,4 +54,24 @@ class MusicPreferences @Inject constructor(
         context.dataStore.data.map { prefs ->
             prefs[EXCLUDED_SONG_IDS]?.mapNotNull { it.toLongOrNull() }?.toSet() ?: emptySet()
         }
+
+    fun favoriteSongIds(): Flow<Set<Long>> =
+        context.dataStore.data.map { prefs ->
+            prefs[FAVORITE_SONG_IDS]?.mapNotNull { it.toLongOrNull() }?.toSet() ?: emptySet()
+        }
+
+    suspend fun toggleFavoriteSongId(songId: Long) {
+        context.dataStore.edit { prefs ->
+            val current = prefs[FAVORITE_SONG_IDS] ?: emptySet()
+            val key = songId.toString()
+            prefs[FAVORITE_SONG_IDS] = if (key in current) current - key else current + key
+        }
+    }
+
+    suspend fun removeFavoriteSongId(songId: Long) {
+        context.dataStore.edit { prefs ->
+            val current = prefs[FAVORITE_SONG_IDS] ?: emptySet()
+            prefs[FAVORITE_SONG_IDS] = current - songId.toString()
+        }
+    }
 }

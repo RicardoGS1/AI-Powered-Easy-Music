@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    <!-- Fondo alineado con DarkSurface / tarjetas de la app -->
+    <path
+        android:fillColor="#FF1B2838"
+        android:pathData="M0,0h200v200h-200z" />
+    <!-- Acento suave -->
+    <path
+        android:fillColor="#FF243447"
+        android:pathData="M0,130 Q100,90 200,130 L200,200 L0,200 Z" />
+    <!-- Nota musical (basada en icono 24dp escalado al centro) -->
+    <group
+        android:pivotX="100"
+        android:pivotY="100"
+        android:scaleX="4.2"
+        android:scaleY="4.2"
+        android:translateX="49.6"
+        android:translateY="49.6">
+        <path
+            android:fillColor="#FF26A69A"
+            android:pathData="M12,3v10.55c-0.59,-0.34 -1.27,-0.55 -2,-0.55 -2.21,0 -4,1.79 -4,4s1.79,4 4,4 4,-1.79 4,-4V7h4V3h-6z" />
+    </group>
+</vector>

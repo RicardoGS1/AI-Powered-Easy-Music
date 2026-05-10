@@ -73,9 +73,16 @@ class MusicRepositoryImpl @Inject constructor(
 
     override suspend fun excludeSongFromLibrary(songId: Long) {
         musicPreferences.addExcludedSongId(songId)
+        musicPreferences.removeFavoriteSongId(songId)
     }
 
     override fun excludedSongIds(): Flow<Set<Long>> = musicPreferences.excludedSongIds()
+
+    override suspend fun toggleFavoriteSong(songId: Long) {
+        musicPreferences.toggleFavoriteSongId(songId)
+    }
+
+    override fun favoriteSongIds(): Flow<Set<Long>> = musicPreferences.favoriteSongIds()
 
     private fun stableArtistId(name: String): Long {
         return UUID.nameUUIDFromBytes(name.toByteArray(Charsets.UTF_8)).mostSignificantBits and Long.MAX_VALUE

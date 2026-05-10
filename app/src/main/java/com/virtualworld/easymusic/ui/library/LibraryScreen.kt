@@ -55,7 +55,7 @@ import com.virtualworld.easymusic.ui.theme.Teal400
 import com.virtualworld.easymusic.ui.theme.TextGray
 import com.virtualworld.easymusic.ui.theme.TextWhite
 
-private val tabs = listOf("Canciones", "Albums", "Artistas")
+private val tabs = listOf("Favoritos", "Canciones", "Albums", "Artistas")
 
 @Composable
 fun LibraryScreen(
@@ -98,6 +98,21 @@ private fun LibraryScreenContent(
     val searchFieldFocusRequester = remember { FocusRequester() }
     var searchExpanded by remember { mutableStateOf(false) }
 
+    val favoriteSongs = remember(uiState.songs, uiState.favoriteSongIds) {
+        uiState.songs
+            .filter { it.id in uiState.favoriteSongIds }
+            .sortedBy { it.title.lowercase() }
+    }
+    val filteredFavoriteSongs = remember(favoriteSongs, uiState.searchQuery) {
+        LibrarySearchFilters.songs(favoriteSongs, uiState.searchQuery)
+    }
+    val favoritesEmptyMessage = remember(favoriteSongs, uiState.searchQuery) {
+        if (favoriteSongs.isEmpty()) {
+            "Aún no tienes favoritos. Márcalos con el corazón en el reproductor."
+        } else {
+            "No se encontraron canciones"
+        }
+    }
     val filteredSongs = remember(uiState.songs, uiState.searchQuery) {
         LibrarySearchFilters.songs(uiState.songs, uiState.searchQuery)
     }
@@ -110,7 +125,7 @@ private fun LibraryScreenContent(
 
     LaunchedEffect(initialFocusSearch) {
         if (initialFocusSearch) {
-            onTabSelected(0)
+            onTabSelected(LibraryViewModel.TAB_SONGS)
             searchExpanded = true
         }
     }
@@ -265,15 +280,20 @@ private fun LibraryScreenContent(
             }
         } else {
             when (uiState.selectedTab) {
-                0 -> SongsTab(
+                LibraryViewModel.TAB_FAVORITES -> SongsTab(
+                    songs = filteredFavoriteSongs,
+                    onSongClick = onSongClick,
+                    emptyMessage = favoritesEmptyMessage
+                )
+                LibraryViewModel.TAB_SONGS -> SongsTab(
                     songs = filteredSongs,
                     onSongClick = onSongClick
                 )
-                1 -> AlbumsTab(
+                2 -> AlbumsTab(
                     albums = filteredAlbums,
                     onAlbumClick = onAlbumClick
                 )
-                2 -> ArtistsTab(
+                3 -> ArtistsTab(
                     artists = filteredArtists,
                     onArtistClick = onArtistClick
                 )

@@ -16,7 +16,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.virtualworld.easymusic.domain.model.Album
 import com.virtualworld.easymusic.ui.theme.DarkCard
 import com.virtualworld.easymusic.ui.theme.TextGray
@@ -35,8 +34,8 @@ fun AlbumItem(
         colors = CardDefaults.cardColors(containerColor = DarkCard)
     ) {
         Column {
-            AsyncImage(
-                model = album.albumArtUri,
+            AlbumArtAsyncImage(
+                albumArtUri = album.albumArtUri,
                 contentDescription = album.name,
                 modifier = Modifier
                     .fillMaxWidth()

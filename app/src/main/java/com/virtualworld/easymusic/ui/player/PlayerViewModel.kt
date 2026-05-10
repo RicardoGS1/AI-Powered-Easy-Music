@@ -10,7 +10,9 @@ import com.virtualworld.easymusic.domain.usecase.FetchSongInsightUseCase
 import com.virtualworld.easymusic.domain.usecase.FetchLyricsUseCase
 import com.virtualworld.easymusic.domain.usecase.GetLastPlayedUseCase
 import com.virtualworld.easymusic.domain.usecase.GetSongsUseCase
+import com.virtualworld.easymusic.domain.usecase.ObserveFavoriteSongIdsUseCase
 import com.virtualworld.easymusic.domain.usecase.SaveLastPlayedUseCase
+import com.virtualworld.easymusic.domain.usecase.ToggleFavoriteSongUseCase
 import com.virtualworld.easymusic.playback.PlaybackController
 import com.virtualworld.easymusic.playback.PlayerState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,6 +31,7 @@ data class PlayerUiState(
     val playerState: PlayerState = PlayerState(),
     val currentPosition: Long = 0L,
     val songs: List<Song> = emptyList(),
+    val favoriteSongIds: Set<Long> = emptySet(),
     val isLoading: Boolean = true,
     val lyricsSheetVisible: Boolean = false,
     val lyricsLoading: Boolean = false,
@@ -47,6 +50,8 @@ class PlayerViewModel @Inject constructor(
     private val excludeSongFromLibraryUseCase: ExcludeSongFromLibraryUseCase,
     private val fetchLyricsUseCase: FetchLyricsUseCase,
     private val fetchSongInsightUseCase: FetchSongInsightUseCase,
+    private val observeFavoriteSongIdsUseCase: ObserveFavoriteSongIdsUseCase,
+    private val toggleFavoriteSongUseCase: ToggleFavoriteSongUseCase,
     val playbackController: PlaybackController
 ) : ViewModel() {
 
@@ -67,6 +72,11 @@ class PlayerViewModel @Inject constructor(
                     _uiState.update { state -> state.copy(songs = songs) }
                 } catch (_: Exception) {
                 }
+            }
+        }
+        viewModelScope.launch {
+            observeFavoriteSongIdsUseCase().collect { ids ->
+                _uiState.update { it.copy(favoriteSongIds = ids) }
             }
         }
     }
@@ -160,6 +170,13 @@ class PlayerViewModel @Inject constructor(
             val song = _uiState.value.playerState.currentSong ?: return@launch
             excludeSongFromLibraryUseCase(song.id)
             playbackController.removeCurrentSongFromQueue()
+        }
+    }
+
+    fun toggleFavoriteCurrentSong() {
+        val songId = _uiState.value.playerState.currentSong?.id ?: return
+        viewModelScope.launch {
+            toggleFavoriteSongUseCase(songId)
         }
     }
 
