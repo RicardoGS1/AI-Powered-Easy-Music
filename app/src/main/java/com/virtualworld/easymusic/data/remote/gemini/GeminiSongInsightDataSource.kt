@@ -38,7 +38,7 @@ class GeminiSongInsightDataSource @Inject constructor(
             - Álbum: ${song.album}
             - Duración aproximada: ${durationSec}s
 
-            Identifica la canción conocida que mejor encaje con esos metadatos y dilo en el resumen.
+            Identifica la canción conocida que mejor encaje con esos metadatos y di el artista, el album y el titulo en el resumen.
 
             Responde ÚNICAMENTE con un JSON válido (sin markdown) con estas claves exactas:
             {
