@@ -1,8 +1,10 @@
 package com.virtualworld.easymusic.ui.library
 
+import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.domain.model.Song
 import com.virtualworld.easymusic.domain.usecase.GetAlbumsUseCase
 import com.virtualworld.easymusic.domain.usecase.GetArtistsUseCase
@@ -40,6 +42,7 @@ data class CollectionSongsUiState(
 
 @HiltViewModel
 class CollectionSongsViewModel @Inject constructor(
+    private val app: Application,
     savedStateHandle: SavedStateHandle,
     private val getSongsByAlbumUseCase: GetSongsByAlbumUseCase,
     private val getAlbumsUseCase: GetAlbumsUseCase,
@@ -64,7 +67,7 @@ class CollectionSongsViewModel @Inject constructor(
                 it.copy(
                     isLoading = false,
                     isMissing = true,
-                    title = "No encontrado"
+                    title = app.getString(R.string.not_found)
                 )
             }
             return
@@ -76,7 +79,7 @@ class CollectionSongsViewModel @Inject constructor(
             }
         } catch (_: Exception) {
             _uiState.update {
-                it.copy(isLoading = false, isMissing = true, title = "Error al cargar")
+                it.copy(isLoading = false, isMissing = true, title = app.getString(R.string.load_error))
             }
         }
     }
@@ -88,7 +91,7 @@ class CollectionSongsViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 isMissing = songs.isEmpty(),
-                title = meta?.name ?: songs.firstOrNull()?.album ?: "Álbum",
+                title = meta?.name ?: songs.firstOrNull()?.album ?: app.getString(R.string.album_fallback),
                 subtitle = meta?.artist ?: songs.firstOrNull()?.artist,
                 songs = songs
             )
@@ -102,7 +105,7 @@ class CollectionSongsViewModel @Inject constructor(
                 it.copy(
                     isLoading = false,
                     isMissing = true,
-                    title = "Artista no encontrado"
+                    title = app.getString(R.string.artist_not_found)
                 )
             }
             return
@@ -116,8 +119,8 @@ class CollectionSongsViewModel @Inject constructor(
                 isMissing = songs.isEmpty(),
                 title = artist.name,
                 subtitle = when (songs.size) {
-                    1 -> "1 canción"
-                    else -> "${songs.size} canciones"
+                    1 -> app.getString(R.string.song_count_one)
+                    else -> app.getString(R.string.song_count_many, songs.size)
                 },
                 songs = songs
             )

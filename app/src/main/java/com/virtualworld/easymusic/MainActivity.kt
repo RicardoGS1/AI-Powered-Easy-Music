@@ -35,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -120,7 +121,7 @@ private fun PermissionRequestScreen(onRequestPermission: () -> Unit) {
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Easy Music",
+                text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.headlineLarge,
                 color = TextWhite
             )
@@ -128,7 +129,7 @@ private fun PermissionRequestScreen(onRequestPermission: () -> Unit) {
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "Necesitamos acceso a tu musica para poder reproducirla",
+                text = stringResource(R.string.permission_message),
                 style = MaterialTheme.typography.bodyLarge,
                 color = TextGray,
                 textAlign = TextAlign.Center
@@ -142,7 +143,7 @@ private fun PermissionRequestScreen(onRequestPermission: () -> Unit) {
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = "Conceder permiso",
+                    text = stringResource(R.string.grant_permission),
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
                     color = TextWhite
                 )

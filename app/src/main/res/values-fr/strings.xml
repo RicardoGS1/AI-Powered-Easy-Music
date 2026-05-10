@@ -1,0 +1,119 @@
+<resources>
+    <string name="app_name">Lecteur Musique propulsé par l\'IA</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">Partager l\'appli</string>
+    <string name="share_app_text">Essaie %1$s !\n%2$s</string>
+    <string name="drawer_share_app">Partager l\'appli</string>
+    <string name="drawer_rate_app">Évaluer l\'appli</string>
+
+    <!-- Player -->
+    <string name="cd_menu">Menu</string>
+    <string name="now_playing">EN LECTURE</string>
+    <string name="cd_search">Rechercher</string>
+    <string name="cd_remove_favorite">Retirer des favoris</string>
+    <string name="cd_add_favorite">Ajouter aux favoris</string>
+    <string name="no_song">Aucun morceau</string>
+    <string name="select_a_song">Sélectionne un morceau</string>
+    <string name="cd_volume">Volume</string>
+    <string name="cd_repeat">Répéter</string>
+    <string name="cd_shuffle">Aléatoire</string>
+    <string name="cd_library">Bibliothèque</string>
+    <string name="cd_hide_extra_controls">Masquer les contrôles supplémentaires</string>
+    <string name="cd_show_extra_controls">Afficher les contrôles supplémentaires</string>
+    <string name="cd_equalizer">Égaliseur</string>
+    <string name="cd_remove_from_queue">Retirer de la file et de la bibliothèque</string>
+    <string name="cd_previous">Précédent</string>
+    <string name="cd_pause">Pause</string>
+    <string name="cd_play">Lecture</string>
+    <string name="cd_next">Suivant</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">Données du morceau</string>
+    <string name="gemini_local_metadata">Gemini (métadonnées locales)</string>
+    <string name="insight_summary">Résumé</string>
+    <string name="insight_genre">Genre ou style</string>
+    <string name="insight_era">Époque ou contexte</string>
+    <string name="insight_fun_fact">Anecdote</string>
+    <string name="insight_similar_artists">Artistes ou thèmes similaires</string>
+    <string name="no_data">Aucune donnée.</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">Paroles</string>
+    <string name="lyrics_no_exact_match">Aucune correspondance exacte trouvée (titre, artiste, album et durée). Recherche d\'autres correspondances sur LRCLIB…</string>
+    <string name="lyrics_instrumental">Cette piste est répertoriée comme instrumentale sur LRCLIB.</string>
+    <string name="lyrics_not_found">Aucune parole trouvée pour ce morceau. Vérifie le titre, l\'artiste, l\'album et la durée dans les métadonnées.</string>
+    <string name="lyrics_multiple_matches">Plusieurs correspondances sur LRCLIB. Choisis la bonne piste :</string>
+    <string name="lyrics_no_options">Aucune option à afficher.</string>
+    <string name="no_title">Sans titre</string>
+
+    <!-- Library -->
+    <string name="library">Bibliothèque</string>
+    <string name="tab_favorites">Favoris</string>
+    <string name="tab_songs">Morceaux</string>
+    <string name="tab_albums">Albums</string>
+    <string name="tab_artists">Artistes</string>
+    <string name="no_songs_found">Aucun morceau trouvé</string>
+    <string name="no_albums_found">Aucun album trouvé</string>
+    <string name="no_artists_found">Aucun artiste trouvé</string>
+    <string name="no_favorites_yet">Tu n\'as pas encore de favoris. Marque-les avec le cœur dans le lecteur.</string>
+    <string name="search_placeholder">Rechercher des morceaux, albums ou artistes</string>
+    <string name="cd_close_search">Fermer la recherche</string>
+    <string name="cd_back">Retour</string>
+    <string name="play_all">Tout lire</string>
+    <string name="no_songs">Aucun morceau</string>
+    <string name="not_found">Introuvable</string>
+    <string name="artist_not_found">Artiste introuvable</string>
+    <string name="load_error">Erreur de chargement</string>
+    <string name="no_songs_to_show">Aucun morceau à afficher.</string>
+    <string name="album_fallback">Album</string>
+    <string name="song_count_one">1 morceau</string>
+    <string name="song_count_many">%d morceaux</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">ÉGALISEUR</string>
+    <string name="equalizer">Égaliseur</string>
+    <string name="enabled">Activé</string>
+    <string name="disabled">Désactivé</string>
+    <string name="music_style">Style musical</string>
+    <string name="eq_play_song_hint">Joue un morceau : l\'égaliseur se connecte à l\'audio et tu peux appliquer des styles.</string>
+    <string name="eq_custom_curve">Courbe personnalisée (ajuste les bandes)</string>
+    <string name="bass_boost">Renforcement des basses</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">Inconnu</string>
+    <string name="unknown_artist">Artiste inconnu</string>
+    <string name="unknown_album">Album inconnu</string>
+
+    <string name="permission_message">Nous avons besoin d\'accéder à ta musique pour la lire</string>
+    <string name="grant_permission">Accorder la permission</string>
+    <string name="artist_songs_albums">%1$d morceaux · %2$d albums</string>
+    <string name="preset_flat">Plat</string>
+    <string name="preset_rock">Rock</string>
+    <string name="preset_pop">Pop</string>
+    <string name="preset_jazz">Jazz</string>
+    <string name="preset_classical">Classique</string>
+    <string name="preset_dance">Dance</string>
+    <string name="preset_hip_hop">Hip Hop</string>
+    <string name="preset_electronic">Électronique</string>
+    <string name="preset_rnb">R&amp;B</string>
+    <string name="preset_heavy_metal">Heavy Metal</string>
+    <string name="preset_acoustic">Acoustique</string>
+    <string name="preset_latin">Latin</string>
+    <string name="preset_vocal">Vocal</string>
+    <string name="preset_bass">Basses</string>
+    <string name="preset_treble">Aigus</string>
+    <string name="ai_not_available">Les informations IA ne sont pas disponibles pour le moment.</string>
+    <string name="gemini_key_missing">Ajoute GEMINI_API_KEY dans local.properties (clé Google AI Studio) et recompile.</string>
+    <string name="error_building_request">Erreur interne lors de la construction de la requête.</string>
+    <string name="api_response_unrecognized">Réponse de l\'API non reconnue.</string>
+    <string name="api_no_usable_text">L\'API n\'a pas renvoyé de texte utilisable.</string>
+    <string name="json_parse_error">Impossible d\'interpréter la réponse JSON du modèle.</string>
+    <string name="network_error">Erreur réseau ou de service.</string>
+    <string name="no_connection">Pas de connexion</string>
+    <string name="http_error">Erreur HTTP %d</string>
+    <string name="settings">Paramètres</string>
+    <string name="drawer_settings">Paramètres</string>
+    <string name="language">Langue</string>
+    <string name="system_default">Par défaut du système</string>
+</resources>

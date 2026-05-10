@@ -1,5 +1,7 @@
 package com.virtualworld.easymusic.data.remote.lrclib
 
+import android.app.Application
+import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.domain.model.LyricsResult
 import com.virtualworld.easymusic.domain.model.LyricsSearchCandidate
 import com.virtualworld.easymusic.domain.model.Song
@@ -11,6 +13,7 @@ import javax.inject.Singleton
 
 @Singleton
 class LrcLibLyricsDataSource @Inject constructor(
+    private val app: Application,
     private val api: LrcLibApi
 ) {
 
@@ -41,7 +44,7 @@ class LrcLibLyricsDataSource @Inject constructor(
                 else -> LyricsResult.Failure(httpMessage(cached))
             }
         } catch (e: IOException) {
-            LyricsResult.Failure(e.message ?: "Sin conexión")
+            LyricsResult.Failure(e.message ?: app.getString(R.string.no_connection))
         }
     }
 
@@ -53,7 +56,7 @@ class LrcLibLyricsDataSource @Inject constructor(
         return try {
             searchFallback(durationSec, trackName, artistName, albumName)
         } catch (e: IOException) {
-            LyricsResult.Failure(e.message ?: "Sin conexión")
+            LyricsResult.Failure(e.message ?: app.getString(R.string.no_connection))
         }
     }
 
@@ -69,7 +72,7 @@ class LrcLibLyricsDataSource @Inject constructor(
                 else -> LyricsResult.Failure(httpMessage(response))
             }
         } catch (e: IOException) {
-            LyricsResult.Failure(e.message ?: "Sin conexión")
+            LyricsResult.Failure(e.message ?: app.getString(R.string.no_connection))
         }
     }
 
@@ -154,6 +157,6 @@ class LrcLibLyricsDataSource @Inject constructor(
     private fun httpMessage(response: Response<*>): String {
         val msg = response.message().trim()
         if (msg.isNotEmpty()) return msg
-        return "Error HTTP ${response.code()}"
+        return app.getString(R.string.http_error, response.code())
     }
 }

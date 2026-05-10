@@ -49,6 +49,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.RepeatOne
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material.icons.filled.StarRate
@@ -126,6 +127,7 @@ fun PlayerScreen(
     onNavigateToLibrary: () -> Unit,
     onNavigateToLibrarySearch: () -> Unit,
     onNavigateToEqualizer: () -> Unit,
+    onNavigateToSettings: () -> Unit,
     viewModel: PlayerViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -139,6 +141,7 @@ fun PlayerScreen(
         onNavigateToLibrary = onNavigateToLibrary,
         onNavigateToLibrarySearch = onNavigateToLibrarySearch,
         onNavigateToEqualizer = onNavigateToEqualizer,
+        onNavigateToSettings = onNavigateToSettings,
         onToggleRepeatMode = { viewModel.toggleRepeatMode() },
         onToggleShuffle = { viewModel.toggleShuffle() },
         onSeekTo = { viewModel.seekTo(it) },
@@ -162,6 +165,7 @@ fun PlayerContent(
     onNavigateToLibrary: () -> Unit,
     onNavigateToLibrarySearch: () -> Unit,
     onNavigateToEqualizer: () -> Unit,
+    onNavigateToSettings: () -> Unit,
     onToggleRepeatMode: () -> Unit,
     onToggleShuffle: () -> Unit,
     onSeekTo: (Long) -> Unit,
@@ -218,6 +222,14 @@ fun PlayerContent(
                             scope.launch { drawerState.close() }
                         }
                     )
+                    DrawerMenuAction(
+                        icon = Icons.Default.Settings,
+                        label = stringResource(R.string.drawer_settings),
+                        onClick = {
+                            onNavigateToSettings()
+                            scope.launch { drawerState.close() }
+                        }
+                    )
                 }
             }
         }
@@ -254,12 +266,12 @@ fun PlayerContent(
                 IconButton(onClick = { scope.launch { drawerState.open() } }) {
                     Icon(
                         imageVector = Icons.Default.Menu,
-                        contentDescription = "Menu",
+                        contentDescription = stringResource(R.string.cd_menu),
                         tint = TextWhite
                     )
                 }
                 Text(
-                    text = "NOW PLAYING",
+                    text = stringResource(R.string.now_playing),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 2.sp,
@@ -268,7 +280,7 @@ fun PlayerContent(
                 IconButton(onClick = onNavigateToLibrarySearch) {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = "Buscar",
+                        contentDescription = stringResource(R.string.cd_search),
                         tint = TextWhite
                     )
                 }
@@ -308,9 +320,9 @@ fun PlayerContent(
                                 Icons.Outlined.FavoriteBorder
                             },
                             contentDescription = if (isCurrentFavorite) {
-                                "Quitar de favoritos"
+                                stringResource(R.string.cd_remove_favorite)
                             } else {
-                                "Agregar a favoritos"
+                                stringResource(R.string.cd_add_favorite)
                             }
                         )
                     }
@@ -337,7 +349,7 @@ fun PlayerContent(
 
             // Song info
             Text(
-                text = song?.title ?: "Sin cancion",
+                text = song?.title ?: stringResource(R.string.no_song),
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = TextWhite,
@@ -348,7 +360,7 @@ fun PlayerContent(
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = song?.artist ?: "Selecciona una cancion",
+                text = song?.artist ?: stringResource(R.string.select_a_song),
                 style = MaterialTheme.typography.bodyLarge,
                 color = TextGray,
                 maxLines = 1,
@@ -383,7 +395,7 @@ fun PlayerContent(
                     ) {
                         Icon(
                             imageVector = Icons.Default.VolumeUp,
-                            contentDescription = "Volumen",
+                            contentDescription = stringResource(R.string.cd_volume),
                             tint = if (volumeBarExpanded) Teal400 else TextGray
                         )
                     }
@@ -393,7 +405,7 @@ fun PlayerContent(
                                 Player.REPEAT_MODE_ONE -> Icons.Default.RepeatOne
                                 else -> Icons.Default.Repeat
                             },
-                            contentDescription = "Repetir",
+                            contentDescription = stringResource(R.string.cd_repeat),
                             tint = if (uiState.playerState.repeatMode != Player.REPEAT_MODE_OFF)
                                 Teal400 else TextGray
                         )
@@ -401,7 +413,7 @@ fun PlayerContent(
                     IconButton(onClick = onToggleShuffle) {
                         Icon(
                             imageVector = Icons.Default.Shuffle,
-                            contentDescription = "Aleatorio",
+                            contentDescription = stringResource(R.string.cd_shuffle),
                             tint = if (uiState.playerState.shuffleEnabled)
                                 Teal400 else TextGray
                         )
@@ -409,7 +421,7 @@ fun PlayerContent(
                     IconButton(onClick = onNavigateToLibrary) {
                         Icon(
                             imageVector = Icons.Filled.Folder,
-                            contentDescription = "Biblioteca",
+                            contentDescription = stringResource(R.string.cd_library),
                             tint = TextGray
                         )
                     }
@@ -422,9 +434,9 @@ fun PlayerContent(
                             Icons.Filled.ExpandLess
                         },
                         contentDescription = if (extraControlsExpanded) {
-                            "Ocultar controles extra"
+                            stringResource(R.string.cd_hide_extra_controls)
                         } else {
-                            "Mostrar controles extra"
+                            stringResource(R.string.cd_show_extra_controls)
                         },
                         tint = if (extraControlsExpanded) Teal400 else TextGray
                     )
@@ -481,7 +493,7 @@ fun PlayerContent(
                     IconButton(onClick = onNavigateToEqualizer) {
                         Icon(
                             imageVector = Icons.Filled.Equalizer,
-                            contentDescription = "Ecualizador",
+                            contentDescription = stringResource(R.string.cd_equalizer),
                             tint = TextGray
                         )
                     }
@@ -491,7 +503,7 @@ fun PlayerContent(
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
-                            contentDescription = "Quitar de la cola y de la biblioteca",
+                            contentDescription = stringResource(R.string.cd_remove_from_queue),
                             tint = if (song != null) TextGray else TextGray.copy(alpha = 0.4f)
                         )
                     }
@@ -571,7 +583,7 @@ fun PlayerContent(
                 ) {
                     Icon(
                         imageVector = Icons.Default.SkipPrevious,
-                        contentDescription = "Anterior",
+                        contentDescription = stringResource(R.string.cd_previous),
                         modifier = Modifier.size(36.dp),
                         tint = TextWhite
                     )
@@ -587,7 +599,7 @@ fun PlayerContent(
                     Icon(
                         imageVector = if (uiState.playerState.isPlaying)
                             Icons.Default.Pause else Icons.Default.PlayArrow,
-                        contentDescription = if (uiState.playerState.isPlaying) "Pausar" else "Reproducir",
+                        contentDescription = if (uiState.playerState.isPlaying) stringResource(R.string.cd_pause) else stringResource(R.string.cd_play),
                         modifier = Modifier.padding(18.dp),
                         tint = Color.White
                     )
@@ -599,7 +611,7 @@ fun PlayerContent(
                 ) {
                     Icon(
                         imageVector = Icons.Default.SkipNext,
-                        contentDescription = "Siguiente",
+                        contentDescription = stringResource(R.string.cd_next),
                         modifier = Modifier.size(36.dp),
                         tint = TextWhite
                     )
@@ -686,7 +698,7 @@ private fun SongInsightSheetContent(
         modifier = modifier.padding(horizontal = 20.dp, vertical = 8.dp)
     ) {
         Text(
-            text = "Datos de la canción",
+            text = stringResource(R.string.song_data),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = Teal400,
@@ -694,7 +706,7 @@ private fun SongInsightSheetContent(
             textAlign = TextAlign.Center
         )
         Text(
-            text = "Gemini (metadatos locales)",
+            text = stringResource(R.string.gemini_local_metadata),
             style = MaterialTheme.typography.labelSmall,
             color = TextGray,
             modifier = Modifier
@@ -733,16 +745,16 @@ private fun SongInsightSheetContent(
                         .padding(bottom = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(14.dp)
                 ) {
-                    InsightFieldBlock(label = "Resumen", text = result.insight.resumen)
-                    InsightFieldBlock(label = "Género o estilo", text = result.insight.generoOEstilo)
-                    InsightFieldBlock(label = "Época o contexto", text = result.insight.epocaOContexto)
-                    InsightFieldBlock(label = "Dato curioso", text = result.insight.datoCurioso)
+                    InsightFieldBlock(label = stringResource(R.string.insight_summary), text = result.insight.resumen)
+                    InsightFieldBlock(label = stringResource(R.string.insight_genre), text = result.insight.generoOEstilo)
+                    InsightFieldBlock(label = stringResource(R.string.insight_era), text = result.insight.epocaOContexto)
+                    InsightFieldBlock(label = stringResource(R.string.insight_fun_fact), text = result.insight.datoCurioso)
                     val similares = result.insight.artistasOTemasSimilares.orEmpty()
                         .map { it.trim() }
                         .filter { it.isNotEmpty() }
                     if (similares.isNotEmpty()) {
                         Text(
-                            text = "Artistas o temas similares",
+                            text = stringResource(R.string.insight_similar_artists),
                             style = MaterialTheme.typography.titleSmall,
                             color = Teal400,
                             fontWeight = FontWeight.SemiBold
@@ -759,7 +771,7 @@ private fun SongInsightSheetContent(
             }
             else -> {
                 Text(
-                    text = "Sin datos.",
+                    text = stringResource(R.string.no_data),
                     style = MaterialTheme.typography.bodyLarge,
                     color = TextGray
                 )
@@ -800,7 +812,7 @@ private fun LyricsSheetContent(
         modifier = modifier.padding(horizontal = 20.dp, vertical = 8.dp)
     ) {
         Text(
-            text = "Letra",
+            text = stringResource(R.string.lyrics),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = Teal400,
@@ -831,7 +843,7 @@ private fun LyricsSheetContent(
                     ) {
                         if (searchingAlternatives) {
                             Text(
-                                text = "No se encontró una letra con coincidencia exacta (título, artista, álbum y duración). Buscando otras coincidencias en LRCLIB…",
+                                text = stringResource(R.string.lyrics_no_exact_match),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = TextGray,
                                 textAlign = TextAlign.Center
@@ -876,7 +888,7 @@ private fun LyricsSheetContent(
 
             result is LyricsResult.Instrumental -> {
                 Text(
-                    text = "Esta pista figura como instrumental en LRCLIB.",
+                    text = stringResource(R.string.lyrics_instrumental),
                     style = MaterialTheme.typography.bodyLarge,
                     color = TextGray,
                     textAlign = TextAlign.Center,
@@ -888,7 +900,7 @@ private fun LyricsSheetContent(
 
             result is LyricsResult.NotFound -> {
                 Text(
-                    text = "No se encontró letra para esta canción. Comprueba título, artista, álbum y duración en los metadatos.",
+                    text = stringResource(R.string.lyrics_not_found),
                     style = MaterialTheme.typography.bodyLarge,
                     color = TextGray,
                     textAlign = TextAlign.Center,
@@ -925,7 +937,7 @@ private fun LyricsCandidatePicker(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = "Varias coincidencias en LRCLIB. Elige la pista correcta:",
+            text = stringResource(R.string.lyrics_multiple_matches),
             style = MaterialTheme.typography.bodyMedium,
             color = TextGray,
             modifier = Modifier
@@ -934,7 +946,7 @@ private fun LyricsCandidatePicker(
         )
         if (candidates.isEmpty()) {
             Text(
-                text = "No hay opciones para mostrar.",
+                text = stringResource(R.string.lyrics_no_options),
                 style = MaterialTheme.typography.bodyLarge,
                 color = TextGray,
                 textAlign = TextAlign.Center,
@@ -962,7 +974,7 @@ private fun LyricsCandidatePicker(
                 ) {
                     Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp)) {
                         Text(
-                            text = candidate.trackName.ifBlank { "Sin título" },
+                            text = candidate.trackName.ifBlank { stringResource(R.string.no_title) },
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = TextWhite,
@@ -1066,6 +1078,7 @@ fun PlayerScreenPreview() {
             onNavigateToLibrary = {},
             onNavigateToLibrarySearch = {},
             onNavigateToEqualizer = {},
+            onNavigateToSettings = {},
             onToggleRepeatMode = {},
             onToggleShuffle = {},
             onSeekTo = {},

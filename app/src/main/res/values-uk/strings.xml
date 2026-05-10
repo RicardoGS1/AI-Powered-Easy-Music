@@ -1,0 +1,119 @@
+<resources>
+    <string name="app_name">Музичний плеєр на базі ШІ</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">Поділитися додатком</string>
+    <string name="share_app_text">Спробуй %1$s!\n%2$s</string>
+    <string name="drawer_share_app">Поділитися додатком</string>
+    <string name="drawer_rate_app">Оцінити додаток</string>
+
+    <!-- Player -->
+    <string name="cd_menu">Меню</string>
+    <string name="now_playing">ЗАРАЗ ГРАЄ</string>
+    <string name="cd_search">Пошук</string>
+    <string name="cd_remove_favorite">Видалити з обраного</string>
+    <string name="cd_add_favorite">Додати до обраного</string>
+    <string name="no_song">Немає пісні</string>
+    <string name="select_a_song">Оберіть пісню</string>
+    <string name="cd_volume">Гучність</string>
+    <string name="cd_repeat">Повтор</string>
+    <string name="cd_shuffle">Випадковий порядок</string>
+    <string name="cd_library">Бібліотека</string>
+    <string name="cd_hide_extra_controls">Сховати додаткові елементи</string>
+    <string name="cd_show_extra_controls">Показати додаткові елементи</string>
+    <string name="cd_equalizer">Еквалайзер</string>
+    <string name="cd_remove_from_queue">Видалити з черги та бібліотеки</string>
+    <string name="cd_previous">Попередній</string>
+    <string name="cd_pause">Пауза</string>
+    <string name="cd_play">Відтворити</string>
+    <string name="cd_next">Наступний</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">Дані про пісню</string>
+    <string name="gemini_local_metadata">Gemini (локальні метадані)</string>
+    <string name="insight_summary">Огляд</string>
+    <string name="insight_genre">Жанр або стиль</string>
+    <string name="insight_era">Епоха або контекст</string>
+    <string name="insight_fun_fact">Цікавий факт</string>
+    <string name="insight_similar_artists">Схожі виконавці або теми</string>
+    <string name="no_data">Немає даних.</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">Текст пісні</string>
+    <string name="lyrics_no_exact_match">Точний збіг не знайдено (назва, виконавець, альбом та тривалість). Пошук інших збігів у LRCLIB…</string>
+    <string name="lyrics_instrumental">Цей трек позначено як інструментальний у LRCLIB.</string>
+    <string name="lyrics_not_found">Текст для цієї пісні не знайдено. Перевірте назву, виконавця, альбом та тривалість у метаданих.</string>
+    <string name="lyrics_multiple_matches">Кілька збігів у LRCLIB. Оберіть правильний трек:</string>
+    <string name="lyrics_no_options">Немає варіантів для відображення.</string>
+    <string name="no_title">Без назви</string>
+
+    <!-- Library -->
+    <string name="library">Бібліотека</string>
+    <string name="tab_favorites">Обране</string>
+    <string name="tab_songs">Пісні</string>
+    <string name="tab_albums">Альбоми</string>
+    <string name="tab_artists">Виконавці</string>
+    <string name="no_songs_found">Пісень не знайдено</string>
+    <string name="no_albums_found">Альбомів не знайдено</string>
+    <string name="no_artists_found">Виконавців не знайдено</string>
+    <string name="no_favorites_yet">У вас ще немає обраного. Позначте серцем у плеєрі.</string>
+    <string name="search_placeholder">Шукати пісні, альбоми або виконавців</string>
+    <string name="cd_close_search">Закрити пошук</string>
+    <string name="cd_back">Назад</string>
+    <string name="play_all">Відтворити все</string>
+    <string name="no_songs">Немає пісень</string>
+    <string name="not_found">Не знайдено</string>
+    <string name="artist_not_found">Виконавця не знайдено</string>
+    <string name="load_error">Помилка завантаження</string>
+    <string name="no_songs_to_show">Немає пісень для відображення.</string>
+    <string name="album_fallback">Альбом</string>
+    <string name="song_count_one">1 пісня</string>
+    <string name="song_count_many">%d пісень</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">ЕКВАЛАЙЗЕР</string>
+    <string name="equalizer">Еквалайзер</string>
+    <string name="enabled">Увімкнено</string>
+    <string name="disabled">Вимкнено</string>
+    <string name="music_style">Музичний стиль</string>
+    <string name="eq_play_song_hint">Відтворіть пісню: еквалайзер підключиться до аудіо і ви зможете застосовувати стилі.</string>
+    <string name="eq_custom_curve">Власна крива (налаштуйте смуги)</string>
+    <string name="bass_boost">Підсилення басів</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">Невідомо</string>
+    <string name="unknown_artist">Невідомий виконавець</string>
+    <string name="unknown_album">Невідомий альбом</string>
+
+    <string name="permission_message">Нам потрібен доступ до вашої музики для відтворення</string>
+    <string name="grant_permission">Надати дозвіл</string>
+    <string name="artist_songs_albums">%1$d пісень · %2$d альбомів</string>
+    <string name="preset_flat">Рівний</string>
+    <string name="preset_rock">Рок</string>
+    <string name="preset_pop">Поп</string>
+    <string name="preset_jazz">Джаз</string>
+    <string name="preset_classical">Класика</string>
+    <string name="preset_dance">Денс</string>
+    <string name="preset_hip_hop">Хіп-хоп</string>
+    <string name="preset_electronic">Електроніка</string>
+    <string name="preset_rnb">R&amp;B</string>
+    <string name="preset_heavy_metal">Хеві-метал</string>
+    <string name="preset_acoustic">Акустика</string>
+    <string name="preset_latin">Латино</string>
+    <string name="preset_vocal">Вокал</string>
+    <string name="preset_bass">Баси</string>
+    <string name="preset_treble">Високі</string>
+    <string name="ai_not_available">Інформація ШІ наразі недоступна.</string>
+    <string name="gemini_key_missing">Додайте GEMINI_API_KEY у local.properties (ключ Google AI Studio) та перекомпілюйте.</string>
+    <string name="error_building_request">Внутрішня помилка при побудові запиту.</string>
+    <string name="api_response_unrecognized">Відповідь API не розпізнана.</string>
+    <string name="api_no_usable_text">API не повернув придатний текст.</string>
+    <string name="json_parse_error">Не вдалося інтерпретувати JSON-відповідь моделі.</string>
+    <string name="network_error">Помилка мережі або сервісу.</string>
+    <string name="no_connection">Немає з\'єднання</string>
+    <string name="http_error">Помилка HTTP %d</string>
+    <string name="settings">Налаштування</string>
+    <string name="drawer_settings">Налаштування</string>
+    <string name="language">Мова</string>
+    <string name="system_default">За замовчуванням системи</string>
+</resources>

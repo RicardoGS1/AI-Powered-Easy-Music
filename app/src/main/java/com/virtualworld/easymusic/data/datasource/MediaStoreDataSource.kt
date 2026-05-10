@@ -1,10 +1,12 @@
 package com.virtualworld.easymusic.data.datasource
 
+import android.app.Application
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.domain.model.Album
 import com.virtualworld.easymusic.domain.model.Artist
 import com.virtualworld.easymusic.domain.model.Song
@@ -15,7 +17,8 @@ import javax.inject.Singleton
 
 @Singleton
 class MediaStoreDataSource @Inject constructor(
-    private val contentResolver: ContentResolver
+    private val contentResolver: ContentResolver,
+    private val app: Application
 ) {
 
     suspend fun querySongs(): List<Song> = withContext(Dispatchers.IO) {
@@ -59,9 +62,9 @@ class MediaStoreDataSource @Inject constructor(
                 songs.add(
                     Song(
                         id = id,
-                        title = cursor.getString(titleColumn) ?: "Desconocido",
-                        artist = cursor.getString(artistColumn) ?: "Artista desconocido",
-                        album = cursor.getString(albumColumn) ?: "Album desconocido",
+                        title = cursor.getString(titleColumn) ?: app.getString(R.string.unknown),
+                        artist = cursor.getString(artistColumn) ?: app.getString(R.string.unknown_artist),
+                        album = cursor.getString(albumColumn) ?: app.getString(R.string.unknown_album),
                         albumId = albumId,
                         duration = cursor.getLong(durationColumn),
                         uri = contentUri,
@@ -102,8 +105,8 @@ class MediaStoreDataSource @Inject constructor(
                 albums.add(
                     Album(
                         id = id,
-                        name = cursor.getString(albumColumn) ?: "Album desconocido",
-                        artist = cursor.getString(artistColumn) ?: "Artista desconocido",
+                        name = cursor.getString(albumColumn) ?: app.getString(R.string.unknown_album),
+                        artist = cursor.getString(artistColumn) ?: app.getString(R.string.unknown_artist),
                         albumArtUri = albumArtUri,
                         songCount = cursor.getInt(songsColumn)
                     )
@@ -136,7 +139,7 @@ class MediaStoreDataSource @Inject constructor(
                 artists.add(
                     Artist(
                         id = cursor.getLong(idColumn),
-                        name = cursor.getString(artistColumn) ?: "Artista desconocido",
+                        name = cursor.getString(artistColumn) ?: app.getString(R.string.unknown_artist),
                         songCount = cursor.getInt(tracksColumn),
                         albumCount = cursor.getInt(albumsColumn)
                     )
@@ -189,9 +192,9 @@ class MediaStoreDataSource @Inject constructor(
                 songs.add(
                     Song(
                         id = id,
-                        title = cursor.getString(titleColumn) ?: "Desconocido",
-                        artist = cursor.getString(artistColumn) ?: "Artista desconocido",
-                        album = cursor.getString(albumColumn) ?: "Album desconocido",
+                        title = cursor.getString(titleColumn) ?: app.getString(R.string.unknown),
+                        artist = cursor.getString(artistColumn) ?: app.getString(R.string.unknown_artist),
+                        album = cursor.getString(albumColumn) ?: app.getString(R.string.unknown_album),
                         albumId = aId,
                         duration = cursor.getLong(durationColumn),
                         uri = contentUri,

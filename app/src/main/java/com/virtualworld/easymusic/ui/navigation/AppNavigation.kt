@@ -10,6 +10,7 @@ import com.virtualworld.easymusic.ui.equalizer.EqualizerScreen
 import com.virtualworld.easymusic.ui.library.CollectionSongsScreen
 import com.virtualworld.easymusic.ui.library.LibraryScreen
 import com.virtualworld.easymusic.ui.player.PlayerScreen
+import com.virtualworld.easymusic.ui.settings.SettingsScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -21,7 +22,8 @@ fun AppNavigation(navController: NavHostController) {
             PlayerScreen(
                 onNavigateToLibrary = { navController.navigate(Routes.library(openSearch = false)) },
                 onNavigateToLibrarySearch = { navController.navigate(Routes.library(openSearch = true)) },
-                onNavigateToEqualizer = { navController.navigate(Routes.EQUALIZER) }
+                onNavigateToEqualizer = { navController.navigate(Routes.EQUALIZER) },
+                onNavigateToSettings = { navController.navigate(Routes.SETTINGS) }
             )
         }
         composable(
@@ -61,6 +63,11 @@ fun AppNavigation(navController: NavHostController) {
         }
         composable(Routes.EQUALIZER) {
             EqualizerScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+        composable(Routes.SETTINGS) {
+            SettingsScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }

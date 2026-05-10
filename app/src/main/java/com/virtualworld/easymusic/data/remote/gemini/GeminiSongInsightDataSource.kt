@@ -1,7 +1,9 @@
 package com.virtualworld.easymusic.data.remote.gemini
 
+import android.app.Application
 import android.util.Log
 import com.google.gson.Gson
+import com.virtualworld.easymusic.R
 import com.google.gson.JsonSyntaxException
 import com.virtualworld.easymusic.domain.model.Song
 import com.virtualworld.easymusic.domain.model.SongAiInsight
@@ -19,6 +21,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 
 @Singleton
 class GeminiSongInsightDataSource @Inject constructor(
+    private val app: Application,
     private val httpClient: OkHttpClient,
     private val gson: Gson,
     @param:Named("gemini_api_key") private val apiKey: String
@@ -27,7 +30,7 @@ class GeminiSongInsightDataSource @Inject constructor(
     suspend fun fetchInsight(song: Song): SongInsightResult = withContext(Dispatchers.IO) {
         if (apiKey.isBlank()) {
             return@withContext SongInsightResult.Error(
-                "Añade GEMINI_API_KEY en local.properties (clave de Google AI Studio) y vuelve a compilar."
+                app.getString(R.string.gemini_key_missing)
             )
         }
         val durationSec = (song.duration / 1000L).coerceAtLeast(0L)
@@ -71,7 +74,7 @@ class GeminiSongInsightDataSource @Inject constructor(
                 .build()
         } catch (e: Exception) {
             Log.e(TAG, "URL Gemini inválida", e)
-            return@withContext SongInsightResult.Error("Error interno al construir la petición.")
+            return@withContext SongInsightResult.Error(app.getString(R.string.error_building_request))
         }
 
         Log.d(TAG, "POST " + url.newBuilder().setQueryParameter("key", "…").build())
@@ -97,7 +100,7 @@ class GeminiSongInsightDataSource @Inject constructor(
                     gson.fromJson(raw, GeminiGenerateResponse::class.java)
                 } catch (e: JsonSyntaxException) {
                     Log.e(TAG, "JSON de respuesta inválido: ${raw.take(500)}", e)
-                    return@use SongInsightResult.Error("Respuesta de la API no reconocida.")
+                    return@use SongInsightResult.Error(app.getString(R.string.api_response_unrecognized))
                 }
                 parsed.error?.message?.let { msg ->
                     return@use SongInsightResult.Error(msg)
@@ -111,19 +114,19 @@ class GeminiSongInsightDataSource @Inject constructor(
                     ?.trim()
                 if (text.isNullOrEmpty()) {
                     Log.w(TAG, "Sin candidatos: ${raw.take(600)}")
-                    return@use SongInsightResult.Error("La API no devolvió texto utilizable.")
+                    return@use SongInsightResult.Error(app.getString(R.string.api_no_usable_text))
                 }
                 val jsonPayload = text.stripMarkdownJsonFence()
                 val insight = try {
                     gson.fromJson(jsonPayload, SongAiInsight::class.java)
                 } catch (_: JsonSyntaxException) {
-                    return@use SongInsightResult.Error("No se pudo interpretar la respuesta JSON del modelo.")
+                    return@use SongInsightResult.Error(app.getString(R.string.json_parse_error))
                 }
                 SongInsightResult.Success(insight)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Fallo de red o ejecución", e)
-            SongInsightResult.Error(e.message ?: "Error de red o del servicio.")
+            SongInsightResult.Error(e.message ?: app.getString(R.string.network_error))
         }
     }
 

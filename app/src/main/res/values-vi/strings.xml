@@ -1,0 +1,119 @@
+<resources>
+    <string name="app_name">Trình phát nhạc hỗ trợ AI</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">Chia sẻ ứng dụng</string>
+    <string name="share_app_text">Thử %1$s!\n%2$s</string>
+    <string name="drawer_share_app">Chia sẻ ứng dụng</string>
+    <string name="drawer_rate_app">Đánh giá ứng dụng</string>
+
+    <!-- Player -->
+    <string name="cd_menu">Menu</string>
+    <string name="now_playing">ĐANG PHÁT</string>
+    <string name="cd_search">Tìm kiếm</string>
+    <string name="cd_remove_favorite">Xóa khỏi yêu thích</string>
+    <string name="cd_add_favorite">Thêm vào yêu thích</string>
+    <string name="no_song">Không có bài hát</string>
+    <string name="select_a_song">Chọn một bài hát</string>
+    <string name="cd_volume">Âm lượng</string>
+    <string name="cd_repeat">Lặp lại</string>
+    <string name="cd_shuffle">Ngẫu nhiên</string>
+    <string name="cd_library">Thư viện</string>
+    <string name="cd_hide_extra_controls">Ẩn điều khiển thêm</string>
+    <string name="cd_show_extra_controls">Hiện điều khiển thêm</string>
+    <string name="cd_equalizer">Bộ cân bằng</string>
+    <string name="cd_remove_from_queue">Xóa khỏi hàng đợi và thư viện</string>
+    <string name="cd_previous">Trước</string>
+    <string name="cd_pause">Tạm dừng</string>
+    <string name="cd_play">Phát</string>
+    <string name="cd_next">Tiếp theo</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">Dữ liệu bài hát</string>
+    <string name="gemini_local_metadata">Gemini (siêu dữ liệu cục bộ)</string>
+    <string name="insight_summary">Tóm tắt</string>
+    <string name="insight_genre">Thể loại hoặc phong cách</string>
+    <string name="insight_era">Thời đại hoặc bối cảnh</string>
+    <string name="insight_fun_fact">Sự thật thú vị</string>
+    <string name="insight_similar_artists">Nghệ sĩ hoặc chủ đề tương tự</string>
+    <string name="no_data">Không có dữ liệu.</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">Lời bài hát</string>
+    <string name="lyrics_no_exact_match">Không tìm thấy kết quả khớp chính xác (tiêu đề, nghệ sĩ, album và thời lượng). Đang tìm kết quả khác trên LRCLIB…</string>
+    <string name="lyrics_instrumental">Bản nhạc này được liệt kê là nhạc không lời trên LRCLIB.</string>
+    <string name="lyrics_not_found">Không tìm thấy lời cho bài hát này. Kiểm tra tiêu đề, nghệ sĩ, album và thời lượng trong siêu dữ liệu.</string>
+    <string name="lyrics_multiple_matches">Nhiều kết quả khớp trên LRCLIB. Chọn bản nhạc đúng:</string>
+    <string name="lyrics_no_options">Không có tùy chọn nào để hiển thị.</string>
+    <string name="no_title">Không có tiêu đề</string>
+
+    <!-- Library -->
+    <string name="library">Thư viện</string>
+    <string name="tab_favorites">Yêu thích</string>
+    <string name="tab_songs">Bài hát</string>
+    <string name="tab_albums">Album</string>
+    <string name="tab_artists">Nghệ sĩ</string>
+    <string name="no_songs_found">Không tìm thấy bài hát</string>
+    <string name="no_albums_found">Không tìm thấy album</string>
+    <string name="no_artists_found">Không tìm thấy nghệ sĩ</string>
+    <string name="no_favorites_yet">Bạn chưa có yêu thích. Đánh dấu bằng trái tim trong trình phát.</string>
+    <string name="search_placeholder">Tìm bài hát, album hoặc nghệ sĩ</string>
+    <string name="cd_close_search">Đóng tìm kiếm</string>
+    <string name="cd_back">Quay lại</string>
+    <string name="play_all">Phát tất cả</string>
+    <string name="no_songs">Không có bài hát</string>
+    <string name="not_found">Không tìm thấy</string>
+    <string name="artist_not_found">Không tìm thấy nghệ sĩ</string>
+    <string name="load_error">Lỗi tải</string>
+    <string name="no_songs_to_show">Không có bài hát để hiển thị.</string>
+    <string name="album_fallback">Album</string>
+    <string name="song_count_one">1 bài hát</string>
+    <string name="song_count_many">%d bài hát</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">BỘ CÂN BẰNG</string>
+    <string name="equalizer">Bộ cân bằng</string>
+    <string name="enabled">Đã bật</string>
+    <string name="disabled">Đã tắt</string>
+    <string name="music_style">Phong cách nhạc</string>
+    <string name="eq_play_song_hint">Phát một bài hát: bộ cân bằng sẽ kết nối với âm thanh và bạn có thể áp dụng các phong cách.</string>
+    <string name="eq_custom_curve">Đường cong tùy chỉnh (điều chỉnh các dải)</string>
+    <string name="bass_boost">Tăng cường âm trầm</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">Không xác định</string>
+    <string name="unknown_artist">Nghệ sĩ không xác định</string>
+    <string name="unknown_album">Album không xác định</string>
+
+    <string name="permission_message">Chúng tôi cần quyền truy cập nhạc của bạn để phát</string>
+    <string name="grant_permission">Cấp quyền</string>
+    <string name="artist_songs_albums">%1$d bài hát · %2$d album</string>
+    <string name="preset_flat">Phẳng</string>
+    <string name="preset_rock">Rock</string>
+    <string name="preset_pop">Pop</string>
+    <string name="preset_jazz">Jazz</string>
+    <string name="preset_classical">Cổ điển</string>
+    <string name="preset_dance">Dance</string>
+    <string name="preset_hip_hop">Hip Hop</string>
+    <string name="preset_electronic">Điện tử</string>
+    <string name="preset_rnb">R&amp;B</string>
+    <string name="preset_heavy_metal">Heavy Metal</string>
+    <string name="preset_acoustic">Acoustic</string>
+    <string name="preset_latin">Latin</string>
+    <string name="preset_vocal">Vocal</string>
+    <string name="preset_bass">Trầm</string>
+    <string name="preset_treble">Cao</string>
+    <string name="ai_not_available">Thông tin AI hiện không khả dụng.</string>
+    <string name="gemini_key_missing">Thêm GEMINI_API_KEY vào local.properties (khóa Google AI Studio) và biên dịch lại.</string>
+    <string name="error_building_request">Lỗi nội bộ khi xây dựng yêu cầu.</string>
+    <string name="api_response_unrecognized">Phản hồi API không được nhận dạng.</string>
+    <string name="api_no_usable_text">API không trả về văn bản có thể sử dụng.</string>
+    <string name="json_parse_error">Không thể phân tích phản hồi JSON của mô hình.</string>
+    <string name="network_error">Lỗi mạng hoặc dịch vụ.</string>
+    <string name="no_connection">Không có kết nối</string>
+    <string name="http_error">Lỗi HTTP %d</string>
+    <string name="settings">Cài đặt</string>
+    <string name="drawer_settings">Cài đặt</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="system_default">Mặc định hệ thống</string>
+</resources>

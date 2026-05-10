@@ -14,8 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.domain.model.Album
 import com.virtualworld.easymusic.ui.theme.DarkCard
 import com.virtualworld.easymusic.ui.theme.TextGray
@@ -59,7 +61,7 @@ fun AlbumItem(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = formatAlbumSongCount(album.songCount),
+                    text = if (album.songCount == 1) stringResource(R.string.song_count_one) else stringResource(R.string.song_count_many, album.songCount),
                     style = MaterialTheme.typography.labelSmall,
                     color = TextGray,
                     maxLines = 1,
@@ -68,9 +70,4 @@ fun AlbumItem(
             }
         }
     }
-}
-
-private fun formatAlbumSongCount(count: Int): String = when (count) {
-    1 -> "1 canción"
-    else -> "$count canciones"
 }

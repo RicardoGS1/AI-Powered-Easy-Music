@@ -1,0 +1,119 @@
+<resources>
+    <string name="app_name">เครื่องเล่นเพลงขับเคลื่อนด้วย AI</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">แชร์แอป</string>
+    <string name="share_app_text">ลอง %1$s!\n%2$s</string>
+    <string name="drawer_share_app">แชร์แอป</string>
+    <string name="drawer_rate_app">ให้คะแนนแอป</string>
+
+    <!-- Player -->
+    <string name="cd_menu">เมนู</string>
+    <string name="now_playing">กำลังเล่น</string>
+    <string name="cd_search">ค้นหา</string>
+    <string name="cd_remove_favorite">ลบออกจากรายการโปรด</string>
+    <string name="cd_add_favorite">เพิ่มในรายการโปรด</string>
+    <string name="no_song">ไม่มีเพลง</string>
+    <string name="select_a_song">เลือกเพลง</string>
+    <string name="cd_volume">ระดับเสียง</string>
+    <string name="cd_repeat">เล่นซ้ำ</string>
+    <string name="cd_shuffle">สุ่ม</string>
+    <string name="cd_library">ไลบรารี</string>
+    <string name="cd_hide_extra_controls">ซ่อนตัวควบคุมเพิ่มเติม</string>
+    <string name="cd_show_extra_controls">แสดงตัวควบคุมเพิ่มเติม</string>
+    <string name="cd_equalizer">อีควอไลเซอร์</string>
+    <string name="cd_remove_from_queue">ลบออกจากคิวและไลบรารี</string>
+    <string name="cd_previous">ก่อนหน้า</string>
+    <string name="cd_pause">หยุดชั่วคราว</string>
+    <string name="cd_play">เล่น</string>
+    <string name="cd_next">ถัดไป</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">ข้อมูลเพลง</string>
+    <string name="gemini_local_metadata">Gemini (เมทาดาท้าท้องถิ่น)</string>
+    <string name="insight_summary">สรุป</string>
+    <string name="insight_genre">แนวเพลงหรือสไตล์</string>
+    <string name="insight_era">ยุคหรือบริบท</string>
+    <string name="insight_fun_fact">ข้อมูลน่ารู้</string>
+    <string name="insight_similar_artists">ศิลปินหรือธีมที่คล้ายกัน</string>
+    <string name="no_data">ไม่มีข้อมูล</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">เนื้อเพลง</string>
+    <string name="lyrics_no_exact_match">ไม่พบการจับคู่ที่ตรงกัน (ชื่อเพลง ศิลปิน อัลบั้ม และระยะเวลา) กำลังค้นหาการจับคู่อื่นบน LRCLIB…</string>
+    <string name="lyrics_instrumental">แทร็กนี้ถูกจัดเป็นเพลงบรรเลงใน LRCLIB</string>
+    <string name="lyrics_not_found">ไม่พบเนื้อเพลงสำหรับเพลงนี้ ตรวจสอบชื่อเพลง ศิลปิน อัลบั้ม และระยะเวลาในเมทาดาท้า</string>
+    <string name="lyrics_multiple_matches">พบหลายรายการใน LRCLIB เลือกแทร็กที่ถูกต้อง:</string>
+    <string name="lyrics_no_options">ไม่มีตัวเลือกให้แสดง</string>
+    <string name="no_title">ไม่มีชื่อ</string>
+
+    <!-- Library -->
+    <string name="library">ไลบรารี</string>
+    <string name="tab_favorites">รายการโปรด</string>
+    <string name="tab_songs">เพลง</string>
+    <string name="tab_albums">อัลบั้ม</string>
+    <string name="tab_artists">ศิลปิน</string>
+    <string name="no_songs_found">ไม่พบเพลง</string>
+    <string name="no_albums_found">ไม่พบอัลบั้ม</string>
+    <string name="no_artists_found">ไม่พบศิลปิน</string>
+    <string name="no_favorites_yet">คุณยังไม่มีรายการโปรด ทำเครื่องหมายด้วยหัวใจในเครื่องเล่น</string>
+    <string name="search_placeholder">ค้นหาเพลง อัลบั้ม หรือศิลปิน</string>
+    <string name="cd_close_search">ปิดการค้นหา</string>
+    <string name="cd_back">ย้อนกลับ</string>
+    <string name="play_all">เล่นทั้งหมด</string>
+    <string name="no_songs">ไม่มีเพลง</string>
+    <string name="not_found">ไม่พบ</string>
+    <string name="artist_not_found">ไม่พบศิลปิน</string>
+    <string name="load_error">โหลดผิดพลาด</string>
+    <string name="no_songs_to_show">ไม่มีเพลงให้แสดง</string>
+    <string name="album_fallback">อัลบั้ม</string>
+    <string name="song_count_one">1 เพลง</string>
+    <string name="song_count_many">%d เพลง</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">อีควอไลเซอร์</string>
+    <string name="equalizer">อีควอไลเซอร์</string>
+    <string name="enabled">เปิดใช้งาน</string>
+    <string name="disabled">ปิดใช้งาน</string>
+    <string name="music_style">สไตล์เพลง</string>
+    <string name="eq_play_song_hint">เล่นเพลง: อีควอไลเซอร์จะเชื่อมต่อกับเสียงและคุณสามารถใช้สไตล์ได้</string>
+    <string name="eq_custom_curve">เส้นโค้งกำหนดเอง (ปรับแบนด์)</string>
+    <string name="bass_boost">เสริมเสียงเบส</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">ไม่ทราบ</string>
+    <string name="unknown_artist">ศิลปินที่ไม่ทราบ</string>
+    <string name="unknown_album">อัลบั้มที่ไม่ทราบ</string>
+
+    <string name="permission_message">เราต้องการสิทธิ์เข้าถึงเพลงของคุณเพื่อเล่น</string>
+    <string name="grant_permission">ให้สิทธิ์</string>
+    <string name="artist_songs_albums">%1$d เพลง · %2$d อัลบั้ม</string>
+    <string name="preset_flat">แบน</string>
+    <string name="preset_rock">ร็อก</string>
+    <string name="preset_pop">ป็อป</string>
+    <string name="preset_jazz">แจ๊ส</string>
+    <string name="preset_classical">คลาสสิก</string>
+    <string name="preset_dance">แดนซ์</string>
+    <string name="preset_hip_hop">ฮิปฮอป</string>
+    <string name="preset_electronic">อิเล็กทรอนิก</string>
+    <string name="preset_rnb">อาร์แอนด์บี</string>
+    <string name="preset_heavy_metal">เฮฟวีเมทัล</string>
+    <string name="preset_acoustic">อะคูสติก</string>
+    <string name="preset_latin">ละติน</string>
+    <string name="preset_vocal">โวคอล</string>
+    <string name="preset_bass">เบส</string>
+    <string name="preset_treble">เสียงแหลม</string>
+    <string name="ai_not_available">ข้อมูล AI ไม่พร้อมใช้งานในขณะนี้</string>
+    <string name="gemini_key_missing">เพิ่ม GEMINI_API_KEY ใน local.properties (คีย์ Google AI Studio) และคอมไพล์ใหม่</string>
+    <string name="error_building_request">ข้อผิดพลาดภายในในการสร้างคำขอ</string>
+    <string name="api_response_unrecognized">ไม่รู้จักการตอบกลับของ API</string>
+    <string name="api_no_usable_text">API ไม่ส่งคืนข้อความที่ใช้งานได้</string>
+    <string name="json_parse_error">ไม่สามารถตีความการตอบกลับ JSON ของโมเดลได้</string>
+    <string name="network_error">ข้อผิดพลาดของเครือข่ายหรือบริการ</string>
+    <string name="no_connection">ไม่มีการเชื่อมต่อ</string>
+    <string name="http_error">ข้อผิดพลาด HTTP %d</string>
+    <string name="settings">การตั้งค่า</string>
+    <string name="drawer_settings">การตั้งค่า</string>
+    <string name="language">ภาษา</string>
+    <string name="system_default">ค่าเริ่มต้นของระบบ</string>
+</resources>

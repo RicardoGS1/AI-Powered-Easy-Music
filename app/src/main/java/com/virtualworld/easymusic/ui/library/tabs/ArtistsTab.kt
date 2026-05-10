@@ -11,7 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.domain.model.Artist
 import com.virtualworld.easymusic.ui.components.ArtistItem
 import com.virtualworld.easymusic.ui.theme.DarkSurfaceVariant
@@ -28,7 +30,7 @@ fun ArtistsTab(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "No se encontraron artistas",
+                text = stringResource(R.string.no_artists_found),
                 style = MaterialTheme.typography.bodyLarge,
                 color = TextGray
             )

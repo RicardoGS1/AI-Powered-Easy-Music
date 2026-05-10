@@ -1,0 +1,119 @@
+<resources>
+    <string name="app_name">এআই-চালিত সহজ মিউজিক</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">অ্যাপ শেয়ার করুন</string>
+    <string name="share_app_text">%1$s চেষ্টা করুন!\n%2$s</string>
+    <string name="drawer_share_app">অ্যাপ শেয়ার করুন</string>
+    <string name="drawer_rate_app">অ্যাপ রেট করুন</string>
+
+    <!-- Player -->
+    <string name="cd_menu">মেনু</string>
+    <string name="now_playing">এখন চলছে</string>
+    <string name="cd_search">অনুসন্ধান</string>
+    <string name="cd_remove_favorite">পছন্দ থেকে সরান</string>
+    <string name="cd_add_favorite">পছন্দে যোগ করুন</string>
+    <string name="no_song">কোনো গান নেই</string>
+    <string name="select_a_song">একটি গান নির্বাচন করুন</string>
+    <string name="cd_volume">ভলিউম</string>
+    <string name="cd_repeat">পুনরাবৃত্তি</string>
+    <string name="cd_shuffle">এলোমেলো</string>
+    <string name="cd_library">লাইব্রেরি</string>
+    <string name="cd_hide_extra_controls">অতিরিক্ত নিয়ন্ত্রণ লুকান</string>
+    <string name="cd_show_extra_controls">অতিরিক্ত নিয়ন্ত্রণ দেখান</string>
+    <string name="cd_equalizer">ইকুয়ালাইজার</string>
+    <string name="cd_remove_from_queue">সারি ও লাইব্রেরি থেকে সরান</string>
+    <string name="cd_previous">আগের</string>
+    <string name="cd_pause">বিরতি</string>
+    <string name="cd_play">চালান</string>
+    <string name="cd_next">পরবর্তী</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">গানের তথ্য</string>
+    <string name="gemini_local_metadata">Gemini (স্থানীয় মেটাডেটা)</string>
+    <string name="insight_summary">সারাংশ</string>
+    <string name="insight_genre">ধরন বা শৈলী</string>
+    <string name="insight_era">যুগ বা প্রেক্ষাপট</string>
+    <string name="insight_fun_fact">মজার তথ্য</string>
+    <string name="insight_similar_artists">অনুরূপ শিল্পী বা বিষয়</string>
+    <string name="no_data">কোনো তথ্য নেই।</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">গানের কথা</string>
+    <string name="lyrics_no_exact_match">সঠিক মিল পাওয়া যায়নি (শিরোনাম, শিল্পী, অ্যালবাম এবং সময়কাল)। LRCLIB-এ অন্য মিল খোঁজা হচ্ছে…</string>
+    <string name="lyrics_instrumental">এই ট্র্যাকটি LRCLIB-এ বাদ্যযন্ত্র হিসেবে তালিকাভুক্ত।</string>
+    <string name="lyrics_not_found">এই গানের জন্য কোনো গানের কথা পাওয়া যায়নি। মেটাডেটাতে শিরোনাম, শিল্পী, অ্যালবাম এবং সময়কাল পরীক্ষা করুন।</string>
+    <string name="lyrics_multiple_matches">LRCLIB-এ একাধিক মিল। সঠিক ট্র্যাক বেছে নিন:</string>
+    <string name="lyrics_no_options">দেখানোর মতো কোনো বিকল্প নেই।</string>
+    <string name="no_title">শিরোনাম নেই</string>
+
+    <!-- Library -->
+    <string name="library">লাইব্রেরি</string>
+    <string name="tab_favorites">পছন্দসমূহ</string>
+    <string name="tab_songs">গান</string>
+    <string name="tab_albums">অ্যালবাম</string>
+    <string name="tab_artists">শিল্পী</string>
+    <string name="no_songs_found">কোনো গান পাওয়া যায়নি</string>
+    <string name="no_albums_found">কোনো অ্যালবাম পাওয়া যায়নি</string>
+    <string name="no_artists_found">কোনো শিল্পী পাওয়া যায়নি</string>
+    <string name="no_favorites_yet">আপনার এখনো কোনো পছন্দ নেই। প্লেয়ারে হৃদয় চিহ্ন দিয়ে চিহ্নিত করুন।</string>
+    <string name="search_placeholder">গান, অ্যালবাম বা শিল্পী অনুসন্ধান করুন</string>
+    <string name="cd_close_search">অনুসন্ধান বন্ধ করুন</string>
+    <string name="cd_back">পেছনে</string>
+    <string name="play_all">সব চালান</string>
+    <string name="no_songs">কোনো গান নেই</string>
+    <string name="not_found">পাওয়া যায়নি</string>
+    <string name="artist_not_found">শিল্পী পাওয়া যায়নি</string>
+    <string name="load_error">লোড করতে ত্রুটি</string>
+    <string name="no_songs_to_show">দেখানোর মতো কোনো গান নেই।</string>
+    <string name="album_fallback">অ্যালবাম</string>
+    <string name="song_count_one">১টি গান</string>
+    <string name="song_count_many">%dটি গান</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">ইকুয়ালাইজার</string>
+    <string name="equalizer">ইকুয়ালাইজার</string>
+    <string name="enabled">সক্রিয়</string>
+    <string name="disabled">নিষ্ক্রিয়</string>
+    <string name="music_style">সঙ্গীত শৈলী</string>
+    <string name="eq_play_song_hint">একটি গান চালান: ইকুয়ালাইজার অডিওর সাথে সংযুক্ত হবে এবং আপনি শৈলী প্রয়োগ করতে পারবেন।</string>
+    <string name="eq_custom_curve">কাস্টম কার্ভ (ব্যান্ড সামঞ্জস্য করুন)</string>
+    <string name="bass_boost">বেস বুস্ট</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">অজানা</string>
+    <string name="unknown_artist">অজানা শিল্পী</string>
+    <string name="unknown_album">অজানা অ্যালবাম</string>
+
+    <string name="permission_message">আপনার সঙ্গীত চালাতে আমাদের অ্যাক্সেস প্রয়োজন</string>
+    <string name="grant_permission">অনুমতি দিন</string>
+    <string name="artist_songs_albums">%1$dটি গান · %2$dটি অ্যালবাম</string>
+    <string name="preset_flat">সমতল</string>
+    <string name="preset_rock">রক</string>
+    <string name="preset_pop">পপ</string>
+    <string name="preset_jazz">জ্যাজ</string>
+    <string name="preset_classical">ধ্রুপদী</string>
+    <string name="preset_dance">ড্যান্স</string>
+    <string name="preset_hip_hop">হিপ হপ</string>
+    <string name="preset_electronic">ইলেকট্রনিক</string>
+    <string name="preset_rnb">আর অ্যান্ড বি</string>
+    <string name="preset_heavy_metal">হেভি মেটাল</string>
+    <string name="preset_acoustic">অ্যাকুস্টিক</string>
+    <string name="preset_latin">ল্যাটিন</string>
+    <string name="preset_vocal">ভোকাল</string>
+    <string name="preset_bass">বেস</string>
+    <string name="preset_treble">ট্রেবল</string>
+    <string name="ai_not_available">এই মুহূর্তে AI তথ্য উপলব্ধ নেই।</string>
+    <string name="gemini_key_missing">local.properties-এ GEMINI_API_KEY যোগ করুন (Google AI Studio কী) এবং পুনরায় তৈরি করুন।</string>
+    <string name="error_building_request">অনুরোধ তৈরিতে অভ্যন্তরীণ ত্রুটি।</string>
+    <string name="api_response_unrecognized">API প্রতিক্রিয়া অচেনা।</string>
+    <string name="api_no_usable_text">API ব্যবহারযোগ্য টেক্সট ফেরত দেয়নি।</string>
+    <string name="json_parse_error">মডেলের JSON প্রতিক্রিয়া ব্যাখ্যা করা যায়নি।</string>
+    <string name="network_error">নেটওয়ার্ক বা সেবা ত্রুটি।</string>
+    <string name="no_connection">সংযোগ নেই</string>
+    <string name="http_error">HTTP ত্রুটি %d</string>
+    <string name="settings">সেটিংস</string>
+    <string name="drawer_settings">সেটিংস</string>
+    <string name="language">ভাষা</string>
+    <string name="system_default">সিস্টেম ডিফল্ট</string>
+</resources>

@@ -12,7 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.domain.model.Album
 import com.virtualworld.easymusic.ui.components.AlbumItem
 import com.virtualworld.easymusic.ui.theme.TextGray
@@ -28,7 +30,7 @@ fun AlbumsTab(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "No se encontraron albums",
+                text = stringResource(R.string.no_albums_found),
                 style = MaterialTheme.typography.bodyLarge,
                 color = TextGray
             )

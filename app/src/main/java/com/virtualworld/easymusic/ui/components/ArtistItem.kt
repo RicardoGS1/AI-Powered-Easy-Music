@@ -18,7 +18,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.domain.model.Artist
 import com.virtualworld.easymusic.ui.theme.DarkSurfaceVariant
 import com.virtualworld.easymusic.ui.theme.Teal400
@@ -59,7 +61,7 @@ fun ArtistItem(
                 maxLines = 1
             )
             Text(
-                text = "${artist.songCount} canciones · ${artist.albumCount} albums",
+                text = stringResource(R.string.artist_songs_albums, artist.songCount, artist.albumCount),
                 style = MaterialTheme.typography.bodySmall,
                 color = TextGray,
                 maxLines = 1

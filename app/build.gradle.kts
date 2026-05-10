@@ -26,6 +26,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
+        resourceConfigurations += listOf(
+            "en", "es", "ar", "bn", "de", "fr", "hi", "in",
+            "it", "ja", "ko", "nl", "pt", "ru", "th", "tr", "uk", "vi", "zh"
+        )
+
         val localProps = Properties()
         val localFile = rootProject.file("local.properties")
         if (localFile.exists()) {
@@ -57,6 +62,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.androidx.activity.compose)
