@@ -2,6 +2,7 @@ package com.virtualworld.easymusic.data.remote.gemini
 
 import android.app.Application
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.gson.Gson
 import com.virtualworld.easymusic.R
 import com.google.gson.JsonSyntaxException
@@ -18,6 +19,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.util.Locale
 
 @Singleton
 class GeminiSongInsightDataSource @Inject constructor(
@@ -34,16 +36,20 @@ class GeminiSongInsightDataSource @Inject constructor(
             )
         }
         val durationSec = (song.duration / 1000L).coerceAtLeast(0L)
+        val appLocale = app.resolveAppLocaleForContent()
+        val languageTag = appLocale.toLanguageTag()
+        val languageLabelEn = appLocale.getDisplayLanguage(Locale.ENGLISH).ifBlank { languageTag }
+        val emptyFieldHint = app.getString(R.string.no_data).trim()
         val prompt = """
-            Tienes solo estos metadatos de un archivo de música local (pueden ser imprecisos):
-            - Título: ${song.title}
-            - Artista: ${song.artist}
-            - Álbum: ${song.album}
-            - Duración aproximada: ${durationSec}s
+            You only have these metadata fields from a local music file (they may be inaccurate):
+            - Title: ${song.title}
+            - Artist: ${song.artist}
+            - Album: ${song.album}
+            - Approx. duration: ${durationSec}s
 
-            Identifica la canción conocida que mejor encaje con esos metadatos y di el artista, el album y el titulo en el resumen.
+            Identify the best-matching well-known song and mention artist, album, and title in the summary.
 
-            Responde ÚNICAMENTE con un JSON válido (sin markdown) con estas claves exactas:
+            Reply ONLY with valid JSON (no markdown) using exactly these keys:
             {
               "resumen": "string",
               "genero_o_estilo": "string",
@@ -51,7 +57,12 @@ class GeminiSongInsightDataSource @Inject constructor(
               "dato_curioso": "string",
               "artistas_o_temas_similares": ["string", ...]
             }
-            Texto en español. Máximo ~140 palabras en total repartidas entre campos. Si no hay datos, usa cadenas breves tipo "No disponible".
+
+            Rules:
+            - Keep the JSON property names exactly as shown (do not translate keys).
+            - Write every human-readable string VALUE in $languageLabelEn (BCP-47: $languageTag), with natural phrasing for that language.
+            - About 140 words total across all string fields.
+            - If some information is missing, use a short placeholder like "$emptyFieldHint".
         """.trimIndent()
 
         val geminiBody = GeminiGenerateRequest(
@@ -144,6 +155,15 @@ class GeminiSongInsightDataSource @Inject constructor(
 
         private val JSON_MEDIA = "application/json; charset=utf-8".toMediaType()
     }
+}
+
+private fun Application.resolveAppLocaleForContent(): Locale {
+    val applied = AppCompatDelegate.getApplicationLocales()
+    if (!applied.isEmpty) {
+        return applied[0] ?: Locale.getDefault()
+    }
+    val locales = resources.configuration.locales
+    return if (locales.size() > 0) locales[0] else Locale.getDefault()
 }
 
 private fun String.stripMarkdownJsonFence(): String {
