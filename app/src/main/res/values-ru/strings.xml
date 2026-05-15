@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">Скрыть доп. элементы управления</string>
     <string name="cd_show_extra_controls">Показать доп. элементы управления</string>
     <string name="cd_equalizer">Эквалайзер</string>
-    <string name="cd_remove_from_queue">Удалить из очереди и библиотеки</string>
+    <string name="cd_remove_from_queue">Удалить трек из списка</string>
+    <string name="remove_from_queue_dialog_title">Удалить из плеера?</string>
+    <string name="remove_from_queue_dialog_message">Этот трек будет удалён из плеера и скрыт в библиотеке. Файл на устройстве не будет удалён.</string>
+    <string name="remove_from_queue_dialog_confirm">Удалить</string>
+    <string name="remove_from_queue_dialog_cancel">Отмена</string>
+    <string name="remove_from_queue_dialog_dont_show_again">Больше не показывать</string>
     <string name="cd_previous">Предыдущий</string>
     <string name="cd_pause">Пауза</string>
     <string name="cd_play">Воспроизвести</string>

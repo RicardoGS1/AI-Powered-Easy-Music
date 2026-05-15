@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">Hide extra controls</string>
     <string name="cd_show_extra_controls">Show extra controls</string>
     <string name="cd_equalizer">Equalizer</string>
-    <string name="cd_remove_from_queue">Remove from queue and library</string>
+    <string name="cd_remove_from_queue">Remove track from list</string>
+    <string name="remove_from_queue_dialog_title">Remove from player?</string>
+    <string name="remove_from_queue_dialog_message">This track will be removed from the player and hidden from the library. The file on your device will not be deleted.</string>
+    <string name="remove_from_queue_dialog_confirm">Remove</string>
+    <string name="remove_from_queue_dialog_cancel">Cancel</string>
+    <string name="remove_from_queue_dialog_dont_show_again">Don\'t show again</string>
     <string name="cd_previous">Previous</string>
     <string name="cd_pause">Pause</string>
     <string name="cd_play">Play</string>

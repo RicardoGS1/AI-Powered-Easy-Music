@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">Sembunyikan kontrol tambahan</string>
     <string name="cd_show_extra_controls">Tampilkan kontrol tambahan</string>
     <string name="cd_equalizer">Equalizer</string>
-    <string name="cd_remove_from_queue">Hapus dari antrean dan perpustakaan</string>
+    <string name="cd_remove_from_queue">Hapus trek dari daftar</string>
+    <string name="remove_from_queue_dialog_title">Hapus dari pemutar?</string>
+    <string name="remove_from_queue_dialog_message">Trek ini akan dihapus dari pemutar dan disembunyikan dari perpustakaan. File di perangkat Anda tidak akan dihapus.</string>
+    <string name="remove_from_queue_dialog_confirm">Hapus</string>
+    <string name="remove_from_queue_dialog_cancel">Batal</string>
+    <string name="remove_from_queue_dialog_dont_show_again">Jangan tampilkan lagi</string>
     <string name="cd_previous">Sebelumnya</string>
     <string name="cd_pause">Jeda</string>
     <string name="cd_play">Putar</string>

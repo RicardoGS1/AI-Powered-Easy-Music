@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">Ocultar controles extra</string>
     <string name="cd_show_extra_controls">Mostrar controles extra</string>
     <string name="cd_equalizer">Ecualizador</string>
-    <string name="cd_remove_from_queue">Quitar de la cola y de la biblioteca</string>
+    <string name="cd_remove_from_queue">Quitar pista de la lista</string>
+    <string name="remove_from_queue_dialog_title">¿Quitar del reproductor?</string>
+    <string name="remove_from_queue_dialog_message">La canción se quitará del reproductor y se ocultará de la biblioteca. El archivo en tu dispositivo no se eliminará.</string>
+    <string name="remove_from_queue_dialog_confirm">Quitar</string>
+    <string name="remove_from_queue_dialog_cancel">Cancelar</string>
+    <string name="remove_from_queue_dialog_dont_show_again">No volver a mostrar</string>
     <string name="cd_previous">Anterior</string>
     <string name="cd_pause">Pausar</string>
     <string name="cd_play">Reproducir</string>

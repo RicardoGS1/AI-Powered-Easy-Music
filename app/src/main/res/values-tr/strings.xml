@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">Ekstra kontrolleri gizle</string>
     <string name="cd_show_extra_controls">Ekstra kontrolleri göster</string>
     <string name="cd_equalizer">Ekolayzır</string>
-    <string name="cd_remove_from_queue">Sıradan ve kütüphaneden kaldır</string>
+    <string name="cd_remove_from_queue">Parçayı listeden kaldır</string>
+    <string name="remove_from_queue_dialog_title">Çalardan kaldırılsın mı?</string>
+    <string name="remove_from_queue_dialog_message">Bu parça çalardan kaldırılacak ve kitaplıkta gizlenecek. Cihazınızdaki dosya silinmeyecek.</string>
+    <string name="remove_from_queue_dialog_confirm">Kaldır</string>
+    <string name="remove_from_queue_dialog_cancel">İptal</string>
+    <string name="remove_from_queue_dialog_dont_show_again">Bir daha gösterme</string>
     <string name="cd_previous">Önceki</string>
     <string name="cd_pause">Duraklat</string>
     <string name="cd_play">Çal</string>

@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">Сховати додаткові елементи</string>
     <string name="cd_show_extra_controls">Показати додаткові елементи</string>
     <string name="cd_equalizer">Еквалайзер</string>
-    <string name="cd_remove_from_queue">Видалити з черги та бібліотеки</string>
+    <string name="cd_remove_from_queue">Видалити трек із списку</string>
+    <string name="remove_from_queue_dialog_title">Видалити з програвача?</string>
+    <string name="remove_from_queue_dialog_message">Цей трек буде видалено з програвача та приховано в бібліотеці. Файл на вашому пристрої не буде видалено.</string>
+    <string name="remove_from_queue_dialog_confirm">Видалити</string>
+    <string name="remove_from_queue_dialog_cancel">Скасувати</string>
+    <string name="remove_from_queue_dialog_dont_show_again">Більше не показувати</string>
     <string name="cd_previous">Попередній</string>
     <string name="cd_pause">Пауза</string>
     <string name="cd_play">Відтворити</string>

@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">إخفاء عناصر التحكم الإضافية</string>
     <string name="cd_show_extra_controls">إظهار عناصر التحكم الإضافية</string>
     <string name="cd_equalizer">المعادل الصوتي</string>
-    <string name="cd_remove_from_queue">إزالة من قائمة الانتظار والمكتبة</string>
+    <string name="cd_remove_from_queue">إزالة المقطع من القائمة</string>
+    <string name="remove_from_queue_dialog_title">إزالة من المشغّل؟</string>
+    <string name="remove_from_queue_dialog_message">سيتم إزالة هذا المقطع من المشغّل وإخفاؤه من المكتبة. لن يتم حذف الملف من جهازك.</string>
+    <string name="remove_from_queue_dialog_confirm">إزالة</string>
+    <string name="remove_from_queue_dialog_cancel">إلغاء</string>
+    <string name="remove_from_queue_dialog_dont_show_again">عدم الإظهار مرة أخرى</string>
     <string name="cd_previous">السابق</string>
     <string name="cd_pause">إيقاف مؤقت</string>
     <string name="cd_play">تشغيل</string>

@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">ซ่อนตัวควบคุมเพิ่มเติม</string>
     <string name="cd_show_extra_controls">แสดงตัวควบคุมเพิ่มเติม</string>
     <string name="cd_equalizer">อีควอไลเซอร์</string>
-    <string name="cd_remove_from_queue">ลบออกจากคิวและไลบรารี</string>
+    <string name="cd_remove_from_queue">ลบแทร็กออกจากรายการ</string>
+    <string name="remove_from_queue_dialog_title">ลบออกจากเครื่องเล่น?</string>
+    <string name="remove_from_queue_dialog_message">แทร็กนี้จะถูกลบออกจากเครื่องเล่นและซ่อนในไลบรารี ไฟล์บนอุปกรณ์ของคุณจะไม่ถูกลบ</string>
+    <string name="remove_from_queue_dialog_confirm">ลบ</string>
+    <string name="remove_from_queue_dialog_cancel">ยกเลิก</string>
+    <string name="remove_from_queue_dialog_dont_show_again">ไม่แสดงอีก</string>
     <string name="cd_previous">ก่อนหน้า</string>
     <string name="cd_pause">หยุดชั่วคราว</string>
     <string name="cd_play">เล่น</string>

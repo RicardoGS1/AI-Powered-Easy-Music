@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">অতিরিক্ত নিয়ন্ত্রণ লুকান</string>
     <string name="cd_show_extra_controls">অতিরিক্ত নিয়ন্ত্রণ দেখান</string>
     <string name="cd_equalizer">ইকুয়ালাইজার</string>
-    <string name="cd_remove_from_queue">সারি ও লাইব্রেরি থেকে সরান</string>
+    <string name="cd_remove_from_queue">তালিকা থেকে ট্র্যাক সরান</string>
+    <string name="remove_from_queue_dialog_title">প্লেয়ার থেকে সরাবেন?</string>
+    <string name="remove_from_queue_dialog_message">এই ট্র্যাকটি প্লেয়ার থেকে সরানো হবে এবং লাইব্রেরি থেকে লুকানো হবে। আপনার ডিভাইসের ফাইল মুছে ফেলা হবে না।</string>
+    <string name="remove_from_queue_dialog_confirm">সরান</string>
+    <string name="remove_from_queue_dialog_cancel">বাতিল</string>
+    <string name="remove_from_queue_dialog_dont_show_again">আর দেখাবেন না</string>
     <string name="cd_previous">আগের</string>
     <string name="cd_pause">বিরতি</string>
     <string name="cd_play">চালান</string>

@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">추가 컨트롤 숨기기</string>
     <string name="cd_show_extra_controls">추가 컨트롤 표시</string>
     <string name="cd_equalizer">이퀄라이저</string>
-    <string name="cd_remove_from_queue">대기열 및 라이브러리에서 제거</string>
+    <string name="cd_remove_from_queue">목록에서 트랙 제거</string>
+    <string name="remove_from_queue_dialog_title">플레이어에서 제거할까요?</string>
+    <string name="remove_from_queue_dialog_message">이 트랙은 플레이어에서 제거되고 라이브러리에서 숨겨집니다. 기기의 파일은 삭제되지 않습니다.</string>
+    <string name="remove_from_queue_dialog_confirm">제거</string>
+    <string name="remove_from_queue_dialog_cancel">취소</string>
+    <string name="remove_from_queue_dialog_dont_show_again">다시 표시하지 않음</string>
     <string name="cd_previous">이전</string>
     <string name="cd_pause">일시정지</string>
     <string name="cd_play">재생</string>

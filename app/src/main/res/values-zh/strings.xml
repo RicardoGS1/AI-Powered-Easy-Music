@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">隐藏额外控制</string>
     <string name="cd_show_extra_controls">显示额外控制</string>
     <string name="cd_equalizer">均衡器</string>
-    <string name="cd_remove_from_queue">从队列和音乐库中移除</string>
+    <string name="cd_remove_from_queue">从列表中移除曲目</string>
+    <string name="remove_from_queue_dialog_title">从播放器中移除？</string>
+    <string name="remove_from_queue_dialog_message">此曲目将从播放器中移除并在音乐库中隐藏。设备上的文件不会被删除。</string>
+    <string name="remove_from_queue_dialog_confirm">移除</string>
+    <string name="remove_from_queue_dialog_cancel">取消</string>
+    <string name="remove_from_queue_dialog_dont_show_again">不再显示</string>
     <string name="cd_previous">上一首</string>
     <string name="cd_pause">暂停</string>
     <string name="cd_play">播放</string>

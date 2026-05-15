@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.virtualworld.easymusic.domain.model.Song
 import com.virtualworld.easymusic.domain.model.LyricsResult
 import com.virtualworld.easymusic.domain.model.SongInsightResult
+import com.virtualworld.easymusic.data.preferences.MusicPreferences
 import com.virtualworld.easymusic.domain.usecase.ExcludeSongFromLibraryUseCase
 import com.virtualworld.easymusic.domain.usecase.FetchSongInsightUseCase
 import com.virtualworld.easymusic.domain.usecase.FetchLyricsUseCase
@@ -43,6 +44,7 @@ data class PlayerUiState(
     val insightResult: SongInsightResult? = null,
     /** Kill switch vía Firebase Remote Config ([RemoteConfigKeys.ENABLE_AI_INSIGHT]). */
     val aiInsightEnabled: Boolean = true,
+    val skipRemoveFromQueueConfirmation: Boolean = false,
 )
 
 @HiltViewModel
@@ -56,6 +58,7 @@ class PlayerViewModel @Inject constructor(
     private val observeFavoriteSongIdsUseCase: ObserveFavoriteSongIdsUseCase,
     private val toggleFavoriteSongUseCase: ToggleFavoriteSongUseCase,
     private val remoteConfigValues: RemoteConfigValues,
+    private val musicPreferences: MusicPreferences,
     val playbackController: PlaybackController
 ) : ViewModel() {
 
@@ -81,6 +84,11 @@ class PlayerViewModel @Inject constructor(
         viewModelScope.launch {
             observeFavoriteSongIdsUseCase().collect { ids ->
                 _uiState.update { it.copy(favoriteSongIds = ids) }
+            }
+        }
+        viewModelScope.launch {
+            musicPreferences.skipRemoveFromQueueConfirmation().collect { skip ->
+                _uiState.update { it.copy(skipRemoveFromQueueConfirmation = skip) }
             }
         }
         refreshAiInsightRemoteFlag()
@@ -181,6 +189,12 @@ class PlayerViewModel @Inject constructor(
             val song = _uiState.value.playerState.currentSong ?: return@launch
             excludeSongFromLibraryUseCase(song.id)
             playbackController.removeCurrentSongFromQueue()
+        }
+    }
+
+    fun setSkipRemoveFromQueueConfirmation(skip: Boolean) {
+        viewModelScope.launch {
+            musicPreferences.setSkipRemoveFromQueueConfirmation(skip)
         }
     }
 

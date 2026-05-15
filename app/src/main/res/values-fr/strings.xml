@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">Masquer les contrôles supplémentaires</string>
     <string name="cd_show_extra_controls">Afficher les contrôles supplémentaires</string>
     <string name="cd_equalizer">Égaliseur</string>
-    <string name="cd_remove_from_queue">Retirer de la file et de la bibliothèque</string>
+    <string name="cd_remove_from_queue">Retirer la piste de la liste</string>
+    <string name="remove_from_queue_dialog_title">Retirer du lecteur ?</string>
+    <string name="remove_from_queue_dialog_message">Ce morceau sera retiré du lecteur et masqué dans la bibliothèque. Le fichier sur votre appareil ne sera pas supprimé.</string>
+    <string name="remove_from_queue_dialog_confirm">Retirer</string>
+    <string name="remove_from_queue_dialog_cancel">Annuler</string>
+    <string name="remove_from_queue_dialog_dont_show_again">Ne plus afficher</string>
     <string name="cd_previous">Précédent</string>
     <string name="cd_pause">Pause</string>
     <string name="cd_play">Lecture</string>

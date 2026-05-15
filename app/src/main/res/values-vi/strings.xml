@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">Ẩn điều khiển thêm</string>
     <string name="cd_show_extra_controls">Hiện điều khiển thêm</string>
     <string name="cd_equalizer">Bộ cân bằng</string>
-    <string name="cd_remove_from_queue">Xóa khỏi hàng đợi và thư viện</string>
+    <string name="cd_remove_from_queue">Xóa bài khỏi danh sách</string>
+    <string name="remove_from_queue_dialog_title">Xóa khỏi trình phát?</string>
+    <string name="remove_from_queue_dialog_message">Bài này sẽ bị xóa khỏi trình phát và ẩn trong thư viện. Tệp trên thiết bị của bạn sẽ không bị xóa.</string>
+    <string name="remove_from_queue_dialog_confirm">Xóa</string>
+    <string name="remove_from_queue_dialog_cancel">Hủy</string>
+    <string name="remove_from_queue_dialog_dont_show_again">Không hiển thị lại</string>
     <string name="cd_previous">Trước</string>
     <string name="cd_pause">Tạm dừng</string>
     <string name="cd_play">Phát</string>

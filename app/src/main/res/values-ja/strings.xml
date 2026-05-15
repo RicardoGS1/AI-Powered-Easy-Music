@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">追加コントロールを非表示</string>
     <string name="cd_show_extra_controls">追加コントロールを表示</string>
     <string name="cd_equalizer">イコライザー</string>
-    <string name="cd_remove_from_queue">キューとライブラリから削除</string>
+    <string name="cd_remove_from_queue">リストから曲を削除</string>
+    <string name="remove_from_queue_dialog_title">プレイヤーから削除しますか？</string>
+    <string name="remove_from_queue_dialog_message">この曲はプレイヤーから削除され、ライブラリに表示されなくなります。デバイス上のファイルは削除されません。</string>
+    <string name="remove_from_queue_dialog_confirm">削除</string>
+    <string name="remove_from_queue_dialog_cancel">キャンセル</string>
+    <string name="remove_from_queue_dialog_dont_show_again">今後表示しない</string>
     <string name="cd_previous">前へ</string>
     <string name="cd_pause">一時停止</string>
     <string name="cd_play">再生</string>

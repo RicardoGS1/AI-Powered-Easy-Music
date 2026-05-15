@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">Zusätzliche Steuerung ausblenden</string>
     <string name="cd_show_extra_controls">Zusätzliche Steuerung einblenden</string>
     <string name="cd_equalizer">Equalizer</string>
-    <string name="cd_remove_from_queue">Aus Warteschlange und Bibliothek entfernen</string>
+    <string name="cd_remove_from_queue">Titel aus der Liste entfernen</string>
+    <string name="remove_from_queue_dialog_title">Aus dem Player entfernen?</string>
+    <string name="remove_from_queue_dialog_message">Dieser Titel wird aus dem Player entfernt und in der Bibliothek ausgeblendet. Die Datei auf Ihrem Gerät wird nicht gelöscht.</string>
+    <string name="remove_from_queue_dialog_confirm">Entfernen</string>
+    <string name="remove_from_queue_dialog_cancel">Abbrechen</string>
+    <string name="remove_from_queue_dialog_dont_show_again">Nicht mehr anzeigen</string>
     <string name="cd_previous">Vorheriger</string>
     <string name="cd_pause">Pause</string>
     <string name="cd_play">Abspielen</string>

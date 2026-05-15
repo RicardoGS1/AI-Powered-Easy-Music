@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">अतिरिक्त नियंत्रण छुपाएं</string>
     <string name="cd_show_extra_controls">अतिरिक्त नियंत्रण दिखाएं</string>
     <string name="cd_equalizer">इक्वलाइज़र</string>
-    <string name="cd_remove_from_queue">कतार और लाइब्रेरी से हटाएं</string>
+    <string name="cd_remove_from_queue">सूची से ट्रैक हटाएं</string>
+    <string name="remove_from_queue_dialog_title">प्लेयर से हटाएं?</string>
+    <string name="remove_from_queue_dialog_message">यह ट्रैक प्लेयर से हटा दिया जाएगा और लाइब्रेरी में छिपा दिया जाएगा। आपके डिवाइस पर फ़ाइल हटाई नहीं जाएगी।</string>
+    <string name="remove_from_queue_dialog_confirm">हटाएं</string>
+    <string name="remove_from_queue_dialog_cancel">रद्द करें</string>
+    <string name="remove_from_queue_dialog_dont_show_again">दोबारा न दिखाएं</string>
     <string name="cd_previous">पिछला</string>
     <string name="cd_pause">रोकें</string>
     <string name="cd_play">चलाएं</string>

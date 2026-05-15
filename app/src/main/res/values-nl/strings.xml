@@ -22,7 +22,12 @@
     <string name="cd_hide_extra_controls">Extra bediening verbergen</string>
     <string name="cd_show_extra_controls">Extra bediening tonen</string>
     <string name="cd_equalizer">Equalizer</string>
-    <string name="cd_remove_from_queue">Verwijderen uit wachtrij en bibliotheek</string>
+    <string name="cd_remove_from_queue">Nummer uit lijst verwijderen</string>
+    <string name="remove_from_queue_dialog_title">Uit speler verwijderen?</string>
+    <string name="remove_from_queue_dialog_message">Dit nummer wordt uit de speler verwijderd en in de bibliotheek verborgen. Het bestand op je apparaat wordt niet verwijderd.</string>
+    <string name="remove_from_queue_dialog_confirm">Verwijderen</string>
+    <string name="remove_from_queue_dialog_cancel">Annuleren</string>
+    <string name="remove_from_queue_dialog_dont_show_again">Niet meer tonen</string>
     <string name="cd_previous">Vorige</string>
     <string name="cd_pause">Pauzeren</string>
     <string name="cd_play">Afspelen</string>

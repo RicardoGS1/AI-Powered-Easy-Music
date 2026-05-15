@@ -35,7 +35,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.PlaylistRemove
 import androidx.compose.material.icons.filled.Equalizer
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -57,7 +57,11 @@ import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.Subtitles
 import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -148,7 +152,9 @@ fun PlayerScreen(
         onPrevious = { viewModel.previous() },
         onTogglePlayPause = { viewModel.togglePlayPause() },
         onNext = { viewModel.next() },
+        skipRemoveFromQueueConfirmation = uiState.skipRemoveFromQueueConfirmation,
         onExcludeCurrentSong = { viewModel.excludeCurrentSongFromLibrary() },
+        onSetSkipRemoveFromQueueConfirmation = { viewModel.setSkipRemoveFromQueueConfirmation(it) },
         onToggleLyricsSheet = { viewModel.toggleLyricsSheet() },
         onDismissLyricsSheet = { viewModel.dismissLyricsSheet() },
         onPickLyricsCandidate = { viewModel.loadLyricsForLrcLibId(it) },
@@ -172,7 +178,9 @@ fun PlayerContent(
     onPrevious: () -> Unit,
     onTogglePlayPause: () -> Unit,
     onNext: () -> Unit,
+    skipRemoveFromQueueConfirmation: Boolean = false,
     onExcludeCurrentSong: () -> Unit,
+    onSetSkipRemoveFromQueueConfirmation: (Boolean) -> Unit,
     onToggleLyricsSheet: () -> Unit,
     onDismissLyricsSheet: () -> Unit,
     onPickLyricsCandidate: (Long) -> Unit,
@@ -186,6 +194,8 @@ fun PlayerContent(
     var extraControlsExpanded by remember { mutableStateOf(false) }
     var volumeBarExpanded by remember { mutableStateOf(false) }
     var volumeFraction by remember { mutableFloatStateOf(0f) }
+    var showRemoveFromQueueDialog by remember { mutableStateOf(false) }
+    var dontShowRemoveDialogAgain by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val audioManager = remember(context) {
         context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -498,11 +508,19 @@ fun PlayerContent(
                         )
                     }
                     IconButton(
-                        onClick = onExcludeCurrentSong,
+                        onClick = {
+                            if (song == null) return@IconButton
+                            if (skipRemoveFromQueueConfirmation) {
+                                onExcludeCurrentSong()
+                            } else {
+                                dontShowRemoveDialogAgain = false
+                                showRemoveFromQueueDialog = true
+                            }
+                        },
                         enabled = song != null
                     ) {
                         Icon(
-                            imageVector = Icons.Filled.Delete,
+                            imageVector = Icons.Filled.PlaylistRemove,
                             contentDescription = stringResource(R.string.cd_remove_from_queue),
                             tint = if (song != null) TextGray else TextGray.copy(alpha = 0.4f)
                         )
@@ -656,6 +674,70 @@ fun PlayerContent(
                         .navigationBarsPadding()
                 )
             }
+        }
+
+        if (showRemoveFromQueueDialog) {
+            AlertDialog(
+                onDismissRequest = { showRemoveFromQueueDialog = false },
+                containerColor = DarkSurface,
+                titleContentColor = TextWhite,
+                textContentColor = TextGray,
+                title = {
+                    Text(text = stringResource(R.string.remove_from_queue_dialog_title))
+                },
+                text = {
+                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Text(text = stringResource(R.string.remove_from_queue_dialog_message))
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    dontShowRemoveDialogAgain = !dontShowRemoveDialogAgain
+                                },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Checkbox(
+                                checked = dontShowRemoveDialogAgain,
+                                onCheckedChange = { dontShowRemoveDialogAgain = it },
+                                colors = CheckboxDefaults.colors(
+                                    checkedColor = Teal400,
+                                    uncheckedColor = TextGray,
+                                    checkmarkColor = DarkBackground
+                                )
+                            )
+                            Text(
+                                text = stringResource(R.string.remove_from_queue_dialog_dont_show_again),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = TextGray
+                            )
+                        }
+                    }
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            if (dontShowRemoveDialogAgain) {
+                                onSetSkipRemoveFromQueueConfirmation(true)
+                            }
+                            showRemoveFromQueueDialog = false
+                            onExcludeCurrentSong()
+                        }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.remove_from_queue_dialog_confirm),
+                            color = Teal400
+                        )
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showRemoveFromQueueDialog = false }) {
+                        Text(
+                            text = stringResource(R.string.remove_from_queue_dialog_cancel),
+                            color = TextGray
+                        )
+                    }
+                }
+            )
         }
         }
     }
@@ -1086,6 +1168,7 @@ fun PlayerScreenPreview() {
             onTogglePlayPause = {},
             onNext = {},
             onExcludeCurrentSong = {},
+            onSetSkipRemoveFromQueueConfirmation = {},
             onToggleLyricsSheet = {},
             onDismissLyricsSheet = {},
             onPickLyricsCandidate = {},
