@@ -123,7 +123,3 @@ La app solicita acceso a los archivos de audio del dispositivo (`READ_MEDIA_AUDI
 | Colección | Listado de canciones de un álbum o artista |
 | Ecualizador | Presets, bandas y bass boost |
 | Ajustes | Idioma de la aplicación |
-
-## Licencia
-
-Este proyecto no incluye un archivo de licencia en el repositorio. Añade uno si publicas el código con condiciones de uso específicas.
