@@ -3,6 +3,7 @@ package com.virtualworld.easymusic.data.preferences
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
@@ -25,6 +26,19 @@ class MusicPreferences @Inject constructor(
         val LAST_PLAYED_SONG_ID = longPreferencesKey("last_played_song_id")
         val EXCLUDED_SONG_IDS = stringSetPreferencesKey("excluded_song_ids")
         val FAVORITE_SONG_IDS = stringSetPreferencesKey("favorite_song_ids")
+        val SKIP_REMOVE_FROM_QUEUE_CONFIRMATION =
+            booleanPreferencesKey("skip_remove_from_queue_confirmation")
+    }
+
+    fun skipRemoveFromQueueConfirmation(): Flow<Boolean> =
+        context.dataStore.data.map { prefs ->
+            prefs[SKIP_REMOVE_FROM_QUEUE_CONFIRMATION] ?: false
+        }
+
+    suspend fun setSkipRemoveFromQueueConfirmation(skip: Boolean) {
+        context.dataStore.edit { prefs ->
+            prefs[SKIP_REMOVE_FROM_QUEUE_CONFIRMATION] = skip
+        }
     }
 
     fun getLastPlayedSongId(): Flow<Long?> =

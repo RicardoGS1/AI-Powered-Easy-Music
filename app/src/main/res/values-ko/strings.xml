@@ -1,0 +1,124 @@
+<resources>
+    <string name="app_name">AI 기반 이지 뮤직</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">앱 공유</string>
+    <string name="share_app_text">%1$s을(를) 사용해 보세요!\n%2$s</string>
+    <string name="drawer_share_app">앱 공유</string>
+    <string name="drawer_rate_app">앱 평가</string>
+
+    <!-- Player -->
+    <string name="cd_menu">메뉴</string>
+    <string name="now_playing">지금 재생 중</string>
+    <string name="cd_search">검색</string>
+    <string name="cd_remove_favorite">즐겨찾기에서 제거</string>
+    <string name="cd_add_favorite">즐겨찾기에 추가</string>
+    <string name="no_song">노래 없음</string>
+    <string name="select_a_song">노래를 선택하세요</string>
+    <string name="cd_volume">볼륨</string>
+    <string name="cd_repeat">반복</string>
+    <string name="cd_shuffle">셔플</string>
+    <string name="cd_library">라이브러리</string>
+    <string name="cd_hide_extra_controls">추가 컨트롤 숨기기</string>
+    <string name="cd_show_extra_controls">추가 컨트롤 표시</string>
+    <string name="cd_equalizer">이퀄라이저</string>
+    <string name="cd_remove_from_queue">목록에서 트랙 제거</string>
+    <string name="remove_from_queue_dialog_title">플레이어에서 제거할까요?</string>
+    <string name="remove_from_queue_dialog_message">이 트랙은 플레이어에서 제거되고 라이브러리에서 숨겨집니다. 기기의 파일은 삭제되지 않습니다.</string>
+    <string name="remove_from_queue_dialog_confirm">제거</string>
+    <string name="remove_from_queue_dialog_cancel">취소</string>
+    <string name="remove_from_queue_dialog_dont_show_again">다시 표시하지 않음</string>
+    <string name="cd_previous">이전</string>
+    <string name="cd_pause">일시정지</string>
+    <string name="cd_play">재생</string>
+    <string name="cd_next">다음</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">곡 데이터</string>
+    <string name="gemini_local_metadata">Gemini (로컬 메타데이터)</string>
+    <string name="insight_summary">요약</string>
+    <string name="insight_genre">장르 또는 스타일</string>
+    <string name="insight_era">시대 또는 배경</string>
+    <string name="insight_fun_fact">재미있는 사실</string>
+    <string name="insight_similar_artists">유사한 아티스트 또는 주제</string>
+    <string name="no_data">데이터 없음.</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">가사</string>
+    <string name="lyrics_no_exact_match">정확한 일치를 찾지 못했습니다(제목, 아티스트, 앨범, 재생 시간). LRCLIB에서 다른 일치 항목을 검색 중…</string>
+    <string name="lyrics_instrumental">이 트랙은 LRCLIB에서 연주곡으로 등록되어 있습니다.</string>
+    <string name="lyrics_not_found">이 노래의 가사를 찾을 수 없습니다. 메타데이터에서 제목, 아티스트, 앨범, 재생 시간을 확인하세요.</string>
+    <string name="lyrics_multiple_matches">LRCLIB에서 여러 일치 항목. 올바른 트랙을 선택하세요:</string>
+    <string name="lyrics_no_options">표시할 옵션이 없습니다.</string>
+    <string name="no_title">제목 없음</string>
+
+    <!-- Library -->
+    <string name="library">라이브러리</string>
+    <string name="tab_favorites">즐겨찾기</string>
+    <string name="tab_songs">노래</string>
+    <string name="tab_albums">앨범</string>
+    <string name="tab_artists">아티스트</string>
+    <string name="no_songs_found">노래를 찾을 수 없습니다</string>
+    <string name="no_albums_found">앨범을 찾을 수 없습니다</string>
+    <string name="no_artists_found">아티스트를 찾을 수 없습니다</string>
+    <string name="no_favorites_yet">아직 즐겨찾기가 없습니다. 플레이어에서 하트로 표시하세요.</string>
+    <string name="search_placeholder">노래, 앨범 또는 아티스트 검색</string>
+    <string name="cd_close_search">검색 닫기</string>
+    <string name="cd_back">뒤로</string>
+    <string name="play_all">모두 재생</string>
+    <string name="no_songs">노래 없음</string>
+    <string name="not_found">찾을 수 없음</string>
+    <string name="artist_not_found">아티스트를 찾을 수 없음</string>
+    <string name="load_error">로드 오류</string>
+    <string name="no_songs_to_show">표시할 노래가 없습니다.</string>
+    <string name="album_fallback">앨범</string>
+    <string name="song_count_one">1곡</string>
+    <string name="song_count_many">%d곡</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">이퀄라이저</string>
+    <string name="equalizer">이퀄라이저</string>
+    <string name="enabled">활성화</string>
+    <string name="disabled">비활성화</string>
+    <string name="music_style">음악 스타일</string>
+    <string name="eq_play_song_hint">노래를 재생하세요: 이퀄라이저가 오디오에 연결되며 스타일을 적용할 수 있습니다.</string>
+    <string name="eq_custom_curve">커스텀 커브 (밴드 조정)</string>
+    <string name="bass_boost">저음 강화</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">알 수 없음</string>
+    <string name="unknown_artist">알 수 없는 아티스트</string>
+    <string name="unknown_album">알 수 없는 앨범</string>
+
+    <string name="permission_message">음악을 재생하려면 접근 권한이 필요합니다</string>
+    <string name="grant_permission">권한 허용</string>
+    <string name="artist_songs_albums">%1$d곡 · %2$d앨범</string>
+    <string name="preset_flat">플랫</string>
+    <string name="preset_rock">록</string>
+    <string name="preset_pop">팝</string>
+    <string name="preset_jazz">재즈</string>
+    <string name="preset_classical">클래식</string>
+    <string name="preset_dance">댄스</string>
+    <string name="preset_hip_hop">힙합</string>
+    <string name="preset_electronic">일렉트로닉</string>
+    <string name="preset_rnb">알앤비</string>
+    <string name="preset_heavy_metal">헤비메탈</string>
+    <string name="preset_acoustic">어쿠스틱</string>
+    <string name="preset_latin">라틴</string>
+    <string name="preset_vocal">보컬</string>
+    <string name="preset_bass">저음</string>
+    <string name="preset_treble">고음</string>
+    <string name="ai_not_available">현재 AI 정보를 사용할 수 없습니다.</string>
+    <string name="gemini_key_missing">local.properties에 GEMINI_API_KEY를 추가하고(Google AI Studio 키) 다시 빌드하세요.</string>
+    <string name="error_building_request">요청 생성 중 내부 오류.</string>
+    <string name="api_response_unrecognized">API 응답을 인식할 수 없습니다.</string>
+    <string name="api_no_usable_text">API가 사용 가능한 텍스트를 반환하지 않았습니다.</string>
+    <string name="json_parse_error">모델의 JSON 응답을 해석할 수 없습니다.</string>
+    <string name="network_error">네트워크 또는 서비스 오류.</string>
+    <string name="no_connection">연결 없음</string>
+    <string name="http_error">HTTP 오류 %d</string>
+    <string name="settings">설정</string>
+    <string name="drawer_settings">설정</string>
+    <string name="language">언어</string>
+    <string name="system_default">시스템 기본값</string>
+</resources>

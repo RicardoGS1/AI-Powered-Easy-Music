@@ -1,8 +1,10 @@
 package com.virtualworld.easymusic.playback
 
+import android.app.Application
 import android.media.audiofx.BassBoost
 import android.media.audiofx.Equalizer
 import android.util.Log
+import com.virtualworld.easymusic.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,7 +29,7 @@ data class EqualizerState(
 data class EqPreset(val name: String, val levels: List<Int>)
 
 @Singleton
-class EqualizerManager @Inject constructor() {
+class EqualizerManager @Inject constructor(private val app: Application) {
 
     companion object {
         // Niveles en millibels para 5 bandas: ~60Hz, ~230Hz, ~910Hz, ~3.6kHz, ~14kHz
@@ -52,12 +54,30 @@ class EqualizerManager @Inject constructor() {
         private val PRESET_NAMES: List<String> = PRESETS.map { it.name }
     }
 
+    fun getLocalizedPresetNames(): List<String> = listOf(
+        app.getString(R.string.preset_flat),
+        app.getString(R.string.preset_rock),
+        app.getString(R.string.preset_pop),
+        app.getString(R.string.preset_jazz),
+        app.getString(R.string.preset_classical),
+        app.getString(R.string.preset_dance),
+        app.getString(R.string.preset_hip_hop),
+        app.getString(R.string.preset_electronic),
+        app.getString(R.string.preset_rnb),
+        app.getString(R.string.preset_heavy_metal),
+        app.getString(R.string.preset_acoustic),
+        app.getString(R.string.preset_latin),
+        app.getString(R.string.preset_vocal),
+        app.getString(R.string.preset_bass),
+        app.getString(R.string.preset_treble)
+    )
+
     private var equalizer: Equalizer? = null
     private var bassBoost: BassBoost? = null
     private var currentSessionId: Int = -1
 
     /** Los nombres de estilo no dependen del hardware: la UI puede mostrarlos antes de que exista sesión de audio. */
-    private val _state = MutableStateFlow(EqualizerState(presets = PRESET_NAMES))
+    private val _state = MutableStateFlow(EqualizerState(presets = getLocalizedPresetNames()))
     val state: StateFlow<EqualizerState> = _state.asStateFlow()
 
     fun initialize(audioSessionId: Int) {
@@ -106,7 +126,7 @@ class EqualizerManager @Inject constructor() {
                         minLevel = minLvl,
                         maxLevel = maxLvl,
                         centerFrequencies = frequencies,
-                        presets = PRESET_NAMES,
+                        presets = getLocalizedPresetNames(),
                         currentPreset = previousState.currentPreset
                     )
                 }
@@ -120,7 +140,7 @@ class EqualizerManager @Inject constructor() {
             }
         } catch (e: Exception) {
             Log.e("EqualizerManager", "Failed to initialize audio effects for session $audioSessionId", e)
-            _state.update { it.copy(presets = PRESET_NAMES) }
+            _state.update { it.copy(presets = getLocalizedPresetNames()) }
         }
     }
 

@@ -1,0 +1,124 @@
+<resources>
+    <string name="app_name">مشغّل موسيقى مدعوم بالذكاء الاصطناعي</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">مشاركة التطبيق</string>
+    <string name="share_app_text">جرّب %1$s!\n%2$s</string>
+    <string name="drawer_share_app">مشاركة التطبيق</string>
+    <string name="drawer_rate_app">تقييم التطبيق</string>
+
+    <!-- Player -->
+    <string name="cd_menu">القائمة</string>
+    <string name="now_playing">قيد التشغيل</string>
+    <string name="cd_search">بحث</string>
+    <string name="cd_remove_favorite">إزالة من المفضلة</string>
+    <string name="cd_add_favorite">إضافة إلى المفضلة</string>
+    <string name="no_song">لا توجد أغنية</string>
+    <string name="select_a_song">اختر أغنية</string>
+    <string name="cd_volume">مستوى الصوت</string>
+    <string name="cd_repeat">تكرار</string>
+    <string name="cd_shuffle">عشوائي</string>
+    <string name="cd_library">المكتبة</string>
+    <string name="cd_hide_extra_controls">إخفاء عناصر التحكم الإضافية</string>
+    <string name="cd_show_extra_controls">إظهار عناصر التحكم الإضافية</string>
+    <string name="cd_equalizer">المعادل الصوتي</string>
+    <string name="cd_remove_from_queue">إزالة المقطع من القائمة</string>
+    <string name="remove_from_queue_dialog_title">إزالة من المشغّل؟</string>
+    <string name="remove_from_queue_dialog_message">سيتم إزالة هذا المقطع من المشغّل وإخفاؤه من المكتبة. لن يتم حذف الملف من جهازك.</string>
+    <string name="remove_from_queue_dialog_confirm">إزالة</string>
+    <string name="remove_from_queue_dialog_cancel">إلغاء</string>
+    <string name="remove_from_queue_dialog_dont_show_again">عدم الإظهار مرة أخرى</string>
+    <string name="cd_previous">السابق</string>
+    <string name="cd_pause">إيقاف مؤقت</string>
+    <string name="cd_play">تشغيل</string>
+    <string name="cd_next">التالي</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">بيانات الأغنية</string>
+    <string name="gemini_local_metadata">Gemini (بيانات وصفية محلية)</string>
+    <string name="insight_summary">ملخص</string>
+    <string name="insight_genre">النوع أو الأسلوب</string>
+    <string name="insight_era">الحقبة أو السياق</string>
+    <string name="insight_fun_fact">معلومة طريفة</string>
+    <string name="insight_similar_artists">فنانون أو مواضيع مشابهة</string>
+    <string name="no_data">لا توجد بيانات.</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">كلمات الأغنية</string>
+    <string name="lyrics_no_exact_match">لم يتم العثور على تطابق دقيق (العنوان والفنان والألبوم والمدة). جارٍ البحث عن تطابقات أخرى في LRCLIB…</string>
+    <string name="lyrics_instrumental">هذا المسار مدرج كموسيقى آلية في LRCLIB.</string>
+    <string name="lyrics_not_found">لم يتم العثور على كلمات لهذه الأغنية. تحقق من العنوان والفنان والألبوم والمدة في البيانات الوصفية.</string>
+    <string name="lyrics_multiple_matches">عدة تطابقات في LRCLIB. اختر المسار الصحيح:</string>
+    <string name="lyrics_no_options">لا توجد خيارات لعرضها.</string>
+    <string name="no_title">بدون عنوان</string>
+
+    <!-- Library -->
+    <string name="library">المكتبة</string>
+    <string name="tab_favorites">المفضلة</string>
+    <string name="tab_songs">الأغاني</string>
+    <string name="tab_albums">الألبومات</string>
+    <string name="tab_artists">الفنانون</string>
+    <string name="no_songs_found">لم يتم العثور على أغانٍ</string>
+    <string name="no_albums_found">لم يتم العثور على ألبومات</string>
+    <string name="no_artists_found">لم يتم العثور على فنانين</string>
+    <string name="no_favorites_yet">ليس لديك مفضلات بعد. ضع علامة عليها بالقلب في المشغّل.</string>
+    <string name="search_placeholder">بحث عن أغانٍ أو ألبومات أو فنانين</string>
+    <string name="cd_close_search">إغلاق البحث</string>
+    <string name="cd_back">رجوع</string>
+    <string name="play_all">تشغيل الكل</string>
+    <string name="no_songs">لا توجد أغانٍ</string>
+    <string name="not_found">غير موجود</string>
+    <string name="artist_not_found">الفنان غير موجود</string>
+    <string name="load_error">خطأ في التحميل</string>
+    <string name="no_songs_to_show">لا توجد أغانٍ لعرضها.</string>
+    <string name="album_fallback">ألبوم</string>
+    <string name="song_count_one">أغنية واحدة</string>
+    <string name="song_count_many">%d أغانٍ</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">المعادل الصوتي</string>
+    <string name="equalizer">المعادل الصوتي</string>
+    <string name="enabled">مفعّل</string>
+    <string name="disabled">معطّل</string>
+    <string name="music_style">نمط الموسيقى</string>
+    <string name="eq_play_song_hint">شغّل أغنية: يرتبط المعادل بالصوت ويمكنك تطبيق الأنماط.</string>
+    <string name="eq_custom_curve">منحنى مخصص (اضبط النطاقات)</string>
+    <string name="bass_boost">تعزيز الجهير</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">غير معروف</string>
+    <string name="unknown_artist">فنان غير معروف</string>
+    <string name="unknown_album">ألبوم غير معروف</string>
+
+    <string name="permission_message">نحتاج الوصول إلى موسيقاك لتشغيلها</string>
+    <string name="grant_permission">منح الإذن</string>
+    <string name="artist_songs_albums">%1$d أغانٍ · %2$d ألبومات</string>
+    <string name="preset_flat">مسطح</string>
+    <string name="preset_rock">روك</string>
+    <string name="preset_pop">بوب</string>
+    <string name="preset_jazz">جاز</string>
+    <string name="preset_classical">كلاسيكي</string>
+    <string name="preset_dance">رقص</string>
+    <string name="preset_hip_hop">هيب هوب</string>
+    <string name="preset_electronic">إلكتروني</string>
+    <string name="preset_rnb">آر أند بي</string>
+    <string name="preset_heavy_metal">هيفي ميتال</string>
+    <string name="preset_acoustic">صوتي</string>
+    <string name="preset_latin">لاتيني</string>
+    <string name="preset_vocal">صوتي غنائي</string>
+    <string name="preset_bass">جهير</string>
+    <string name="preset_treble">حاد</string>
+    <string name="ai_not_available">معلومات الذكاء الاصطناعي غير متوفرة حالياً.</string>
+    <string name="gemini_key_missing">أضف GEMINI_API_KEY في local.properties (مفتاح Google AI Studio) وأعد التجميع.</string>
+    <string name="error_building_request">خطأ داخلي في بناء الطلب.</string>
+    <string name="api_response_unrecognized">استجابة API غير معروفة.</string>
+    <string name="api_no_usable_text">لم تُرجع API نصاً قابلاً للاستخدام.</string>
+    <string name="json_parse_error">تعذر تفسير استجابة JSON من النموذج.</string>
+    <string name="network_error">خطأ في الشبكة أو الخدمة.</string>
+    <string name="no_connection">لا يوجد اتصال</string>
+    <string name="http_error">خطأ HTTP %d</string>
+    <string name="settings">الإعدادات</string>
+    <string name="drawer_settings">الإعدادات</string>
+    <string name="language">اللغة</string>
+    <string name="system_default">الافتراضي للنظام</string>
+</resources>

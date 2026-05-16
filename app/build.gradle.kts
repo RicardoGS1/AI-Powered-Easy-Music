@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -19,10 +21,15 @@ android {
         applicationId = "com.virtualworld.easymusic"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 100100100
+        versionName = "1.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        resourceConfigurations += listOf(
+            "en", "es", "ar", "bn", "de", "fr", "hi", "in",
+            "it", "ja", "ko", "nl", "pt", "ru", "th", "tr", "uk", "vi", "zh"
+        )
 
         val localProps = Properties()
         val localFile = rootProject.file("local.properties")
@@ -55,6 +62,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.androidx.activity.compose)
@@ -81,6 +89,11 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.config)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

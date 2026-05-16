@@ -1,0 +1,124 @@
+<resources>
+    <string name="app_name">AI搭載イージーミュージック</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">アプリを共有</string>
+    <string name="share_app_text">%1$sを試してみて！\n%2$s</string>
+    <string name="drawer_share_app">アプリを共有</string>
+    <string name="drawer_rate_app">アプリを評価</string>
+
+    <!-- Player -->
+    <string name="cd_menu">メニュー</string>
+    <string name="now_playing">再生中</string>
+    <string name="cd_search">検索</string>
+    <string name="cd_remove_favorite">お気に入りから削除</string>
+    <string name="cd_add_favorite">お気に入りに追加</string>
+    <string name="no_song">曲がありません</string>
+    <string name="select_a_song">曲を選択してください</string>
+    <string name="cd_volume">音量</string>
+    <string name="cd_repeat">リピート</string>
+    <string name="cd_shuffle">シャッフル</string>
+    <string name="cd_library">ライブラリ</string>
+    <string name="cd_hide_extra_controls">追加コントロールを非表示</string>
+    <string name="cd_show_extra_controls">追加コントロールを表示</string>
+    <string name="cd_equalizer">イコライザー</string>
+    <string name="cd_remove_from_queue">リストから曲を削除</string>
+    <string name="remove_from_queue_dialog_title">プレイヤーから削除しますか？</string>
+    <string name="remove_from_queue_dialog_message">この曲はプレイヤーから削除され、ライブラリに表示されなくなります。デバイス上のファイルは削除されません。</string>
+    <string name="remove_from_queue_dialog_confirm">削除</string>
+    <string name="remove_from_queue_dialog_cancel">キャンセル</string>
+    <string name="remove_from_queue_dialog_dont_show_again">今後表示しない</string>
+    <string name="cd_previous">前へ</string>
+    <string name="cd_pause">一時停止</string>
+    <string name="cd_play">再生</string>
+    <string name="cd_next">次へ</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">曲のデータ</string>
+    <string name="gemini_local_metadata">Gemini（ローカルメタデータ）</string>
+    <string name="insight_summary">概要</string>
+    <string name="insight_genre">ジャンルまたはスタイル</string>
+    <string name="insight_era">時代または背景</string>
+    <string name="insight_fun_fact">豆知識</string>
+    <string name="insight_similar_artists">類似アーティストまたはテーマ</string>
+    <string name="no_data">データなし。</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">歌詞</string>
+    <string name="lyrics_no_exact_match">完全一致が見つかりません（タイトル、アーティスト、アルバム、再生時間）。LRCLIBで他の一致を検索中…</string>
+    <string name="lyrics_instrumental">このトラックはLRCLIBでインストゥルメンタルとして登録されています。</string>
+    <string name="lyrics_not_found">この曲の歌詞が見つかりません。メタデータのタイトル、アーティスト、アルバム、再生時間を確認してください。</string>
+    <string name="lyrics_multiple_matches">LRCLIBで複数の一致。正しいトラックを選択してください：</string>
+    <string name="lyrics_no_options">表示するオプションがありません。</string>
+    <string name="no_title">タイトルなし</string>
+
+    <!-- Library -->
+    <string name="library">ライブラリ</string>
+    <string name="tab_favorites">お気に入り</string>
+    <string name="tab_songs">曲</string>
+    <string name="tab_albums">アルバム</string>
+    <string name="tab_artists">アーティスト</string>
+    <string name="no_songs_found">曲が見つかりません</string>
+    <string name="no_albums_found">アルバムが見つかりません</string>
+    <string name="no_artists_found">アーティストが見つかりません</string>
+    <string name="no_favorites_yet">まだお気に入りがありません。プレーヤーでハートマークを付けてください。</string>
+    <string name="search_placeholder">曲、アルバム、アーティストを検索</string>
+    <string name="cd_close_search">検索を閉じる</string>
+    <string name="cd_back">戻る</string>
+    <string name="play_all">すべて再生</string>
+    <string name="no_songs">曲がありません</string>
+    <string name="not_found">見つかりません</string>
+    <string name="artist_not_found">アーティストが見つかりません</string>
+    <string name="load_error">読み込みエラー</string>
+    <string name="no_songs_to_show">表示する曲がありません。</string>
+    <string name="album_fallback">アルバム</string>
+    <string name="song_count_one">1曲</string>
+    <string name="song_count_many">%d曲</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">イコライザー</string>
+    <string name="equalizer">イコライザー</string>
+    <string name="enabled">有効</string>
+    <string name="disabled">無効</string>
+    <string name="music_style">音楽スタイル</string>
+    <string name="eq_play_song_hint">曲を再生してください：イコライザーがオーディオに接続され、スタイルを適用できます。</string>
+    <string name="eq_custom_curve">カスタムカーブ（バンドを調整）</string>
+    <string name="bass_boost">低音ブースト</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">不明</string>
+    <string name="unknown_artist">不明なアーティスト</string>
+    <string name="unknown_album">不明なアルバム</string>
+
+    <string name="permission_message">音楽を再生するにはアクセス許可が必要です</string>
+    <string name="grant_permission">許可する</string>
+    <string name="artist_songs_albums">%1$d曲 · %2$dアルバム</string>
+    <string name="preset_flat">フラット</string>
+    <string name="preset_rock">ロック</string>
+    <string name="preset_pop">ポップ</string>
+    <string name="preset_jazz">ジャズ</string>
+    <string name="preset_classical">クラシック</string>
+    <string name="preset_dance">ダンス</string>
+    <string name="preset_hip_hop">ヒップホップ</string>
+    <string name="preset_electronic">エレクトロニック</string>
+    <string name="preset_rnb">R&amp;B</string>
+    <string name="preset_heavy_metal">ヘヴィメタル</string>
+    <string name="preset_acoustic">アコースティック</string>
+    <string name="preset_latin">ラテン</string>
+    <string name="preset_vocal">ボーカル</string>
+    <string name="preset_bass">低音</string>
+    <string name="preset_treble">高音</string>
+    <string name="ai_not_available">現在AI情報は利用できません。</string>
+    <string name="gemini_key_missing">local.propertiesにGEMINI_API_KEYを追加し（Google AI Studioキー）、再ビルドしてください。</string>
+    <string name="error_building_request">リクエスト構築時の内部エラー。</string>
+    <string name="api_response_unrecognized">APIの応答を認識できません。</string>
+    <string name="api_no_usable_text">APIが使用可能なテキストを返しませんでした。</string>
+    <string name="json_parse_error">モデルのJSON応答を解釈できませんでした。</string>
+    <string name="network_error">ネットワークまたはサービスエラー。</string>
+    <string name="no_connection">接続なし</string>
+    <string name="http_error">HTTPエラー %d</string>
+    <string name="settings">設定</string>
+    <string name="drawer_settings">設定</string>
+    <string name="language">言語</string>
+    <string name="system_default">システムのデフォルト</string>
+</resources>

@@ -11,7 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.domain.model.Song
 import com.virtualworld.easymusic.ui.components.SongItem
 import com.virtualworld.easymusic.ui.theme.DarkSurfaceVariant
@@ -21,16 +23,18 @@ import com.virtualworld.easymusic.ui.theme.TextGray
 fun SongsTab(
     songs: List<Song>,
     onSongClick: (Song) -> Unit,
-    emptyMessage: String = "No se encontraron canciones",
+    emptyMessage: String = "",
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
+    val displayMessage = emptyMessage.ifEmpty { stringResource(R.string.no_songs_found) }
+
     if (songs.isEmpty()) {
         Box(
             modifier = modifier,
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = emptyMessage,
+                text = displayMessage,
                 style = MaterialTheme.typography.bodyLarge,
                 color = TextGray
             )

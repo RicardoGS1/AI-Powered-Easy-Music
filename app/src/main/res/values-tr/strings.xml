@@ -1,0 +1,124 @@
+<resources>
+    <string name="app_name">Yapay Zekâ Destekli Müzik Çalar</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">Uygulamayı paylaş</string>
+    <string name="share_app_text">%1$s\'ı dene!\n%2$s</string>
+    <string name="drawer_share_app">Uygulamayı paylaş</string>
+    <string name="drawer_rate_app">Uygulamayı değerlendir</string>
+
+    <!-- Player -->
+    <string name="cd_menu">Menü</string>
+    <string name="now_playing">ŞİMDİ ÇALINIYOR</string>
+    <string name="cd_search">Ara</string>
+    <string name="cd_remove_favorite">Favorilerden kaldır</string>
+    <string name="cd_add_favorite">Favorilere ekle</string>
+    <string name="no_song">Şarkı yok</string>
+    <string name="select_a_song">Bir şarkı seçin</string>
+    <string name="cd_volume">Ses</string>
+    <string name="cd_repeat">Tekrarla</string>
+    <string name="cd_shuffle">Karıştır</string>
+    <string name="cd_library">Kütüphane</string>
+    <string name="cd_hide_extra_controls">Ekstra kontrolleri gizle</string>
+    <string name="cd_show_extra_controls">Ekstra kontrolleri göster</string>
+    <string name="cd_equalizer">Ekolayzır</string>
+    <string name="cd_remove_from_queue">Parçayı listeden kaldır</string>
+    <string name="remove_from_queue_dialog_title">Çalardan kaldırılsın mı?</string>
+    <string name="remove_from_queue_dialog_message">Bu parça çalardan kaldırılacak ve kitaplıkta gizlenecek. Cihazınızdaki dosya silinmeyecek.</string>
+    <string name="remove_from_queue_dialog_confirm">Kaldır</string>
+    <string name="remove_from_queue_dialog_cancel">İptal</string>
+    <string name="remove_from_queue_dialog_dont_show_again">Bir daha gösterme</string>
+    <string name="cd_previous">Önceki</string>
+    <string name="cd_pause">Duraklat</string>
+    <string name="cd_play">Çal</string>
+    <string name="cd_next">Sonraki</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">Şarkı verileri</string>
+    <string name="gemini_local_metadata">Gemini (yerel meta veriler)</string>
+    <string name="insight_summary">Özet</string>
+    <string name="insight_genre">Tür veya stil</string>
+    <string name="insight_era">Dönem veya bağlam</string>
+    <string name="insight_fun_fact">İlginç bilgi</string>
+    <string name="insight_similar_artists">Benzer sanatçılar veya temalar</string>
+    <string name="no_data">Veri yok.</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">Şarkı sözleri</string>
+    <string name="lyrics_no_exact_match">Tam eşleşme bulunamadı (başlık, sanatçı, albüm ve süre). LRCLIB\'de diğer eşleşmeler aranıyor…</string>
+    <string name="lyrics_instrumental">Bu parça LRCLIB\'de enstrümantal olarak listelenmiş.</string>
+    <string name="lyrics_not_found">Bu şarkı için söz bulunamadı. Meta verilerde başlık, sanatçı, albüm ve süreyi kontrol edin.</string>
+    <string name="lyrics_multiple_matches">LRCLIB\'de birden fazla eşleşme. Doğru parçayı seçin:</string>
+    <string name="lyrics_no_options">Gösterilecek seçenek yok.</string>
+    <string name="no_title">Başlıksız</string>
+
+    <!-- Library -->
+    <string name="library">Kütüphane</string>
+    <string name="tab_favorites">Favoriler</string>
+    <string name="tab_songs">Şarkılar</string>
+    <string name="tab_albums">Albümler</string>
+    <string name="tab_artists">Sanatçılar</string>
+    <string name="no_songs_found">Şarkı bulunamadı</string>
+    <string name="no_albums_found">Albüm bulunamadı</string>
+    <string name="no_artists_found">Sanatçı bulunamadı</string>
+    <string name="no_favorites_yet">Henüz favoriniz yok. Oynatıcıdaki kalp ile işaretleyin.</string>
+    <string name="search_placeholder">Şarkı, albüm veya sanatçı ara</string>
+    <string name="cd_close_search">Aramayı kapat</string>
+    <string name="cd_back">Geri</string>
+    <string name="play_all">Tümünü çal</string>
+    <string name="no_songs">Şarkı yok</string>
+    <string name="not_found">Bulunamadı</string>
+    <string name="artist_not_found">Sanatçı bulunamadı</string>
+    <string name="load_error">Yükleme hatası</string>
+    <string name="no_songs_to_show">Gösterilecek şarkı yok.</string>
+    <string name="album_fallback">Albüm</string>
+    <string name="song_count_one">1 şarkı</string>
+    <string name="song_count_many">%d şarkı</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">EKOLAYZER</string>
+    <string name="equalizer">Ekolayzır</string>
+    <string name="enabled">Etkin</string>
+    <string name="disabled">Devre dışı</string>
+    <string name="music_style">Müzik stili</string>
+    <string name="eq_play_song_hint">Bir şarkı çalın: ekolayzır ses ile bağlanır ve stilleri uygulayabilirsiniz.</string>
+    <string name="eq_custom_curve">Özel eğri (bantları ayarlayın)</string>
+    <string name="bass_boost">Bas Takviyesi</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">Bilinmeyen</string>
+    <string name="unknown_artist">Bilinmeyen sanatçı</string>
+    <string name="unknown_album">Bilinmeyen albüm</string>
+
+    <string name="permission_message">Müziğinizi çalmak için erişim izni gerekiyor</string>
+    <string name="grant_permission">İzin ver</string>
+    <string name="artist_songs_albums">%1$d şarkı · %2$d albüm</string>
+    <string name="preset_flat">Düz</string>
+    <string name="preset_rock">Rock</string>
+    <string name="preset_pop">Pop</string>
+    <string name="preset_jazz">Caz</string>
+    <string name="preset_classical">Klasik</string>
+    <string name="preset_dance">Dans</string>
+    <string name="preset_hip_hop">Hip Hop</string>
+    <string name="preset_electronic">Elektronik</string>
+    <string name="preset_rnb">R&amp;B</string>
+    <string name="preset_heavy_metal">Ağır Metal</string>
+    <string name="preset_acoustic">Akustik</string>
+    <string name="preset_latin">Latin</string>
+    <string name="preset_vocal">Vokal</string>
+    <string name="preset_bass">Bas</string>
+    <string name="preset_treble">Tiz</string>
+    <string name="ai_not_available">Yapay zekâ bilgileri şu anda kullanılamıyor.</string>
+    <string name="gemini_key_missing">local.properties\'e GEMINI_API_KEY ekleyin (Google AI Studio anahtarı) ve yeniden derleyin.</string>
+    <string name="error_building_request">İstek oluşturulurken iç hata.</string>
+    <string name="api_response_unrecognized">API yanıtı tanınmadı.</string>
+    <string name="api_no_usable_text">API kullanılabilir metin döndürmedi.</string>
+    <string name="json_parse_error">Modelin JSON yanıtı yorumlanamadı.</string>
+    <string name="network_error">Ağ veya hizmet hatası.</string>
+    <string name="no_connection">Bağlantı yok</string>
+    <string name="http_error">HTTP Hatası %d</string>
+    <string name="settings">Ayarlar</string>
+    <string name="drawer_settings">Ayarlar</string>
+    <string name="language">Dil</string>
+    <string name="system_default">Sistem varsayılanı</string>
+</resources>

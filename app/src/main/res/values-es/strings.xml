@@ -1,0 +1,131 @@
+<resources>
+    <string name="app_name">Reproductor Música potenciado con IA</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">Compartir app</string>
+    <string name="share_app_text">¡Prueba %1$s!\n%2$s</string>
+    <string name="drawer_share_app">Compartir app</string>
+    <string name="drawer_rate_app">Valorar app</string>
+
+    <!-- Player -->
+    <string name="cd_menu">Menú</string>
+    <string name="now_playing">REPRODUCIENDO</string>
+    <string name="cd_search">Buscar</string>
+    <string name="cd_remove_favorite">Quitar de favoritos</string>
+    <string name="cd_add_favorite">Agregar a favoritos</string>
+    <string name="no_song">Sin canción</string>
+    <string name="select_a_song">Selecciona una canción</string>
+    <string name="cd_volume">Volumen</string>
+    <string name="cd_repeat">Repetir</string>
+    <string name="cd_shuffle">Aleatorio</string>
+    <string name="cd_library">Biblioteca</string>
+    <string name="cd_hide_extra_controls">Ocultar controles extra</string>
+    <string name="cd_show_extra_controls">Mostrar controles extra</string>
+    <string name="cd_equalizer">Ecualizador</string>
+    <string name="cd_remove_from_queue">Quitar pista de la lista</string>
+    <string name="remove_from_queue_dialog_title">¿Quitar del reproductor?</string>
+    <string name="remove_from_queue_dialog_message">La canción se quitará del reproductor y se ocultará de la biblioteca. El archivo en tu dispositivo no se eliminará.</string>
+    <string name="remove_from_queue_dialog_confirm">Quitar</string>
+    <string name="remove_from_queue_dialog_cancel">Cancelar</string>
+    <string name="remove_from_queue_dialog_dont_show_again">No volver a mostrar</string>
+    <string name="cd_previous">Anterior</string>
+    <string name="cd_pause">Pausar</string>
+    <string name="cd_play">Reproducir</string>
+    <string name="cd_next">Siguiente</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">Datos de la canción</string>
+    <string name="gemini_local_metadata">Gemini (metadatos locales)</string>
+    <string name="insight_summary">Resumen</string>
+    <string name="insight_genre">Género o estilo</string>
+    <string name="insight_era">Época o contexto</string>
+    <string name="insight_fun_fact">Dato curioso</string>
+    <string name="insight_similar_artists">Artistas o temas similares</string>
+    <string name="no_data">Sin datos.</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">Letra</string>
+    <string name="lyrics_no_exact_match">No se encontró una letra con coincidencia exacta (título, artista, álbum y duración). Buscando otras coincidencias en LRCLIB…</string>
+    <string name="lyrics_instrumental">Esta pista figura como instrumental en LRCLIB.</string>
+    <string name="lyrics_not_found">No se encontró letra para esta canción. Comprueba título, artista, álbum y duración en los metadatos.</string>
+    <string name="lyrics_multiple_matches">Varias coincidencias en LRCLIB. Elige la pista correcta:</string>
+    <string name="lyrics_no_options">No hay opciones para mostrar.</string>
+    <string name="no_title">Sin título</string>
+
+    <!-- Library -->
+    <string name="library">Biblioteca</string>
+    <string name="tab_favorites">Favoritos</string>
+    <string name="tab_songs">Canciones</string>
+    <string name="tab_albums">Álbumes</string>
+    <string name="tab_artists">Artistas</string>
+    <string name="no_songs_found">No se encontraron canciones</string>
+    <string name="no_albums_found">No se encontraron álbumes</string>
+    <string name="no_artists_found">No se encontraron artistas</string>
+    <string name="no_favorites_yet">Aún no tienes favoritos. Márcalos con el corazón en el reproductor.</string>
+    <string name="search_placeholder">Buscar canciones, álbumes o artistas</string>
+    <string name="cd_close_search">Cerrar búsqueda</string>
+    <string name="cd_back">Volver</string>
+    <string name="play_all">Reproducir todo</string>
+    <string name="no_songs">No hay canciones</string>
+    <string name="not_found">No encontrado</string>
+    <string name="artist_not_found">Artista no encontrado</string>
+    <string name="load_error">Error al cargar</string>
+    <string name="no_songs_to_show">No hay canciones para mostrar.</string>
+    <string name="album_fallback">Álbum</string>
+    <string name="song_count_one">1 canción</string>
+    <string name="song_count_many">%d canciones</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">ECUALIZADOR</string>
+    <string name="equalizer">Ecualizador</string>
+    <string name="enabled">Activado</string>
+    <string name="disabled">Desactivado</string>
+    <string name="music_style">Estilo musical</string>
+    <string name="eq_play_song_hint">Reproduce una canción: el ecualizador se enlaza al audio y podrás aplicar los estilos.</string>
+    <string name="eq_custom_curve">Curva personalizada (ajusta las bandas)</string>
+    <string name="bass_boost">Refuerzo de Graves</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">Desconocido</string>
+    <string name="unknown_artist">Artista desconocido</string>
+    <string name="unknown_album">Álbum desconocido</string>
+
+    <!-- Permission screen -->
+    <string name="permission_message">Necesitamos acceso a tu música para poder reproducirla</string>
+    <string name="grant_permission">Conceder permiso</string>
+
+    <!-- AlbumItem / ArtistItem -->
+    <string name="artist_songs_albums">%1$d canciones · %2$d álbumes</string>
+
+    <!-- Equalizer presets -->
+    <string name="preset_flat">Plano</string>
+    <string name="preset_rock">Rock</string>
+    <string name="preset_pop">Pop</string>
+    <string name="preset_jazz">Jazz</string>
+    <string name="preset_classical">Clásica</string>
+    <string name="preset_dance">Dance</string>
+    <string name="preset_hip_hop">Hip Hop</string>
+    <string name="preset_electronic">Electrónica</string>
+    <string name="preset_rnb">R&amp;B</string>
+    <string name="preset_heavy_metal">Heavy Metal</string>
+    <string name="preset_acoustic">Acústica</string>
+    <string name="preset_latin">Latino</string>
+    <string name="preset_vocal">Vocal</string>
+    <string name="preset_bass">Graves</string>
+    <string name="preset_treble">Agudos</string>
+
+    <!-- Error messages -->
+    <string name="ai_not_available">La información con IA no está disponible en este momento.</string>
+    <string name="gemini_key_missing">Añade GEMINI_API_KEY en local.properties (clave de Google AI Studio) y vuelve a compilar.</string>
+    <string name="error_building_request">Error interno al construir la petición.</string>
+    <string name="api_response_unrecognized">Respuesta de la API no reconocida.</string>
+    <string name="api_no_usable_text">La API no devolvió texto utilizable.</string>
+    <string name="json_parse_error">No se pudo interpretar la respuesta JSON del modelo.</string>
+    <string name="network_error">Error de red o del servicio.</string>
+    <string name="no_connection">Sin conexión</string>
+    <string name="http_error">Error HTTP %d</string>
+    <string name="settings">Ajustes</string>
+    <string name="drawer_settings">Ajustes</string>
+    <string name="language">Idioma</string>
+    <string name="system_default">Predeterminado del sistema</string>
+</resources>

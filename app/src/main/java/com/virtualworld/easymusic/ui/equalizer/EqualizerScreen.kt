@@ -42,8 +42,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.virtualworld.easymusic.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.virtualworld.easymusic.playback.EqualizerManager
 import com.virtualworld.easymusic.playback.EqualizerState
@@ -161,7 +163,7 @@ private fun TopBar(onNavigateBack: () -> Unit) {
         IconButton(onClick = onNavigateBack) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Volver",
+                contentDescription = stringResource(R.string.cd_back),
                 tint = TextWhite
             )
         }
@@ -173,7 +175,7 @@ private fun TopBar(onNavigateBack: () -> Unit) {
             modifier = Modifier.padding(end = 8.dp)
         )
         Text(
-            text = "ECUALIZADOR",
+            text = stringResource(R.string.equalizer_title),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             letterSpacing = 2.sp,
@@ -199,13 +201,13 @@ private fun EnableSection(
     ) {
         Column {
             Text(
-                text = "Ecualizador",
+                text = stringResource(R.string.equalizer),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = TextWhite
             )
             Text(
-                text = if (isEnabled) "Activado" else "Desactivado",
+                text = if (isEnabled) stringResource(R.string.enabled) else stringResource(R.string.disabled),
                 style = MaterialTheme.typography.bodySmall,
                 color = if (isEnabled) Teal400 else TextGray
             )
@@ -236,7 +238,7 @@ private fun StylePresetSelector(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = "Estilo musical",
+            text = stringResource(R.string.music_style),
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
             color = TextGray,
@@ -245,7 +247,7 @@ private fun StylePresetSelector(
         if (!bandsReady) {
             Spacer(modifier = Modifier.height(6.dp))
             Text(
-                text = "Reproduce una canción: el ecualizador se enlaza al audio y podrás aplicar los estilos.",
+                text = stringResource(R.string.eq_play_song_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = TextDarkGray,
                 modifier = Modifier.padding(horizontal = 24.dp)
@@ -302,7 +304,7 @@ private fun StylePresetSelector(
         if (currentPreset !in names.indices && globalEqEnabled && bandsReady) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Curva personalizada (ajusta las bandas)",
+                text = stringResource(R.string.eq_custom_curve),
                 style = MaterialTheme.typography.bodySmall,
                 color = TextDarkGray,
                 modifier = Modifier.padding(horizontal = 24.dp)
@@ -457,7 +459,7 @@ private fun BassBoostSection(
         ) {
             Column {
                 Text(
-                    text = "Refuerzo de Graves",
+                    text = stringResource(R.string.bass_boost),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = TextWhite

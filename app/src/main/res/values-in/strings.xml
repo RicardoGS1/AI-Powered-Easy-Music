@@ -1,0 +1,124 @@
+<resources>
+    <string name="app_name">Pemutar Musik Bertenaga AI</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">Bagikan aplikasi</string>
+    <string name="share_app_text">Coba %1$s!\n%2$s</string>
+    <string name="drawer_share_app">Bagikan aplikasi</string>
+    <string name="drawer_rate_app">Beri nilai aplikasi</string>
+
+    <!-- Player -->
+    <string name="cd_menu">Menu</string>
+    <string name="now_playing">SEDANG DIPUTAR</string>
+    <string name="cd_search">Cari</string>
+    <string name="cd_remove_favorite">Hapus dari favorit</string>
+    <string name="cd_add_favorite">Tambah ke favorit</string>
+    <string name="no_song">Tidak ada lagu</string>
+    <string name="select_a_song">Pilih sebuah lagu</string>
+    <string name="cd_volume">Volume</string>
+    <string name="cd_repeat">Ulangi</string>
+    <string name="cd_shuffle">Acak</string>
+    <string name="cd_library">Perpustakaan</string>
+    <string name="cd_hide_extra_controls">Sembunyikan kontrol tambahan</string>
+    <string name="cd_show_extra_controls">Tampilkan kontrol tambahan</string>
+    <string name="cd_equalizer">Equalizer</string>
+    <string name="cd_remove_from_queue">Hapus trek dari daftar</string>
+    <string name="remove_from_queue_dialog_title">Hapus dari pemutar?</string>
+    <string name="remove_from_queue_dialog_message">Trek ini akan dihapus dari pemutar dan disembunyikan dari perpustakaan. File di perangkat Anda tidak akan dihapus.</string>
+    <string name="remove_from_queue_dialog_confirm">Hapus</string>
+    <string name="remove_from_queue_dialog_cancel">Batal</string>
+    <string name="remove_from_queue_dialog_dont_show_again">Jangan tampilkan lagi</string>
+    <string name="cd_previous">Sebelumnya</string>
+    <string name="cd_pause">Jeda</string>
+    <string name="cd_play">Putar</string>
+    <string name="cd_next">Berikutnya</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">Data lagu</string>
+    <string name="gemini_local_metadata">Gemini (metadata lokal)</string>
+    <string name="insight_summary">Ringkasan</string>
+    <string name="insight_genre">Genre atau gaya</string>
+    <string name="insight_era">Era atau konteks</string>
+    <string name="insight_fun_fact">Fakta menarik</string>
+    <string name="insight_similar_artists">Artis atau tema serupa</string>
+    <string name="no_data">Tidak ada data.</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">Lirik</string>
+    <string name="lyrics_no_exact_match">Kecocokan persis tidak ditemukan (judul, artis, album, dan durasi). Mencari kecocokan lain di LRCLIB…</string>
+    <string name="lyrics_instrumental">Trek ini terdaftar sebagai instrumental di LRCLIB.</string>
+    <string name="lyrics_not_found">Lirik tidak ditemukan untuk lagu ini. Periksa judul, artis, album, dan durasi di metadata.</string>
+    <string name="lyrics_multiple_matches">Beberapa kecocokan di LRCLIB. Pilih trek yang benar:</string>
+    <string name="lyrics_no_options">Tidak ada opsi untuk ditampilkan.</string>
+    <string name="no_title">Tanpa judul</string>
+
+    <!-- Library -->
+    <string name="library">Perpustakaan</string>
+    <string name="tab_favorites">Favorit</string>
+    <string name="tab_songs">Lagu</string>
+    <string name="tab_albums">Album</string>
+    <string name="tab_artists">Artis</string>
+    <string name="no_songs_found">Tidak ada lagu ditemukan</string>
+    <string name="no_albums_found">Tidak ada album ditemukan</string>
+    <string name="no_artists_found">Tidak ada artis ditemukan</string>
+    <string name="no_favorites_yet">Anda belum memiliki favorit. Tandai dengan hati di pemutar.</string>
+    <string name="search_placeholder">Cari lagu, album, atau artis</string>
+    <string name="cd_close_search">Tutup pencarian</string>
+    <string name="cd_back">Kembali</string>
+    <string name="play_all">Putar semua</string>
+    <string name="no_songs">Tidak ada lagu</string>
+    <string name="not_found">Tidak ditemukan</string>
+    <string name="artist_not_found">Artis tidak ditemukan</string>
+    <string name="load_error">Gagal memuat</string>
+    <string name="no_songs_to_show">Tidak ada lagu untuk ditampilkan.</string>
+    <string name="album_fallback">Album</string>
+    <string name="song_count_one">1 lagu</string>
+    <string name="song_count_many">%d lagu</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">EQUALIZER</string>
+    <string name="equalizer">Equalizer</string>
+    <string name="enabled">Aktif</string>
+    <string name="disabled">Nonaktif</string>
+    <string name="music_style">Gaya musik</string>
+    <string name="eq_play_song_hint">Putar lagu: equalizer terhubung ke audio dan Anda bisa menerapkan gaya.</string>
+    <string name="eq_custom_curve">Kurva kustom (sesuaikan band)</string>
+    <string name="bass_boost">Penguatan Bass</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">Tidak diketahui</string>
+    <string name="unknown_artist">Artis tidak dikenal</string>
+    <string name="unknown_album">Album tidak dikenal</string>
+
+    <string name="permission_message">Kami memerlukan akses ke musik Anda untuk memutarnya</string>
+    <string name="grant_permission">Berikan izin</string>
+    <string name="artist_songs_albums">%1$d lagu · %2$d album</string>
+    <string name="preset_flat">Datar</string>
+    <string name="preset_rock">Rock</string>
+    <string name="preset_pop">Pop</string>
+    <string name="preset_jazz">Jazz</string>
+    <string name="preset_classical">Klasik</string>
+    <string name="preset_dance">Dance</string>
+    <string name="preset_hip_hop">Hip Hop</string>
+    <string name="preset_electronic">Elektronik</string>
+    <string name="preset_rnb">R&amp;B</string>
+    <string name="preset_heavy_metal">Heavy Metal</string>
+    <string name="preset_acoustic">Akustik</string>
+    <string name="preset_latin">Latin</string>
+    <string name="preset_vocal">Vokal</string>
+    <string name="preset_bass">Bass</string>
+    <string name="preset_treble">Treble</string>
+    <string name="ai_not_available">Informasi AI tidak tersedia saat ini.</string>
+    <string name="gemini_key_missing">Tambahkan GEMINI_API_KEY di local.properties (kunci Google AI Studio) dan kompilasi ulang.</string>
+    <string name="error_building_request">Kesalahan internal saat membuat permintaan.</string>
+    <string name="api_response_unrecognized">Respons API tidak dikenali.</string>
+    <string name="api_no_usable_text">API tidak mengembalikan teks yang dapat digunakan.</string>
+    <string name="json_parse_error">Tidak dapat menginterpretasi respons JSON model.</string>
+    <string name="network_error">Kesalahan jaringan atau layanan.</string>
+    <string name="no_connection">Tidak ada koneksi</string>
+    <string name="http_error">Kesalahan HTTP %d</string>
+    <string name="settings">Pengaturan</string>
+    <string name="drawer_settings">Pengaturan</string>
+    <string name="language">Bahasa</string>
+    <string name="system_default">Default sistem</string>
+</resources>

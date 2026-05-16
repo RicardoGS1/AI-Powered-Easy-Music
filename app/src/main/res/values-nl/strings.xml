@@ -1,0 +1,124 @@
+<resources>
+    <string name="app_name">AI-aangedreven Easy Music</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">App delen</string>
+    <string name="share_app_text">Probeer %1$s!\n%2$s</string>
+    <string name="drawer_share_app">App delen</string>
+    <string name="drawer_rate_app">App beoordelen</string>
+
+    <!-- Player -->
+    <string name="cd_menu">Menu</string>
+    <string name="now_playing">NU AAN HET SPELEN</string>
+    <string name="cd_search">Zoeken</string>
+    <string name="cd_remove_favorite">Verwijderen uit favorieten</string>
+    <string name="cd_add_favorite">Toevoegen aan favorieten</string>
+    <string name="no_song">Geen nummer</string>
+    <string name="select_a_song">Selecteer een nummer</string>
+    <string name="cd_volume">Volume</string>
+    <string name="cd_repeat">Herhalen</string>
+    <string name="cd_shuffle">Willekeurig</string>
+    <string name="cd_library">Bibliotheek</string>
+    <string name="cd_hide_extra_controls">Extra bediening verbergen</string>
+    <string name="cd_show_extra_controls">Extra bediening tonen</string>
+    <string name="cd_equalizer">Equalizer</string>
+    <string name="cd_remove_from_queue">Nummer uit lijst verwijderen</string>
+    <string name="remove_from_queue_dialog_title">Uit speler verwijderen?</string>
+    <string name="remove_from_queue_dialog_message">Dit nummer wordt uit de speler verwijderd en in de bibliotheek verborgen. Het bestand op je apparaat wordt niet verwijderd.</string>
+    <string name="remove_from_queue_dialog_confirm">Verwijderen</string>
+    <string name="remove_from_queue_dialog_cancel">Annuleren</string>
+    <string name="remove_from_queue_dialog_dont_show_again">Niet meer tonen</string>
+    <string name="cd_previous">Vorige</string>
+    <string name="cd_pause">Pauzeren</string>
+    <string name="cd_play">Afspelen</string>
+    <string name="cd_next">Volgende</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">Nummergegevens</string>
+    <string name="gemini_local_metadata">Gemini (lokale metadata)</string>
+    <string name="insight_summary">Samenvatting</string>
+    <string name="insight_genre">Genre of stijl</string>
+    <string name="insight_era">Tijdperk of context</string>
+    <string name="insight_fun_fact">Leuk weetje</string>
+    <string name="insight_similar_artists">Vergelijkbare artiesten of thema\'s</string>
+    <string name="no_data">Geen gegevens.</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">Songtekst</string>
+    <string name="lyrics_no_exact_match">Geen exacte overeenkomst gevonden (titel, artiest, album en duur). Zoeken naar andere overeenkomsten op LRCLIB…</string>
+    <string name="lyrics_instrumental">Dit nummer staat als instrumentaal vermeld op LRCLIB.</string>
+    <string name="lyrics_not_found">Geen songtekst gevonden voor dit nummer. Controleer titel, artiest, album en duur in de metadata.</string>
+    <string name="lyrics_multiple_matches">Meerdere overeenkomsten op LRCLIB. Kies het juiste nummer:</string>
+    <string name="lyrics_no_options">Geen opties om weer te geven.</string>
+    <string name="no_title">Zonder titel</string>
+
+    <!-- Library -->
+    <string name="library">Bibliotheek</string>
+    <string name="tab_favorites">Favorieten</string>
+    <string name="tab_songs">Nummers</string>
+    <string name="tab_albums">Albums</string>
+    <string name="tab_artists">Artiesten</string>
+    <string name="no_songs_found">Geen nummers gevonden</string>
+    <string name="no_albums_found">Geen albums gevonden</string>
+    <string name="no_artists_found">Geen artiesten gevonden</string>
+    <string name="no_favorites_yet">Je hebt nog geen favorieten. Markeer ze met het hartje in de speler.</string>
+    <string name="search_placeholder">Zoek nummers, albums of artiesten</string>
+    <string name="cd_close_search">Zoekopdracht sluiten</string>
+    <string name="cd_back">Terug</string>
+    <string name="play_all">Alles afspelen</string>
+    <string name="no_songs">Geen nummers</string>
+    <string name="not_found">Niet gevonden</string>
+    <string name="artist_not_found">Artiest niet gevonden</string>
+    <string name="load_error">Fout bij laden</string>
+    <string name="no_songs_to_show">Geen nummers om weer te geven.</string>
+    <string name="album_fallback">Album</string>
+    <string name="song_count_one">1 nummer</string>
+    <string name="song_count_many">%d nummers</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">EQUALIZER</string>
+    <string name="equalizer">Equalizer</string>
+    <string name="enabled">Ingeschakeld</string>
+    <string name="disabled">Uitgeschakeld</string>
+    <string name="music_style">Muziekstijl</string>
+    <string name="eq_play_song_hint">Speel een nummer af: de equalizer verbindt met het geluid en je kunt stijlen toepassen.</string>
+    <string name="eq_custom_curve">Aangepaste curve (pas de banden aan)</string>
+    <string name="bass_boost">Basversterking</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">Onbekend</string>
+    <string name="unknown_artist">Onbekende artiest</string>
+    <string name="unknown_album">Onbekend album</string>
+
+    <string name="permission_message">We hebben toegang tot je muziek nodig om deze af te spelen</string>
+    <string name="grant_permission">Toestemming verlenen</string>
+    <string name="artist_songs_albums">%1$d nummers · %2$d albums</string>
+    <string name="preset_flat">Vlak</string>
+    <string name="preset_rock">Rock</string>
+    <string name="preset_pop">Pop</string>
+    <string name="preset_jazz">Jazz</string>
+    <string name="preset_classical">Klassiek</string>
+    <string name="preset_dance">Dance</string>
+    <string name="preset_hip_hop">Hip Hop</string>
+    <string name="preset_electronic">Elektronisch</string>
+    <string name="preset_rnb">R&amp;B</string>
+    <string name="preset_heavy_metal">Heavy Metal</string>
+    <string name="preset_acoustic">Akoestisch</string>
+    <string name="preset_latin">Latin</string>
+    <string name="preset_vocal">Vocaal</string>
+    <string name="preset_bass">Bas</string>
+    <string name="preset_treble">Hoog</string>
+    <string name="ai_not_available">AI-informatie is momenteel niet beschikbaar.</string>
+    <string name="gemini_key_missing">Voeg GEMINI_API_KEY toe aan local.properties (Google AI Studio-sleutel) en hercompileer.</string>
+    <string name="error_building_request">Interne fout bij het opbouwen van het verzoek.</string>
+    <string name="api_response_unrecognized">API-respons niet herkend.</string>
+    <string name="api_no_usable_text">De API heeft geen bruikbare tekst geretourneerd.</string>
+    <string name="json_parse_error">Kon de JSON-respons van het model niet interpreteren.</string>
+    <string name="network_error">Netwerk- of servicefout.</string>
+    <string name="no_connection">Geen verbinding</string>
+    <string name="http_error">HTTP-fout %d</string>
+    <string name="settings">Instellingen</string>
+    <string name="drawer_settings">Instellingen</string>
+    <string name="language">Taal</string>
+    <string name="system_default">Systeemstandaard</string>
+</resources>

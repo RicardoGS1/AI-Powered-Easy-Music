@@ -25,9 +25,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.ui.library.tabs.SongsTab
 import com.virtualworld.easymusic.ui.theme.DarkBackground
 import com.virtualworld.easymusic.ui.theme.DarkSurface
@@ -73,7 +75,7 @@ fun CollectionSongsScreen(
                 IconButton(onClick = onNavigateBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Volver",
+                        contentDescription = stringResource(R.string.cd_back),
                         tint = TextWhite
                     )
                 }
@@ -100,10 +102,7 @@ fun CollectionSongsScreen(
                         .fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
-                    val message = when (uiState.title) {
-                        "No encontrado", "Artista no encontrado", "Error al cargar" -> uiState.title
-                        else -> "No hay canciones para mostrar."
-                    }
+                    val message = uiState.title.ifEmpty { stringResource(R.string.no_songs_to_show) }
                     Text(
                         text = message,
                         style = MaterialTheme.typography.bodyLarge,
@@ -140,7 +139,7 @@ fun CollectionSongsScreen(
                             tint = TextWhite
                         )
                         Text(
-                            text = "Reproducir todo",
+                            text = stringResource(R.string.play_all),
                             color = TextWhite,
                             modifier = Modifier.padding(start = 8.dp)
                         )
@@ -153,7 +152,7 @@ fun CollectionSongsScreen(
                         viewModel.playFrom(song)
                         onPlaybackStarted()
                     },
-                    emptyMessage = "No hay canciones",
+                    emptyMessage = stringResource(R.string.no_songs),
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()

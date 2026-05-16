@@ -5,6 +5,7 @@ object Routes {
     const val LIBRARY = "library?openSearch={openSearch}"
     const val EQUALIZER = "equalizer"
     const val COLLECTION = "collection/{kind}/{itemId}"
+    const val SETTINGS = "settings"
 
     fun library(openSearch: Boolean = false): String = "library?openSearch=$openSearch"
 

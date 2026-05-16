@@ -48,14 +48,14 @@ import com.virtualworld.easymusic.domain.model.Song
 import com.virtualworld.easymusic.ui.library.tabs.AlbumsTab
 import com.virtualworld.easymusic.ui.library.tabs.ArtistsTab
 import com.virtualworld.easymusic.ui.library.tabs.SongsTab
+import androidx.compose.ui.res.stringResource
+import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.ui.theme.DarkBackground
 import com.virtualworld.easymusic.ui.theme.DarkSurface
 import com.virtualworld.easymusic.ui.theme.EasyMusicTheme
 import com.virtualworld.easymusic.ui.theme.Teal400
 import com.virtualworld.easymusic.ui.theme.TextGray
 import com.virtualworld.easymusic.ui.theme.TextWhite
-
-private val tabs = listOf("Favoritos", "Canciones", "Albums", "Artistas")
 
 @Composable
 fun LibraryScreen(
@@ -94,6 +94,13 @@ private fun LibraryScreenContent(
     onAlbumClick: (Album) -> Unit,
     onArtistClick: (Artist) -> Unit
 ) {
+    val tabs = listOf(
+        stringResource(R.string.tab_favorites),
+        stringResource(R.string.tab_songs),
+        stringResource(R.string.tab_albums),
+        stringResource(R.string.tab_artists)
+    )
+
     val searchFieldFocusRequester = remember { FocusRequester() }
     var searchExpanded by remember { mutableStateOf(false) }
 
@@ -105,11 +112,13 @@ private fun LibraryScreenContent(
     val filteredFavoriteSongs = remember(favoriteSongs, uiState.searchQuery) {
         LibrarySearchFilters.songs(favoriteSongs, uiState.searchQuery)
     }
+    val noFavoritesYetText = stringResource(R.string.no_favorites_yet)
+    val noSongsFoundText = stringResource(R.string.no_songs_found)
     val favoritesEmptyMessage = remember(favoriteSongs, uiState.searchQuery) {
         if (favoriteSongs.isEmpty()) {
-            "Aún no tienes favoritos. Márcalos con el corazón en el reproductor."
+            noFavoritesYetText
         } else {
-            "No se encontraron canciones"
+            noSongsFoundText
         }
     }
     val filteredSongs = remember(uiState.songs, uiState.searchQuery) {
@@ -160,7 +169,7 @@ private fun LibraryScreenContent(
                             .focusRequester(searchFieldFocusRequester),
                         placeholder = {
                             Text(
-                                text = "Buscar canciones, álbumes o artistas",
+                                text = stringResource(R.string.search_placeholder),
                                 color = TextGray,
                                 style = MaterialTheme.typography.bodySmall
                             )
@@ -191,7 +200,7 @@ private fun LibraryScreenContent(
                     )
                 } else {
                     Text(
-                        text = "Biblioteca",
+                        text = stringResource(R.string.library),
                         color = TextWhite,
                         style = MaterialTheme.typography.titleLarge,
                         maxLines = 1
@@ -211,9 +220,9 @@ private fun LibraryScreenContent(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = if (searchExpanded) {
-                            "Cerrar búsqueda"
+                            stringResource(R.string.cd_close_search)
                         } else {
-                            "Volver"
+                            stringResource(R.string.cd_back)
                         },
                         tint = TextWhite
                     )
@@ -224,7 +233,7 @@ private fun LibraryScreenContent(
                     IconButton(onClick = { searchExpanded = true }) {
                         Icon(
                             imageVector = Icons.Default.Search,
-                            contentDescription = "Buscar",
+                            contentDescription = stringResource(R.string.cd_search),
                             tint = TextWhite
                         )
                     }
@@ -232,7 +241,7 @@ private fun LibraryScreenContent(
                     IconButton(onClick = { collapseSearch() }) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Cerrar búsqueda",
+                            contentDescription = stringResource(R.string.cd_close_search),
                             tint = TextWhite
                         )
                     }

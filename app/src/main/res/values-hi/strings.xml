@@ -1,0 +1,124 @@
+<resources>
+    <string name="app_name">एआई-संचालित ईज़ी म्यूज़िक</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">ऐप शेयर करें</string>
+    <string name="share_app_text">%1$s आज़माएं!\n%2$s</string>
+    <string name="drawer_share_app">ऐप शेयर करें</string>
+    <string name="drawer_rate_app">ऐप रेट करें</string>
+
+    <!-- Player -->
+    <string name="cd_menu">मेनू</string>
+    <string name="now_playing">अभी चल रहा है</string>
+    <string name="cd_search">खोजें</string>
+    <string name="cd_remove_favorite">पसंदीदा से हटाएं</string>
+    <string name="cd_add_favorite">पसंदीदा में जोड़ें</string>
+    <string name="no_song">कोई गाना नहीं</string>
+    <string name="select_a_song">एक गाना चुनें</string>
+    <string name="cd_volume">वॉल्यूम</string>
+    <string name="cd_repeat">दोहराएं</string>
+    <string name="cd_shuffle">शफ़ल</string>
+    <string name="cd_library">लाइब्रेरी</string>
+    <string name="cd_hide_extra_controls">अतिरिक्त नियंत्रण छुपाएं</string>
+    <string name="cd_show_extra_controls">अतिरिक्त नियंत्रण दिखाएं</string>
+    <string name="cd_equalizer">इक्वलाइज़र</string>
+    <string name="cd_remove_from_queue">सूची से ट्रैक हटाएं</string>
+    <string name="remove_from_queue_dialog_title">प्लेयर से हटाएं?</string>
+    <string name="remove_from_queue_dialog_message">यह ट्रैक प्लेयर से हटा दिया जाएगा और लाइब्रेरी में छिपा दिया जाएगा। आपके डिवाइस पर फ़ाइल हटाई नहीं जाएगी।</string>
+    <string name="remove_from_queue_dialog_confirm">हटाएं</string>
+    <string name="remove_from_queue_dialog_cancel">रद्द करें</string>
+    <string name="remove_from_queue_dialog_dont_show_again">दोबारा न दिखाएं</string>
+    <string name="cd_previous">पिछला</string>
+    <string name="cd_pause">रोकें</string>
+    <string name="cd_play">चलाएं</string>
+    <string name="cd_next">अगला</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">गाने का डेटा</string>
+    <string name="gemini_local_metadata">Gemini (स्थानीय मेटाडेटा)</string>
+    <string name="insight_summary">सारांश</string>
+    <string name="insight_genre">शैली या स्टाइल</string>
+    <string name="insight_era">युग या संदर्भ</string>
+    <string name="insight_fun_fact">रोचक तथ्य</string>
+    <string name="insight_similar_artists">समान कलाकार या विषय</string>
+    <string name="no_data">कोई डेटा नहीं।</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">गीत</string>
+    <string name="lyrics_no_exact_match">सटीक मिलान नहीं मिला (शीर्षक, कलाकार, एल्बम और अवधि)। LRCLIB पर अन्य मिलान खोजे जा रहे हैं…</string>
+    <string name="lyrics_instrumental">यह ट्रैक LRCLIB पर वाद्य यंत्र के रूप में सूचीबद्ध है।</string>
+    <string name="lyrics_not_found">इस गाने के लिए कोई गीत नहीं मिला। मेटाडेटा में शीर्षक, कलाकार, एल्बम और अवधि जांचें।</string>
+    <string name="lyrics_multiple_matches">LRCLIB पर कई मिलान। सही ट्रैक चुनें:</string>
+    <string name="lyrics_no_options">दिखाने के लिए कोई विकल्प नहीं।</string>
+    <string name="no_title">शीर्षकहीन</string>
+
+    <!-- Library -->
+    <string name="library">लाइब्रेरी</string>
+    <string name="tab_favorites">पसंदीदा</string>
+    <string name="tab_songs">गाने</string>
+    <string name="tab_albums">एल्बम</string>
+    <string name="tab_artists">कलाकार</string>
+    <string name="no_songs_found">कोई गाना नहीं मिला</string>
+    <string name="no_albums_found">कोई एल्बम नहीं मिला</string>
+    <string name="no_artists_found">कोई कलाकार नहीं मिला</string>
+    <string name="no_favorites_yet">आपके अभी तक कोई पसंदीदा नहीं हैं। प्लेयर में दिल से चिह्नित करें।</string>
+    <string name="search_placeholder">गाने, एल्बम या कलाकार खोजें</string>
+    <string name="cd_close_search">खोज बंद करें</string>
+    <string name="cd_back">वापस</string>
+    <string name="play_all">सभी चलाएं</string>
+    <string name="no_songs">कोई गाना नहीं</string>
+    <string name="not_found">नहीं मिला</string>
+    <string name="artist_not_found">कलाकार नहीं मिला</string>
+    <string name="load_error">लोड करने में त्रुटि</string>
+    <string name="no_songs_to_show">दिखाने के लिए कोई गाना नहीं।</string>
+    <string name="album_fallback">एल्बम</string>
+    <string name="song_count_one">1 गाना</string>
+    <string name="song_count_many">%d गाने</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">इक्वलाइज़र</string>
+    <string name="equalizer">इक्वलाइज़र</string>
+    <string name="enabled">सक्रिय</string>
+    <string name="disabled">निष्क्रिय</string>
+    <string name="music_style">संगीत शैली</string>
+    <string name="eq_play_song_hint">एक गाना चलाएं: इक्वलाइज़र ऑडियो से जुड़ जाएगा और आप शैलियां लागू कर सकते हैं।</string>
+    <string name="eq_custom_curve">कस्टम कर्व (बैंड समायोजित करें)</string>
+    <string name="bass_boost">बेस बूस्ट</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">अज्ञात</string>
+    <string name="unknown_artist">अज्ञात कलाकार</string>
+    <string name="unknown_album">अज्ञात एल्बम</string>
+
+    <string name="permission_message">आपका संगीत चलाने के लिए हमें एक्सेस चाहिए</string>
+    <string name="grant_permission">अनुमति दें</string>
+    <string name="artist_songs_albums">%1$d गाने · %2$d एल्बम</string>
+    <string name="preset_flat">समतल</string>
+    <string name="preset_rock">रॉक</string>
+    <string name="preset_pop">पॉप</string>
+    <string name="preset_jazz">जैज़</string>
+    <string name="preset_classical">शास्त्रीय</string>
+    <string name="preset_dance">डांस</string>
+    <string name="preset_hip_hop">हिप हॉप</string>
+    <string name="preset_electronic">इलेक्ट्रॉनिक</string>
+    <string name="preset_rnb">आर एंड बी</string>
+    <string name="preset_heavy_metal">हेवी मेटल</string>
+    <string name="preset_acoustic">अकूस्टिक</string>
+    <string name="preset_latin">लैटिन</string>
+    <string name="preset_vocal">वोकल</string>
+    <string name="preset_bass">बेस</string>
+    <string name="preset_treble">ट्रेबल</string>
+    <string name="ai_not_available">इस समय AI जानकारी उपलब्ध नहीं है।</string>
+    <string name="gemini_key_missing">local.properties में GEMINI_API_KEY जोड़ें (Google AI Studio कुंजी) और पुनः संकलित करें।</string>
+    <string name="error_building_request">अनुरोध बनाने में आंतरिक त्रुटि।</string>
+    <string name="api_response_unrecognized">API प्रतिक्रिया पहचानी नहीं गई।</string>
+    <string name="api_no_usable_text">API ने उपयोग योग्य टेक्स्ट नहीं लौटाया।</string>
+    <string name="json_parse_error">मॉडल की JSON प्रतिक्रिया की व्याख्या नहीं हो सकी।</string>
+    <string name="network_error">नेटवर्क या सेवा त्रुटि।</string>
+    <string name="no_connection">कनेक्शन नहीं</string>
+    <string name="http_error">HTTP त्रुटि %d</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="drawer_settings">सेटिंग्स</string>
+    <string name="language">भाषा</string>
+    <string name="system_default">सिस्टम डिफ़ॉल्ट</string>
+</resources>

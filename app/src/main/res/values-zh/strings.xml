@@ -1,0 +1,124 @@
+<resources>
+    <string name="app_name">AI驱动的Easy Music播放器</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">分享应用</string>
+    <string name="share_app_text">试试 %1$s！\n%2$s</string>
+    <string name="drawer_share_app">分享应用</string>
+    <string name="drawer_rate_app">评价应用</string>
+
+    <!-- Player -->
+    <string name="cd_menu">菜单</string>
+    <string name="now_playing">正在播放</string>
+    <string name="cd_search">搜索</string>
+    <string name="cd_remove_favorite">取消收藏</string>
+    <string name="cd_add_favorite">添加收藏</string>
+    <string name="no_song">没有歌曲</string>
+    <string name="select_a_song">选择一首歌曲</string>
+    <string name="cd_volume">音量</string>
+    <string name="cd_repeat">重复</string>
+    <string name="cd_shuffle">随机</string>
+    <string name="cd_library">音乐库</string>
+    <string name="cd_hide_extra_controls">隐藏额外控制</string>
+    <string name="cd_show_extra_controls">显示额外控制</string>
+    <string name="cd_equalizer">均衡器</string>
+    <string name="cd_remove_from_queue">从列表中移除曲目</string>
+    <string name="remove_from_queue_dialog_title">从播放器中移除？</string>
+    <string name="remove_from_queue_dialog_message">此曲目将从播放器中移除并在音乐库中隐藏。设备上的文件不会被删除。</string>
+    <string name="remove_from_queue_dialog_confirm">移除</string>
+    <string name="remove_from_queue_dialog_cancel">取消</string>
+    <string name="remove_from_queue_dialog_dont_show_again">不再显示</string>
+    <string name="cd_previous">上一首</string>
+    <string name="cd_pause">暂停</string>
+    <string name="cd_play">播放</string>
+    <string name="cd_next">下一首</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">歌曲数据</string>
+    <string name="gemini_local_metadata">Gemini（本地元数据）</string>
+    <string name="insight_summary">摘要</string>
+    <string name="insight_genre">流派或风格</string>
+    <string name="insight_era">年代或背景</string>
+    <string name="insight_fun_fact">趣味知识</string>
+    <string name="insight_similar_artists">相似艺术家或主题</string>
+    <string name="no_data">暂无数据。</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">歌词</string>
+    <string name="lyrics_no_exact_match">未找到精确匹配（标题、艺术家、专辑和时长）。正在LRCLIB上搜索其他匹配…</string>
+    <string name="lyrics_instrumental">此曲目在LRCLIB上被列为纯音乐。</string>
+    <string name="lyrics_not_found">未找到此歌曲的歌词。请检查元数据中的标题、艺术家、专辑和时长。</string>
+    <string name="lyrics_multiple_matches">LRCLIB上有多个匹配。请选择正确的曲目：</string>
+    <string name="lyrics_no_options">没有可显示的选项。</string>
+    <string name="no_title">无标题</string>
+
+    <!-- Library -->
+    <string name="library">音乐库</string>
+    <string name="tab_favorites">收藏</string>
+    <string name="tab_songs">歌曲</string>
+    <string name="tab_albums">专辑</string>
+    <string name="tab_artists">艺术家</string>
+    <string name="no_songs_found">未找到歌曲</string>
+    <string name="no_albums_found">未找到专辑</string>
+    <string name="no_artists_found">未找到艺术家</string>
+    <string name="no_favorites_yet">您还没有收藏。在播放器中用心形标记。</string>
+    <string name="search_placeholder">搜索歌曲、专辑或艺术家</string>
+    <string name="cd_close_search">关闭搜索</string>
+    <string name="cd_back">返回</string>
+    <string name="play_all">全部播放</string>
+    <string name="no_songs">没有歌曲</string>
+    <string name="not_found">未找到</string>
+    <string name="artist_not_found">未找到艺术家</string>
+    <string name="load_error">加载出错</string>
+    <string name="no_songs_to_show">没有歌曲可显示。</string>
+    <string name="album_fallback">专辑</string>
+    <string name="song_count_one">1首歌曲</string>
+    <string name="song_count_many">%d首歌曲</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">均衡器</string>
+    <string name="equalizer">均衡器</string>
+    <string name="enabled">已启用</string>
+    <string name="disabled">已禁用</string>
+    <string name="music_style">音乐风格</string>
+    <string name="eq_play_song_hint">播放一首歌曲：均衡器将连接到音频，您可以应用风格。</string>
+    <string name="eq_custom_curve">自定义曲线（调整频段）</string>
+    <string name="bass_boost">低音增强</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">未知</string>
+    <string name="unknown_artist">未知艺术家</string>
+    <string name="unknown_album">未知专辑</string>
+
+    <string name="permission_message">我们需要访问您的音乐才能播放</string>
+    <string name="grant_permission">授予权限</string>
+    <string name="artist_songs_albums">%1$d首歌曲 · %2$d张专辑</string>
+    <string name="preset_flat">平坦</string>
+    <string name="preset_rock">摇滚</string>
+    <string name="preset_pop">流行</string>
+    <string name="preset_jazz">爵士</string>
+    <string name="preset_classical">古典</string>
+    <string name="preset_dance">舞曲</string>
+    <string name="preset_hip_hop">嘻哈</string>
+    <string name="preset_electronic">电子</string>
+    <string name="preset_rnb">R&amp;B</string>
+    <string name="preset_heavy_metal">重金属</string>
+    <string name="preset_acoustic">原声</string>
+    <string name="preset_latin">拉丁</string>
+    <string name="preset_vocal">人声</string>
+    <string name="preset_bass">低音</string>
+    <string name="preset_treble">高音</string>
+    <string name="ai_not_available">AI信息目前不可用。</string>
+    <string name="gemini_key_missing">在local.properties中添加GEMINI_API_KEY（Google AI Studio密钥）并重新编译。</string>
+    <string name="error_building_request">构建请求时发生内部错误。</string>
+    <string name="api_response_unrecognized">无法识别API响应。</string>
+    <string name="api_no_usable_text">API未返回可用文本。</string>
+    <string name="json_parse_error">无法解析模型的JSON响应。</string>
+    <string name="network_error">网络或服务错误。</string>
+    <string name="no_connection">无连接</string>
+    <string name="http_error">HTTP错误 %d</string>
+    <string name="settings">设置</string>
+    <string name="drawer_settings">设置</string>
+    <string name="language">语言</string>
+    <string name="system_default">系统默认</string>
+</resources>

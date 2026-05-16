@@ -1,0 +1,124 @@
+<resources>
+    <string name="app_name">Музыкальный плеер на базе ИИ</string>
+
+    <!-- Drawer -->
+    <string name="share_app_chooser_title">Поделиться приложением</string>
+    <string name="share_app_text">Попробуй %1$s!\n%2$s</string>
+    <string name="drawer_share_app">Поделиться приложением</string>
+    <string name="drawer_rate_app">Оценить приложение</string>
+
+    <!-- Player -->
+    <string name="cd_menu">Меню</string>
+    <string name="now_playing">СЕЙЧАС ИГРАЕТ</string>
+    <string name="cd_search">Поиск</string>
+    <string name="cd_remove_favorite">Удалить из избранного</string>
+    <string name="cd_add_favorite">Добавить в избранное</string>
+    <string name="no_song">Нет песни</string>
+    <string name="select_a_song">Выберите песню</string>
+    <string name="cd_volume">Громкость</string>
+    <string name="cd_repeat">Повтор</string>
+    <string name="cd_shuffle">Случайный порядок</string>
+    <string name="cd_library">Библиотека</string>
+    <string name="cd_hide_extra_controls">Скрыть доп. элементы управления</string>
+    <string name="cd_show_extra_controls">Показать доп. элементы управления</string>
+    <string name="cd_equalizer">Эквалайзер</string>
+    <string name="cd_remove_from_queue">Удалить трек из списка</string>
+    <string name="remove_from_queue_dialog_title">Удалить из плеера?</string>
+    <string name="remove_from_queue_dialog_message">Этот трек будет удалён из плеера и скрыт в библиотеке. Файл на устройстве не будет удалён.</string>
+    <string name="remove_from_queue_dialog_confirm">Удалить</string>
+    <string name="remove_from_queue_dialog_cancel">Отмена</string>
+    <string name="remove_from_queue_dialog_dont_show_again">Больше не показывать</string>
+    <string name="cd_previous">Предыдущий</string>
+    <string name="cd_pause">Пауза</string>
+    <string name="cd_play">Воспроизвести</string>
+    <string name="cd_next">Следующий</string>
+
+    <!-- Song Insight (AI) -->
+    <string name="song_data">Данные о песне</string>
+    <string name="gemini_local_metadata">Gemini (локальные метаданные)</string>
+    <string name="insight_summary">Краткое описание</string>
+    <string name="insight_genre">Жанр или стиль</string>
+    <string name="insight_era">Эпоха или контекст</string>
+    <string name="insight_fun_fact">Интересный факт</string>
+    <string name="insight_similar_artists">Похожие исполнители или темы</string>
+    <string name="no_data">Нет данных.</string>
+
+    <!-- Lyrics -->
+    <string name="lyrics">Текст песни</string>
+    <string name="lyrics_no_exact_match">Точное совпадение не найдено (название, исполнитель, альбом и длительность). Поиск других совпадений в LRCLIB…</string>
+    <string name="lyrics_instrumental">Этот трек отмечен как инструментальный в LRCLIB.</string>
+    <string name="lyrics_not_found">Текст для этой песни не найден. Проверьте название, исполнителя, альбом и длительность в метаданных.</string>
+    <string name="lyrics_multiple_matches">Несколько совпадений в LRCLIB. Выберите правильный трек:</string>
+    <string name="lyrics_no_options">Нет вариантов для отображения.</string>
+    <string name="no_title">Без названия</string>
+
+    <!-- Library -->
+    <string name="library">Библиотека</string>
+    <string name="tab_favorites">Избранное</string>
+    <string name="tab_songs">Песни</string>
+    <string name="tab_albums">Альбомы</string>
+    <string name="tab_artists">Исполнители</string>
+    <string name="no_songs_found">Песни не найдены</string>
+    <string name="no_albums_found">Альбомы не найдены</string>
+    <string name="no_artists_found">Исполнители не найдены</string>
+    <string name="no_favorites_yet">У вас пока нет избранного. Отметьте сердечком в плеере.</string>
+    <string name="search_placeholder">Поиск песен, альбомов или исполнителей</string>
+    <string name="cd_close_search">Закрыть поиск</string>
+    <string name="cd_back">Назад</string>
+    <string name="play_all">Воспроизвести все</string>
+    <string name="no_songs">Нет песен</string>
+    <string name="not_found">Не найдено</string>
+    <string name="artist_not_found">Исполнитель не найден</string>
+    <string name="load_error">Ошибка загрузки</string>
+    <string name="no_songs_to_show">Нет песен для отображения.</string>
+    <string name="album_fallback">Альбом</string>
+    <string name="song_count_one">1 песня</string>
+    <string name="song_count_many">%d песен</string>
+
+    <!-- Equalizer -->
+    <string name="equalizer_title">ЭКВАЛАЙЗЕР</string>
+    <string name="equalizer">Эквалайзер</string>
+    <string name="enabled">Включён</string>
+    <string name="disabled">Выключен</string>
+    <string name="music_style">Музыкальный стиль</string>
+    <string name="eq_play_song_hint">Воспроизведите песню: эквалайзер подключится к аудио, и вы сможете применять стили.</string>
+    <string name="eq_custom_curve">Пользовательская кривая (настройте полосы)</string>
+    <string name="bass_boost">Усиление басов</string>
+
+    <!-- Data source fallbacks -->
+    <string name="unknown">Неизвестно</string>
+    <string name="unknown_artist">Неизвестный исполнитель</string>
+    <string name="unknown_album">Неизвестный альбом</string>
+
+    <string name="permission_message">Нам нужен доступ к вашей музыке для воспроизведения</string>
+    <string name="grant_permission">Предоставить разрешение</string>
+    <string name="artist_songs_albums">%1$d песен · %2$d альбомов</string>
+    <string name="preset_flat">Плоский</string>
+    <string name="preset_rock">Рок</string>
+    <string name="preset_pop">Поп</string>
+    <string name="preset_jazz">Джаз</string>
+    <string name="preset_classical">Классика</string>
+    <string name="preset_dance">Дэнс</string>
+    <string name="preset_hip_hop">Хип-хоп</string>
+    <string name="preset_electronic">Электроника</string>
+    <string name="preset_rnb">R&amp;B</string>
+    <string name="preset_heavy_metal">Хеви-метал</string>
+    <string name="preset_acoustic">Акустика</string>
+    <string name="preset_latin">Латино</string>
+    <string name="preset_vocal">Вокал</string>
+    <string name="preset_bass">Басы</string>
+    <string name="preset_treble">Высокие</string>
+    <string name="ai_not_available">ИИ-информация сейчас недоступна.</string>
+    <string name="gemini_key_missing">Добавьте GEMINI_API_KEY в local.properties (ключ Google AI Studio) и перекомпилируйте.</string>
+    <string name="error_building_request">Внутренняя ошибка при построении запроса.</string>
+    <string name="api_response_unrecognized">Ответ API не распознан.</string>
+    <string name="api_no_usable_text">API не вернул пригодный текст.</string>
+    <string name="json_parse_error">Не удалось интерпретировать JSON-ответ модели.</string>
+    <string name="network_error">Ошибка сети или сервиса.</string>
+    <string name="no_connection">Нет соединения</string>
+    <string name="http_error">Ошибка HTTP %d</string>
+    <string name="settings">Настройки</string>
+    <string name="drawer_settings">Настройки</string>
+    <string name="language">Язык</string>
+    <string name="system_default">По умолчанию системы</string>
+</resources>

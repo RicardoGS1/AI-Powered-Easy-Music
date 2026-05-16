@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.virtualworld.easymusic.domain.model.Song
 import com.virtualworld.easymusic.domain.model.LyricsResult
 import com.virtualworld.easymusic.domain.model.SongInsightResult
+import com.virtualworld.easymusic.data.preferences.MusicPreferences
 import com.virtualworld.easymusic.domain.usecase.ExcludeSongFromLibraryUseCase
 import com.virtualworld.easymusic.domain.usecase.FetchSongInsightUseCase
 import com.virtualworld.easymusic.domain.usecase.FetchLyricsUseCase
@@ -13,6 +14,7 @@ import com.virtualworld.easymusic.domain.usecase.GetSongsUseCase
 import com.virtualworld.easymusic.domain.usecase.ObserveFavoriteSongIdsUseCase
 import com.virtualworld.easymusic.domain.usecase.SaveLastPlayedUseCase
 import com.virtualworld.easymusic.domain.usecase.ToggleFavoriteSongUseCase
+import com.virtualworld.easymusic.firebase.RemoteConfigValues
 import com.virtualworld.easymusic.playback.PlaybackController
 import com.virtualworld.easymusic.playback.PlayerState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +41,10 @@ data class PlayerUiState(
     val lyricsResult: LyricsResult? = null,
     val insightSheetVisible: Boolean = false,
     val insightLoading: Boolean = false,
-    val insightResult: SongInsightResult? = null
+    val insightResult: SongInsightResult? = null,
+    /** Kill switch vía Firebase Remote Config ([RemoteConfigKeys.ENABLE_AI_INSIGHT]). */
+    val aiInsightEnabled: Boolean = true,
+    val skipRemoveFromQueueConfirmation: Boolean = false,
 )
 
 @HiltViewModel
@@ -52,6 +57,8 @@ class PlayerViewModel @Inject constructor(
     private val fetchSongInsightUseCase: FetchSongInsightUseCase,
     private val observeFavoriteSongIdsUseCase: ObserveFavoriteSongIdsUseCase,
     private val toggleFavoriteSongUseCase: ToggleFavoriteSongUseCase,
+    private val remoteConfigValues: RemoteConfigValues,
+    private val musicPreferences: MusicPreferences,
     val playbackController: PlaybackController
 ) : ViewModel() {
 
@@ -78,6 +85,18 @@ class PlayerViewModel @Inject constructor(
             observeFavoriteSongIdsUseCase().collect { ids ->
                 _uiState.update { it.copy(favoriteSongIds = ids) }
             }
+        }
+        viewModelScope.launch {
+            musicPreferences.skipRemoveFromQueueConfirmation().collect { skip ->
+                _uiState.update { it.copy(skipRemoveFromQueueConfirmation = skip) }
+            }
+        }
+        refreshAiInsightRemoteFlag()
+    }
+
+    fun refreshAiInsightRemoteFlag() {
+        _uiState.update {
+            it.copy(aiInsightEnabled = remoteConfigValues.isAiInsightEnabled())
         }
     }
 
@@ -173,6 +192,12 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
+    fun setSkipRemoveFromQueueConfirmation(skip: Boolean) {
+        viewModelScope.launch {
+            musicPreferences.setSkipRemoveFromQueueConfirmation(skip)
+        }
+    }
+
     fun toggleFavoriteCurrentSong() {
         val songId = _uiState.value.playerState.currentSong?.id ?: return
         viewModelScope.launch {
@@ -259,6 +284,9 @@ class PlayerViewModel @Inject constructor(
             }
             return
         }
+        val aiEnabled = remoteConfigValues.isAiInsightEnabled()
+        _uiState.update { it.copy(aiInsightEnabled = aiEnabled) }
+        if (!aiEnabled) return
         val song = snapshot.playerState.currentSong ?: return
         insightFetchJob?.cancel()
         lyricsFetchJob?.cancel()

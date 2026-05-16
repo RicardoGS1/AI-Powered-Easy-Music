@@ -1,7 +1,10 @@
 package com.virtualworld.easymusic.data.remote.gemini
 
+import android.app.Application
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.gson.Gson
+import com.virtualworld.easymusic.R
 import com.google.gson.JsonSyntaxException
 import com.virtualworld.easymusic.domain.model.Song
 import com.virtualworld.easymusic.domain.model.SongAiInsight
@@ -16,9 +19,11 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.util.Locale
 
 @Singleton
 class GeminiSongInsightDataSource @Inject constructor(
+    private val app: Application,
     private val httpClient: OkHttpClient,
     private val gson: Gson,
     @param:Named("gemini_api_key") private val apiKey: String
@@ -27,20 +32,24 @@ class GeminiSongInsightDataSource @Inject constructor(
     suspend fun fetchInsight(song: Song): SongInsightResult = withContext(Dispatchers.IO) {
         if (apiKey.isBlank()) {
             return@withContext SongInsightResult.Error(
-                "Añade GEMINI_API_KEY en local.properties (clave de Google AI Studio) y vuelve a compilar."
+                app.getString(R.string.gemini_key_missing)
             )
         }
         val durationSec = (song.duration / 1000L).coerceAtLeast(0L)
+        val appLocale = app.resolveAppLocaleForContent()
+        val languageTag = appLocale.toLanguageTag()
+        val languageLabelEn = appLocale.getDisplayLanguage(Locale.ENGLISH).ifBlank { languageTag }
+        val emptyFieldHint = app.getString(R.string.no_data).trim()
         val prompt = """
-            Tienes solo estos metadatos de un archivo de música local (pueden ser imprecisos):
-            - Título: ${song.title}
-            - Artista: ${song.artist}
-            - Álbum: ${song.album}
-            - Duración aproximada: ${durationSec}s
+            You only have these metadata fields from a local music file (they may be inaccurate):
+            - Title: ${song.title}
+            - Artist: ${song.artist}
+            - Album: ${song.album}
+            - Approx. duration: ${durationSec}s
 
-            Identifica la canción conocida que mejor encaje con esos metadatos y di el artista, el album y el titulo en el resumen.
+            Identify the best-matching well-known song and mention artist, album, and title in the summary.
 
-            Responde ÚNICAMENTE con un JSON válido (sin markdown) con estas claves exactas:
+            Reply ONLY with valid JSON (no markdown) using exactly these keys:
             {
               "resumen": "string",
               "genero_o_estilo": "string",
@@ -48,7 +57,12 @@ class GeminiSongInsightDataSource @Inject constructor(
               "dato_curioso": "string",
               "artistas_o_temas_similares": ["string", ...]
             }
-            Texto en español. Máximo ~140 palabras en total repartidas entre campos. Si no hay datos, usa cadenas breves tipo "No disponible".
+
+            Rules:
+            - Keep the JSON property names exactly as shown (do not translate keys).
+            - Write every human-readable string VALUE in $languageLabelEn (BCP-47: $languageTag), with natural phrasing for that language.
+            - About 140 words total across all string fields.
+            - If some information is missing, use a short placeholder like "$emptyFieldHint".
         """.trimIndent()
 
         val geminiBody = GeminiGenerateRequest(
@@ -71,7 +85,7 @@ class GeminiSongInsightDataSource @Inject constructor(
                 .build()
         } catch (e: Exception) {
             Log.e(TAG, "URL Gemini inválida", e)
-            return@withContext SongInsightResult.Error("Error interno al construir la petición.")
+            return@withContext SongInsightResult.Error(app.getString(R.string.error_building_request))
         }
 
         Log.d(TAG, "POST " + url.newBuilder().setQueryParameter("key", "…").build())
@@ -97,7 +111,7 @@ class GeminiSongInsightDataSource @Inject constructor(
                     gson.fromJson(raw, GeminiGenerateResponse::class.java)
                 } catch (e: JsonSyntaxException) {
                     Log.e(TAG, "JSON de respuesta inválido: ${raw.take(500)}", e)
-                    return@use SongInsightResult.Error("Respuesta de la API no reconocida.")
+                    return@use SongInsightResult.Error(app.getString(R.string.api_response_unrecognized))
                 }
                 parsed.error?.message?.let { msg ->
                     return@use SongInsightResult.Error(msg)
@@ -111,19 +125,19 @@ class GeminiSongInsightDataSource @Inject constructor(
                     ?.trim()
                 if (text.isNullOrEmpty()) {
                     Log.w(TAG, "Sin candidatos: ${raw.take(600)}")
-                    return@use SongInsightResult.Error("La API no devolvió texto utilizable.")
+                    return@use SongInsightResult.Error(app.getString(R.string.api_no_usable_text))
                 }
                 val jsonPayload = text.stripMarkdownJsonFence()
                 val insight = try {
                     gson.fromJson(jsonPayload, SongAiInsight::class.java)
                 } catch (_: JsonSyntaxException) {
-                    return@use SongInsightResult.Error("No se pudo interpretar la respuesta JSON del modelo.")
+                    return@use SongInsightResult.Error(app.getString(R.string.json_parse_error))
                 }
                 SongInsightResult.Success(insight)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Fallo de red o ejecución", e)
-            SongInsightResult.Error(e.message ?: "Error de red o del servicio.")
+            SongInsightResult.Error(e.message ?: app.getString(R.string.network_error))
         }
     }
 
@@ -141,6 +155,15 @@ class GeminiSongInsightDataSource @Inject constructor(
 
         private val JSON_MEDIA = "application/json; charset=utf-8".toMediaType()
     }
+}
+
+private fun Application.resolveAppLocaleForContent(): Locale {
+    val applied = AppCompatDelegate.getApplicationLocales()
+    if (!applied.isEmpty) {
+        return applied[0] ?: Locale.getDefault()
+    }
+    val locales = resources.configuration.locales
+    return if (locales.size() > 0) locales[0] else Locale.getDefault()
 }
 
 private fun String.stripMarkdownJsonFence(): String {
