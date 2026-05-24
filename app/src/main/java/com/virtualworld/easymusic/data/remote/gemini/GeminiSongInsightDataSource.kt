@@ -81,14 +81,11 @@ class GeminiSongInsightDataSource @Inject constructor(
                 .addPathSegment("v1beta")
                 .addPathSegment("models")
                 .addEncodedPathSegment("$GEMINI_MODEL:generateContent")
-                .addQueryParameter("key", apiKey)
                 .build()
         } catch (e: Exception) {
             Log.e(TAG, "URL Gemini inválida", e)
             return@withContext SongInsightResult.Error(app.getString(R.string.error_building_request))
         }
-
-        Log.d(TAG, "POST " + url.newBuilder().setQueryParameter("key", "…").build())
 
         return@withContext try {
             val json = gson.toJson(geminiBody)
@@ -96,13 +93,14 @@ class GeminiSongInsightDataSource @Inject constructor(
                 .url(url)
                 .post(json.toRequestBody(JSON_MEDIA))
                 .header("Content-Type", "application/json; charset=utf-8")
+                .header("x-goog-api-key", apiKey)
                 .build()
 
             httpClient.newCall(request).execute().use { resp ->
                 val raw = resp.body?.string().orEmpty()
                 if (!resp.isSuccessful) {
-                    Log.e(TAG, "HTTP ${resp.code} ${resp.message} — cuerpo: ${raw.take(800)}")
-                    val apiMsg = parseApiErrorMessage(raw)
+                    Log.e(TAG, "HTTP ${resp.code} ${resp.message} — cuerpo: ${redactSecrets(raw).take(800)}")
+                    val apiMsg = parseApiErrorMessage(raw)?.let(::redactSecrets)
                     return@use SongInsightResult.Error(
                         apiMsg ?: "HTTP ${resp.code}: ${resp.message}"
                     )
@@ -110,11 +108,11 @@ class GeminiSongInsightDataSource @Inject constructor(
                 val parsed = try {
                     gson.fromJson(raw, GeminiGenerateResponse::class.java)
                 } catch (e: JsonSyntaxException) {
-                    Log.e(TAG, "JSON de respuesta inválido: ${raw.take(500)}", e)
+                    Log.e(TAG, "JSON de respuesta inválido: ${redactSecrets(raw).take(500)}", e)
                     return@use SongInsightResult.Error(app.getString(R.string.api_response_unrecognized))
                 }
                 parsed.error?.message?.let { msg ->
-                    return@use SongInsightResult.Error(msg)
+                    return@use SongInsightResult.Error(redactSecrets(msg))
                 }
                 val text = parsed.candidates
                     ?.firstOrNull()
@@ -124,7 +122,7 @@ class GeminiSongInsightDataSource @Inject constructor(
                     ?.text
                     ?.trim()
                 if (text.isNullOrEmpty()) {
-                    Log.w(TAG, "Sin candidatos: ${raw.take(600)}")
+                    Log.w(TAG, "Sin candidatos: ${redactSecrets(raw).take(600)}")
                     return@use SongInsightResult.Error(app.getString(R.string.api_no_usable_text))
                 }
                 val jsonPayload = text.stripMarkdownJsonFence()
@@ -137,8 +135,19 @@ class GeminiSongInsightDataSource @Inject constructor(
             }
         } catch (e: Exception) {
             Log.e(TAG, "Fallo de red o ejecución", e)
-            SongInsightResult.Error(e.message ?: app.getString(R.string.network_error))
+            SongInsightResult.Error(app.getString(R.string.network_error))
         }
+    }
+
+    /** Evita filtrar la clave en pantalla o en logs si aparece en URLs o textos de error. */
+    private fun redactSecrets(text: String): String {
+        var sanitized = text
+        if (apiKey.isNotBlank()) {
+            sanitized = sanitized.replace(apiKey, "[REDACTED]")
+        }
+        sanitized = API_KEY_IN_URL.replace(sanitized, "key=[REDACTED]")
+        sanitized = GOOGLE_API_KEY_PATTERN.replace(sanitized, "[REDACTED]")
+        return sanitized
     }
 
     private fun parseApiErrorMessage(raw: String): String? = try {
@@ -149,6 +158,8 @@ class GeminiSongInsightDataSource @Inject constructor(
 
     companion object {
         private const val TAG = "EasyMusicGemini"
+        private val API_KEY_IN_URL = Regex("(?i)([?&]key=)[^&\\s\"']+")
+        private val GOOGLE_API_KEY_PATTERN = Regex("AIza[0-9A-Za-z_-]{20,}")
 
         /** Modelo ligero actual (2.0 flash-lite ya no se ofrece a cuentas nuevas). */
         const val GEMINI_MODEL = "gemini-2.5-flash-lite"
