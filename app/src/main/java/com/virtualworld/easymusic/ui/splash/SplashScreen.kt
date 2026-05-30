@@ -40,9 +40,13 @@ import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.ui.navigation.Routes
 import com.virtualworld.easymusic.ui.theme.EasyMusicTheme
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.coroutines.resume
 import kotlin.math.max
 
-private const val MAX_WAIT_MS = 10_000L
+private const val MAX_WAIT_MS = 15_000L
 private const val POLL_INTERVAL_MS = 200L
 
 @Composable
@@ -63,13 +67,13 @@ fun SplashScreen(navController: NavHostController) {
     fun navigateToPlayer() {
         if (navigated) return
         navigated = true
-        app?.markColdStartCompleted()
         navController.navigate(Routes.PLAYER) {
             popUpTo(Routes.SPLASH) { inclusive = true }
         }
+        app?.markColdStartCompleted()
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(activity, app) {
         if (activity == null || app == null) {
             targetProgress = 1f
             delay(600)
@@ -79,32 +83,38 @@ fun SplashScreen(navController: NavHostController) {
 
         targetProgress = 0.2f
         var managerReady = false
-        var elapsed = 0L
 
-        app.runWhenAppOpenAdManagerReady { manager ->
-            managerReady = true
-            manager.showStartupAdIfAvailable(activity) {
-                activity.runOnUiThread { navigateToPlayer() }
+        val progressJob = launch {
+            var elapsed = 0L
+            while (!navigated && elapsed < MAX_WAIT_MS) {
+                delay(POLL_INTERVAL_MS)
+                elapsed += POLL_INTERVAL_MS
+                val t = (elapsed.toFloat() / MAX_WAIT_MS).coerceIn(0f, 1f)
+                val next = when {
+                    managerReady -> (0.5f + t * 0.45f).coerceAtMost(0.95f)
+                    else -> 0.2f + t * 0.25f
+                }
+                targetProgress = max(targetProgress, next)
             }
         }
 
-        while (!navigated && elapsed < MAX_WAIT_MS) {
-            delay(POLL_INTERVAL_MS)
-            elapsed += POLL_INTERVAL_MS
-
-            val t = (elapsed.toFloat() / MAX_WAIT_MS).coerceIn(0f, 1f)
-            val next = when {
-                managerReady -> (0.5f + t * 0.45f).coerceAtMost(0.95f)
-                else -> 0.2f + t * 0.25f
+        withTimeoutOrNull(MAX_WAIT_MS) {
+            suspendCancellableCoroutine { continuation ->
+                app.runWhenAppOpenAdManagerReady { manager ->
+                    managerReady = true
+                    manager.showStartupAdIfAvailable(activity) {
+                        if (continuation.isActive) {
+                            continuation.resume(Unit)
+                        }
+                    }
+                }
             }
-            targetProgress = max(targetProgress, next)
         }
 
-        if (!navigated) {
-            targetProgress = max(targetProgress, 1f)
-            delay(200)
-            navigateToPlayer()
-        }
+        progressJob.cancel()
+        targetProgress = max(targetProgress, 1f)
+        delay(200)
+        navigateToPlayer()
     }
 
     SplashScreenContent(progress = animatedProgress)
@@ -127,7 +137,7 @@ fun SplashScreenContent(progress: Float) {
                 .background(Color(0xFF0E346F)),
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                painter = painterResource(id = R.mipmap.ic_launcher_foreground),
                 contentDescription = stringResource(R.string.app_name),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

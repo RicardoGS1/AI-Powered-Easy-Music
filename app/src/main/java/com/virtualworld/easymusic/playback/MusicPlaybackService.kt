@@ -1,5 +1,6 @@
 package com.virtualworld.easymusic.playback
 
+import android.content.Intent
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.Player
@@ -7,7 +8,9 @@ import androidx.media3.common.TrackSelectionParameters
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
+import com.virtualworld.easymusic.domain.usecase.SavePlaybackSessionUseCase
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -15,6 +18,12 @@ class MusicPlaybackService : MediaSessionService() {
 
     @Inject
     lateinit var equalizerManager: EqualizerManager
+
+    @Inject
+    lateinit var playbackController: PlaybackController
+
+    @Inject
+    lateinit var savePlaybackSessionUseCase: SavePlaybackSessionUseCase
 
     private var player: ExoPlayer? = null
     private var mediaSession: MediaSession? = null
@@ -74,6 +83,18 @@ class MusicPlaybackService : MediaSessionService() {
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? {
         return mediaSession
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        playbackController.getCurrentSession()?.let { session ->
+            runBlocking { savePlaybackSessionUseCase(session) }
+        }
+        player?.run {
+            stop()
+            clearMediaItems()
+        }
+        stopSelf()
+        super.onTaskRemoved(rootIntent)
     }
 
     override fun onDestroy() {

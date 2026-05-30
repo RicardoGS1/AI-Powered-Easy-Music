@@ -9,10 +9,11 @@ import com.virtualworld.easymusic.data.preferences.MusicPreferences
 import com.virtualworld.easymusic.domain.usecase.ExcludeSongFromLibraryUseCase
 import com.virtualworld.easymusic.domain.usecase.FetchSongInsightUseCase
 import com.virtualworld.easymusic.domain.usecase.FetchLyricsUseCase
-import com.virtualworld.easymusic.domain.usecase.GetLastPlayedUseCase
+import com.virtualworld.easymusic.domain.usecase.GetPlaybackSessionUseCase
 import com.virtualworld.easymusic.domain.usecase.GetSongsUseCase
 import com.virtualworld.easymusic.domain.usecase.ObserveFavoriteSongIdsUseCase
 import com.virtualworld.easymusic.domain.usecase.SaveLastPlayedUseCase
+import com.virtualworld.easymusic.domain.usecase.SavePlaybackSessionUseCase
 import com.virtualworld.easymusic.domain.usecase.ToggleFavoriteSongUseCase
 import com.virtualworld.easymusic.firebase.RemoteConfigValues
 import com.virtualworld.easymusic.playback.PlaybackController
@@ -23,6 +24,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
@@ -50,8 +52,9 @@ data class PlayerUiState(
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
     private val getSongsUseCase: GetSongsUseCase,
-    private val getLastPlayedUseCase: GetLastPlayedUseCase,
+    private val getPlaybackSessionUseCase: GetPlaybackSessionUseCase,
     private val saveLastPlayedUseCase: SaveLastPlayedUseCase,
+    private val savePlaybackSessionUseCase: SavePlaybackSessionUseCase,
     private val excludeSongFromLibraryUseCase: ExcludeSongFromLibraryUseCase,
     private val fetchLyricsUseCase: FetchLyricsUseCase,
     private val fetchSongInsightUseCase: FetchSongInsightUseCase,
@@ -66,6 +69,8 @@ class PlayerViewModel @Inject constructor(
     val uiState: StateFlow<PlayerUiState> = _uiState.asStateFlow()
     private var lyricsFetchJob: Job? = null
     private var insightFetchJob: Job? = null
+    private var sessionRestored = false
+    private var lastPersistedSongId: Long? = null
 
     init {
         playbackController.connect()
@@ -124,6 +129,10 @@ class PlayerViewModel @Inject constructor(
                 }
                 state.currentSong?.let { song ->
                     saveLastPlayedUseCase(song.id)
+                    if (song.id != lastPersistedSongId) {
+                        lastPersistedSongId = song.id
+                        persistPlaybackSession()
+                    }
                 }
             }
         }
@@ -131,11 +140,25 @@ class PlayerViewModel @Inject constructor(
 
     private fun startPositionUpdater() {
         viewModelScope.launch {
+            var ticksSinceLastSave = 0
             while (true) {
                 delay(500L)
                 val position = playbackController.getCurrentPosition()
                 _uiState.update { it.copy(currentPosition = position) }
+                if (playbackController.getCurrentSession() != null) {
+                    ticksSinceLastSave++
+                    if (ticksSinceLastSave >= 4) {
+                        ticksSinceLastSave = 0
+                        persistPlaybackSession()
+                    }
+                }
             }
+        }
+    }
+
+    private fun persistPlaybackSession() {
+        viewModelScope.launch {
+            playbackController.getCurrentSession()?.let { savePlaybackSessionUseCase(it) }
         }
     }
 
@@ -144,22 +167,22 @@ class PlayerViewModel @Inject constructor(
             try {
                 val songs = getSongsUseCase()
                 _uiState.update { it.copy(songs = songs, isLoading = false) }
-
-                getLastPlayedUseCase().collectLatest { lastPlayedId ->
-                    if (lastPlayedId != null && _uiState.value.playerState.currentSong == null) {
-                        val lastSong = songs.find { it.id == lastPlayedId }
-                        if (lastSong != null) {
-                            _uiState.update {
-                                it.copy(
-                                    playerState = it.playerState.copy(currentSong = lastSong)
-                                )
-                            }
-                        }
-                    }
-                }
+                restoreSavedPlaybackSession(songs)
             } catch (_: Exception) {
                 _uiState.update { it.copy(isLoading = false) }
             }
+        }
+    }
+
+    private fun restoreSavedPlaybackSession(songs: List<Song>) {
+        viewModelScope.launch {
+            if (sessionRestored) return@launch
+            val session = getPlaybackSessionUseCase() ?: return@launch
+            playbackController.playerState.first { it.isConnected }
+            if (sessionRestored) return@launch
+            sessionRestored = true
+            playbackController.restoreSession(songs, session)
+            _uiState.update { it.copy(currentPosition = session.positionMs) }
         }
     }
 

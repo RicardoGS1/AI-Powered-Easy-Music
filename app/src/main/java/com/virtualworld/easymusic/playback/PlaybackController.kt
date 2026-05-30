@@ -2,6 +2,7 @@ package com.virtualworld.easymusic.playback
 
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
@@ -9,6 +10,7 @@ import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
+import com.virtualworld.easymusic.domain.model.PlaybackSession
 import com.virtualworld.easymusic.domain.model.Song
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -100,8 +102,15 @@ class PlaybackController @Inject constructor(
         })
     }
 
-    fun playSongs(songs: List<Song>, startIndex: Int = 0) {
+    fun playSongs(
+        songs: List<Song>,
+        startIndex: Int = 0,
+        startPositionMs: Long = 0L,
+        autoPlay: Boolean = true,
+    ) {
+        if (songs.isEmpty()) return
         currentPlaylist = songs
+        val safeIndex = startIndex.coerceIn(0, songs.lastIndex)
         val mediaItems = songs.map { song ->
             MediaItem.Builder()
                 .setUri(song.uri)
@@ -117,10 +126,72 @@ class PlaybackController @Inject constructor(
                 .build()
         }
         mediaController?.run {
-            setMediaItems(mediaItems, startIndex, 0L)
+            setMediaItems(mediaItems, safeIndex, startPositionMs.coerceAtLeast(0L))
             prepare()
-            play()
+            if (autoPlay) play() else pause()
         }
+        val currentSong = songs[safeIndex]
+        _playerState.update {
+            it.copy(
+                currentSong = currentSong,
+                isPlaying = autoPlay,
+                shuffleEnabled = mediaController?.shuffleModeEnabled ?: it.shuffleEnabled,
+                repeatMode = mediaController?.repeatMode ?: it.repeatMode,
+            )
+        }
+    }
+
+    fun restoreSession(allSongs: List<Song>, session: PlaybackSession) {
+        val songsById = allSongs.associateBy { it.id }
+        val queue = session.queueSongIds.mapNotNull { songsById[it] }
+        if (queue.isEmpty()) return
+
+        val savedSongId = session.queueSongIds.getOrNull(
+            session.currentIndex.coerceIn(0, session.queueSongIds.lastIndex),
+        )
+        val index = savedSongId?.let { id -> queue.indexOfFirst { it.id == id } }
+            ?.takeIf { it >= 0 }
+            ?: session.currentIndex.coerceIn(0, queue.lastIndex)
+
+        playSongs(
+            songs = queue,
+            startIndex = index.coerceIn(0, queue.lastIndex),
+            startPositionMs = session.positionMs,
+            autoPlay = false,
+        )
+        mediaController?.run {
+            shuffleModeEnabled = session.shuffleEnabled
+            repeatMode = session.repeatMode
+        }
+        _playerState.update {
+            it.copy(
+                shuffleEnabled = session.shuffleEnabled,
+                repeatMode = session.repeatMode,
+            )
+        }
+    }
+
+    fun getCurrentSession(): PlaybackSession? {
+        if (currentPlaylist.isEmpty()) return null
+        val controller = mediaController
+        val index = when {
+            controller != null && controller.mediaItemCount > 0 ->
+                controller.currentMediaItemIndex.coerceIn(0, currentPlaylist.lastIndex)
+            else -> {
+                val songId = _playerState.value.currentSong?.id ?: return null
+                currentPlaylist.indexOfFirst { it.id == songId }.takeIf { it >= 0 } ?: 0
+            }
+        }
+        val position = controller?.currentPosition?.coerceAtLeast(0L)
+            ?: _playerState.value.currentPosition.coerceAtLeast(0L)
+        return PlaybackSession(
+            queueSongIds = currentPlaylist.map { it.id },
+            currentIndex = index,
+            positionMs = position,
+            shuffleEnabled = controller?.shuffleModeEnabled
+                ?: _playerState.value.shuffleEnabled,
+            repeatMode = controller?.repeatMode ?: _playerState.value.repeatMode,
+        )
     }
 
     fun play() { mediaController?.play() }
@@ -183,6 +254,17 @@ class PlaybackController @Inject constructor(
         mediaController = null
         controllerFuture = null
         _audioSessionId.value = 0
+        currentPlaylist = emptyList()
         _playerState.update { PlayerState() }
+    }
+
+    /** Detiene la reproducción y el servicio; usar solo al cerrar la app, no en segundo plano. */
+    fun stopPlaybackAndRelease() {
+        mediaController?.run {
+            stop()
+            clearMediaItems()
+        }
+        disconnect()
+        context.stopService(Intent(context, MusicPlaybackService::class.java))
     }
 }

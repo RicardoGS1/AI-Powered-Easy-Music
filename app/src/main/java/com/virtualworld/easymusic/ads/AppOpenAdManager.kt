@@ -27,6 +27,7 @@ class AppOpenAdManager(context: Context) {
         private set
 
     private var loadTime: Long = 0
+    private var pendingOnShowAdCompleteListener: OnShowAdCompleteListener? = null
 
     fun loadAd() {
         if (isLoadingAd || isAdAvailable()) {
@@ -79,7 +80,11 @@ class AppOpenAdManager(context: Context) {
         onShowAdCompleteListener: OnShowAdCompleteListener = OnShowAdCompleteListener {},
     ) {
         if (isShowingAd) {
-            Log.d(TAG, "The app open ad is already showing.")
+            Log.d(TAG, "The app open ad is already showing; queuing completion listener.")
+            pendingOnShowAdCompleteListener = mergeListeners(
+                pendingOnShowAdCompleteListener,
+                onShowAdCompleteListener,
+            )
             return
         }
 
@@ -90,12 +95,13 @@ class AppOpenAdManager(context: Context) {
             return
         }
 
+        val listener = onShowAdCompleteListener
         appOpenAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
             override fun onAdDismissedFullScreenContent() {
                 Log.d(TAG, "Ad dismissed fullscreen content.")
                 appOpenAd = null
                 isShowingAd = false
-                onShowAdCompleteListener.onShowAdComplete()
+                notifyShowAdComplete(listener)
                 loadAd()
             }
 
@@ -103,7 +109,7 @@ class AppOpenAdManager(context: Context) {
                 Log.d(TAG, "Ad failed to show: ${adError.message}")
                 appOpenAd = null
                 isShowingAd = false
-                onShowAdCompleteListener.onShowAdComplete()
+                notifyShowAdComplete(listener)
                 loadAd()
             }
 
@@ -114,6 +120,25 @@ class AppOpenAdManager(context: Context) {
 
         isShowingAd = true
         appOpenAd?.show(activity)
+    }
+
+    private fun notifyShowAdComplete(primary: OnShowAdCompleteListener) {
+        primary.onShowAdComplete()
+        pendingOnShowAdCompleteListener?.let { pending ->
+            pendingOnShowAdCompleteListener = null
+            pending.onShowAdComplete()
+        }
+    }
+
+    private fun mergeListeners(
+        existing: OnShowAdCompleteListener?,
+        incoming: OnShowAdCompleteListener,
+    ): OnShowAdCompleteListener {
+        if (existing == null) return incoming
+        return OnShowAdCompleteListener {
+            existing.onShowAdComplete()
+            incoming.onShowAdComplete()
+        }
     }
 
     private fun wasLoadTimeLessThanNHoursAgo(numHours: Long): Boolean {

@@ -48,10 +48,21 @@ import com.virtualworld.easymusic.ui.theme.EasyMusicTheme
 import com.virtualworld.easymusic.ui.theme.Teal400
 import com.virtualworld.easymusic.ui.theme.TextGray
 import com.virtualworld.easymusic.ui.theme.TextWhite
+import com.virtualworld.easymusic.domain.usecase.SavePlaybackSessionUseCase
+import com.virtualworld.easymusic.playback.PlaybackController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var playbackController: PlaybackController
+
+    @Inject
+    lateinit var savePlaybackSessionUseCase: SavePlaybackSessionUseCase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -66,6 +77,16 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        if (isFinishing && !isChangingConfigurations) {
+            playbackController.getCurrentSession()?.let { session ->
+                runBlocking { savePlaybackSessionUseCase(session) }
+            }
+            playbackController.stopPlaybackAndRelease()
+        }
+        super.onDestroy()
     }
 }
 

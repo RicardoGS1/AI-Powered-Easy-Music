@@ -5,8 +5,12 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
+import androidx.media3.common.Player
+import com.virtualworld.easymusic.domain.model.PlaybackSession
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -28,6 +32,58 @@ class MusicPreferences @Inject constructor(
         val FAVORITE_SONG_IDS = stringSetPreferencesKey("favorite_song_ids")
         val SKIP_REMOVE_FROM_QUEUE_CONFIRMATION =
             booleanPreferencesKey("skip_remove_from_queue_confirmation")
+        val PLAYBACK_QUEUE_IDS = stringPreferencesKey("playback_queue_ids")
+        val PLAYBACK_CURRENT_INDEX = intPreferencesKey("playback_current_index")
+        val PLAYBACK_POSITION_MS = longPreferencesKey("playback_position_ms")
+        val PLAYBACK_SHUFFLE_ENABLED = booleanPreferencesKey("playback_shuffle_enabled")
+        val PLAYBACK_REPEAT_MODE = intPreferencesKey("playback_repeat_mode")
+    }
+
+    private fun parseQueueIds(raw: String?): List<Long> {
+        if (raw.isNullOrBlank()) return emptyList()
+        return raw.split(',').mapNotNull { it.toLongOrNull() }
+    }
+
+    private fun encodeQueueIds(ids: List<Long>): String = ids.joinToString(",")
+
+    suspend fun getPlaybackSession(): PlaybackSession? {
+        val prefs = context.dataStore.data.first()
+        val queueIds = parseQueueIds(prefs[PLAYBACK_QUEUE_IDS])
+        if (queueIds.isEmpty()) return null
+        return PlaybackSession(
+            queueSongIds = queueIds,
+            currentIndex = prefs[PLAYBACK_CURRENT_INDEX] ?: 0,
+            positionMs = prefs[PLAYBACK_POSITION_MS] ?: 0L,
+            shuffleEnabled = prefs[PLAYBACK_SHUFFLE_ENABLED] ?: false,
+            repeatMode = prefs[PLAYBACK_REPEAT_MODE] ?: Player.REPEAT_MODE_OFF,
+        )
+    }
+
+    suspend fun savePlaybackSession(session: PlaybackSession) {
+        if (session.queueSongIds.isEmpty()) {
+            clearPlaybackSession()
+            return
+        }
+        context.dataStore.edit { prefs ->
+            prefs[PLAYBACK_QUEUE_IDS] = encodeQueueIds(session.queueSongIds)
+            prefs[PLAYBACK_CURRENT_INDEX] = session.currentIndex.coerceAtLeast(0)
+            prefs[PLAYBACK_POSITION_MS] = session.positionMs.coerceAtLeast(0L)
+            prefs[PLAYBACK_SHUFFLE_ENABLED] = session.shuffleEnabled
+            prefs[PLAYBACK_REPEAT_MODE] = session.repeatMode
+            prefs[LAST_PLAYED_SONG_ID] =
+                session.queueSongIds.getOrNull(session.currentIndex.coerceIn(0, session.queueSongIds.lastIndex))
+                    ?: session.queueSongIds.first()
+        }
+    }
+
+    suspend fun clearPlaybackSession() {
+        context.dataStore.edit { prefs ->
+            prefs.remove(PLAYBACK_QUEUE_IDS)
+            prefs.remove(PLAYBACK_CURRENT_INDEX)
+            prefs.remove(PLAYBACK_POSITION_MS)
+            prefs.remove(PLAYBACK_SHUFFLE_ENABLED)
+            prefs.remove(PLAYBACK_REPEAT_MODE)
+        }
     }
 
     fun skipRemoveFromQueueConfirmation(): Flow<Boolean> =

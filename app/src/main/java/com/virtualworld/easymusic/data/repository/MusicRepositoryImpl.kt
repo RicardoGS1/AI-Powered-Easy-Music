@@ -4,6 +4,7 @@ import com.virtualworld.easymusic.data.datasource.MediaStoreDataSource
 import com.virtualworld.easymusic.data.preferences.MusicPreferences
 import com.virtualworld.easymusic.domain.model.Album
 import com.virtualworld.easymusic.domain.model.Artist
+import com.virtualworld.easymusic.domain.model.PlaybackSession
 import com.virtualworld.easymusic.domain.model.Song
 import com.virtualworld.easymusic.domain.repository.MusicRepository
 import kotlinx.coroutines.flow.Flow
@@ -69,6 +70,13 @@ class MusicRepositoryImpl @Inject constructor(
 
     override suspend fun saveLastPlayedSongId(songId: Long) {
         musicPreferences.saveLastPlayedSongId(songId)
+    }
+
+    override suspend fun getPlaybackSession(): PlaybackSession? =
+        musicPreferences.getPlaybackSession()
+
+    override suspend fun savePlaybackSession(session: PlaybackSession) {
+        musicPreferences.savePlaybackSession(session)
     }
 
     override suspend fun excludeSongFromLibrary(songId: Long) {
