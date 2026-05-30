@@ -42,8 +42,22 @@ android {
     }
 
     buildTypes {
+        debug {
+            manifestPlaceholders["admobAppId"] = "ca-app-pub-3940256099942544~3347511713"
+            buildConfigField(
+                "String",
+                "APP_OPEN_AD_UNIT_ID",
+                "\"ca-app-pub-3940256099942544/9257395921\""
+            )
+        }
         release {
             isMinifyEnabled = false
+            manifestPlaceholders["admobAppId"] = "ca-app-pub-7595196761874810~8933338384"
+            buildConfigField(
+                "String",
+                "APP_OPEN_AD_UNIT_ID",
+                "\"ca-app-pub-7595196761874810/4955874430\""
+            )
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -94,6 +108,11 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.config)
+
+    implementation(libs.play.services.ads)
+    implementation(libs.ads.mediation.mintegral)
+    implementation(libs.ads.mediation.pangle)
+    implementation(libs.androidx.lifecycle.process)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

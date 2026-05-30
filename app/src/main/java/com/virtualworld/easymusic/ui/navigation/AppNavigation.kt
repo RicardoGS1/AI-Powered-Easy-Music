@@ -11,13 +11,17 @@ import com.virtualworld.easymusic.ui.library.CollectionSongsScreen
 import com.virtualworld.easymusic.ui.library.LibraryScreen
 import com.virtualworld.easymusic.ui.player.PlayerScreen
 import com.virtualworld.easymusic.ui.settings.SettingsScreen
+import com.virtualworld.easymusic.ui.splash.SplashScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Routes.PLAYER
+        startDestination = Routes.SPLASH
     ) {
+        composable(Routes.SPLASH) {
+            SplashScreen(navController = navController)
+        }
         composable(Routes.PLAYER) {
             PlayerScreen(
                 onNavigateToLibrary = { navController.navigate(Routes.library(openSearch = false)) },

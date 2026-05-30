@@ -32,6 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
 import com.virtualworld.easymusic.ui.navigation.AppNavigation
+import com.virtualworld.easymusic.ui.navigation.Routes
 import com.virtualworld.easymusic.ui.theme.DarkBackground
 import com.virtualworld.easymusic.ui.theme.EasyMusicTheme
 import com.virtualworld.easymusic.ui.theme.Teal400
@@ -55,8 +57,11 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContent {
             EasyMusicTheme {
-                PermissionGate {
-                    val navController = rememberNavController()
+                val navController = rememberNavController()
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val isSplash = navBackStackEntry?.destination?.route == Routes.SPLASH
+
+                PermissionGate(bypassPermissionCheck = isSplash) {
                     AppNavigation(navController = navController)
                 }
             }
@@ -65,7 +70,10 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-private fun PermissionGate(content: @Composable () -> Unit) {
+private fun PermissionGate(
+    bypassPermissionCheck: Boolean = false,
+    content: @Composable () -> Unit,
+) {
     val context = LocalContext.current
     val requiredPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         Manifest.permission.READ_MEDIA_AUDIO
@@ -86,7 +94,7 @@ private fun PermissionGate(content: @Composable () -> Unit) {
         hasPermission = granted
     }
 
-    if (hasPermission) {
+    if (bypassPermissionCheck || hasPermission) {
         content()
     } else {
         PermissionRequestScreen(

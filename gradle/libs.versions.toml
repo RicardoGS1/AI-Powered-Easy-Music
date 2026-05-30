@@ -21,6 +21,10 @@ okhttp = "4.12.0"
 firebaseBom = "34.13.0"
 googleServices = "4.4.4"
 firebaseCrashlyticsGradle = "3.0.7"
+playServicesAds = "25.3.0"
+adsMediationMintegral = "17.1.61.0"
+adsMediationPangle = "8.0.0.5.0"
+lifecycleProcess = "2.10.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,6 +59,10 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 firebase-config = { group = "com.google.firebase", name = "firebase-config" }
+play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "playServicesAds" }
+ads-mediation-mintegral = { group = "com.google.ads.mediation", name = "mintegral", version.ref = "adsMediationMintegral" }
+ads-mediation-pangle = { group = "com.google.ads.mediation", name = "pangle", version.ref = "adsMediationPangle" }
+androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycleProcess" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

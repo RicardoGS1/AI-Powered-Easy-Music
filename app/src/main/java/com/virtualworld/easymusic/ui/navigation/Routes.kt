@@ -1,6 +1,7 @@
 package com.virtualworld.easymusic.ui.navigation
 
 object Routes {
+    const val SPLASH = "splash"
     const val PLAYER = "player"
     const val LIBRARY = "library?openSearch={openSearch}"
     const val EQUALIZER = "equalizer"
