@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.virtualworld.easymusic.R
+import com.virtualworld.easymusic.ads.LIBRARY_NATIVE_AD_KEY
+import com.virtualworld.easymusic.ads.LibraryNativeAlbumAd
 import com.virtualworld.easymusic.domain.model.Album
 import com.virtualworld.easymusic.ui.components.AlbumItem
 import com.virtualworld.easymusic.ui.theme.TextGray
@@ -43,11 +44,18 @@ fun AlbumsTab(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(albums, key = { it.id }) { album ->
-                AlbumItem(
-                    album = album,
-                    onClick = { onAlbumClick(album) }
-                )
+            albums.forEachIndexed { index, album ->
+                item(key = album.id) {
+                    AlbumItem(
+                        album = album,
+                        onClick = { onAlbumClick(album) }
+                    )
+                }
+                if (index == 0) {
+                    item(key = LIBRARY_NATIVE_AD_KEY) {
+                        LibraryNativeAlbumAd()
+                    }
+                }
             }
         }
     }

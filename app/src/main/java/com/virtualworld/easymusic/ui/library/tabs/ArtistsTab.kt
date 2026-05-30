@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.virtualworld.easymusic.R
+import com.virtualworld.easymusic.ads.LIBRARY_NATIVE_AD_KEY
+import com.virtualworld.easymusic.ads.LibraryNativeListAd
 import com.virtualworld.easymusic.domain.model.Artist
 import com.virtualworld.easymusic.ui.components.ArtistItem
 import com.virtualworld.easymusic.ui.theme.DarkSurfaceVariant
@@ -37,16 +38,28 @@ fun ArtistsTab(
         }
     } else {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(artists, key = { it.id }) { artist ->
-                ArtistItem(
-                    artist = artist,
-                    onClick = { onArtistClick(artist) }
-                )
-                HorizontalDivider(
-                    modifier = Modifier.padding(start = 80.dp),
-                    color = DarkSurfaceVariant,
-                    thickness = 0.5.dp
-                )
+            artists.forEachIndexed { index, artist ->
+                item(key = artist.id) {
+                    ArtistItem(
+                        artist = artist,
+                        onClick = { onArtistClick(artist) }
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(start = 80.dp),
+                        color = DarkSurfaceVariant,
+                        thickness = 0.5.dp
+                    )
+                }
+                if (index == 0) {
+                    item(key = LIBRARY_NATIVE_AD_KEY) {
+                        LibraryNativeListAd()
+                        HorizontalDivider(
+                            modifier = Modifier.padding(start = 80.dp),
+                            color = DarkSurfaceVariant,
+                            thickness = 0.5.dp
+                        )
+                    }
+                }
             }
         }
     }

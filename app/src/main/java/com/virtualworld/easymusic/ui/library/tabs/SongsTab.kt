@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.virtualworld.easymusic.R
+import com.virtualworld.easymusic.ads.LIBRARY_NATIVE_AD_KEY
+import com.virtualworld.easymusic.ads.LibraryNativeListAd
 import com.virtualworld.easymusic.domain.model.Song
 import com.virtualworld.easymusic.ui.components.SongItem
 import com.virtualworld.easymusic.ui.theme.DarkSurfaceVariant
@@ -41,16 +42,28 @@ fun SongsTab(
         }
     } else {
         LazyColumn(modifier = modifier) {
-            items(songs, key = { it.id }) { song ->
-                SongItem(
-                    song = song,
-                    onClick = { onSongClick(song) }
-                )
-                HorizontalDivider(
-                    modifier = Modifier.padding(start = 80.dp),
-                    color = DarkSurfaceVariant,
-                    thickness = 0.5.dp
-                )
+            songs.forEachIndexed { index, song ->
+                item(key = song.id) {
+                    SongItem(
+                        song = song,
+                        onClick = { onSongClick(song) }
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(start = 80.dp),
+                        color = DarkSurfaceVariant,
+                        thickness = 0.5.dp
+                    )
+                }
+                if (index == 0) {
+                    item(key = LIBRARY_NATIVE_AD_KEY) {
+                        LibraryNativeListAd()
+                        HorizontalDivider(
+                            modifier = Modifier.padding(start = 80.dp),
+                            color = DarkSurfaceVariant,
+                            thickness = 0.5.dp
+                        )
+                    }
+                }
             }
         }
     }

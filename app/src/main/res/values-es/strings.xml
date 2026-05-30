@@ -74,6 +74,7 @@
     <string name="album_fallback">Álbum</string>
     <string name="song_count_one">1 canción</string>
     <string name="song_count_many">%d canciones</string>
+    <string name="ad_attribution">Anuncio</string>
 
     <!-- Equalizer -->
     <string name="equalizer_title">ECUALIZADOR</string>

@@ -49,6 +49,11 @@ android {
                 "APP_OPEN_AD_UNIT_ID",
                 "\"ca-app-pub-3940256099942544/9257395921\""
             )
+            buildConfigField(
+                "String",
+                "NATIVE_AD_UNIT_ID",
+                "\"ca-app-pub-3940256099942544/2247696110\""
+            )
         }
         release {
             isMinifyEnabled = false
@@ -57,6 +62,11 @@ android {
                 "String",
                 "APP_OPEN_AD_UNIT_ID",
                 "\"ca-app-pub-7595196761874810/4955874430\""
+            )
+            buildConfigField(
+                "String",
+                "NATIVE_AD_UNIT_ID",
+                "\"ca-app-pub-7595196761874810/1051607222\""
             )
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
