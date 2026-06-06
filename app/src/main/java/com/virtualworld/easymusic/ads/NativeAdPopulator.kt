@@ -3,10 +3,12 @@ package com.virtualworld.easymusic.ads
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.doOnLayout
 import com.google.android.gms.ads.nativead.MediaView
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
 import com.virtualworld.easymusic.R
+import kotlin.math.max
 
 object NativeAdPopulator {
 
@@ -93,36 +95,47 @@ object NativeAdPopulator {
             callToActionView.visibility = View.VISIBLE
         }
 
-        nativeAd.mediaContent?.let { mediaContent ->
-            adView.mediaView = mediaView
-            adView.iconView = null
-            mediaView.mediaContent = mediaContent
-            mediaView.visibility = View.VISIBLE
-            iconView.visibility = View.GONE
-            setSquareMediaHeight(mediaView)
-        } ?: nativeAd.icon?.drawable?.let { drawable ->
-            adView.mediaView = null
-            adView.iconView = iconView
-            iconView.setImageDrawable(drawable)
-            iconView.visibility = View.VISIBLE
-            mediaView.visibility = View.GONE
-            setSquareMediaHeight(iconView)
-        } ?: run {
-            mediaView.visibility = View.GONE
-            iconView.visibility = View.GONE
+        when {
+            nativeAd.mediaContent != null -> {
+                adView.mediaView = mediaView
+                adView.iconView = null
+                mediaView.mediaContent = nativeAd.mediaContent
+                mediaView.visibility = View.VISIBLE
+                iconView.visibility = View.GONE
+                applySquareMediaSizeWhenReady(mediaView)
+            }
+            nativeAd.icon?.drawable != null -> {
+                adView.mediaView = null
+                adView.iconView = iconView
+                iconView.setImageDrawable(nativeAd.icon!!.drawable)
+                iconView.visibility = View.VISIBLE
+                mediaView.visibility = View.GONE
+                applySquareMediaSizeWhenReady(iconView)
+            }
+            else -> {
+                adView.mediaView = null
+                adView.iconView = null
+                mediaView.visibility = View.GONE
+                iconView.visibility = View.GONE
+            }
         }
 
         adView.setNativeAd(nativeAd)
     }
 
-    private fun setSquareMediaHeight(view: View) {
-        view.post {
-            val width = view.width
-            if (width > 0) {
-                view.layoutParams = view.layoutParams.apply {
-                    height = width
-                }
+    private fun applySquareMediaSizeWhenReady(view: View) {
+        view.doOnLayout {
+            val minSizePx = minAdMediaSizePx(view)
+            val width = view.width.takeIf { it > 0 }
+                ?: (view.parent as? View)?.width?.takeIf { it > 0 }
+                ?: return@doOnLayout
+            val size = max(width, minSizePx)
+            if (view.layoutParams.height != size) {
+                view.layoutParams = view.layoutParams.apply { height = size }
             }
         }
     }
+
+    private fun minAdMediaSizePx(view: View): Int =
+        (120 * view.resources.displayMetrics.density).toInt()
 }
