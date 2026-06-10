@@ -21,7 +21,7 @@ android {
         applicationId = "com.virtualworld.easymusic"
         minSdk = 24
         targetSdk = 36
-        versionCode = 100200100
+        versionCode = 100200101
         versionName = "1.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
