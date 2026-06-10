@@ -56,7 +56,11 @@ android {
             )
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            ndk {
+                debugSymbolLevel = "SYMBOL_TABLE"
+            }
             manifestPlaceholders["admobAppId"] = "ca-app-pub-7595196761874810~8933338384"
             buildConfigField(
                 "String",

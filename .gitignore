@@ -18,3 +18,4 @@ local.properties
 /app/release/baselineProfiles/1/app-release.dm
 /.idea/markdown.xml
 /app/release/output-metadata.json
+/app/release/app-release.aab
