@@ -21,7 +21,7 @@ android {
         applicationId = "com.virtualworld.easymusic"
         minSdk = 24
         targetSdk = 36
-        versionCode = 100200101
+        versionCode = 100200102
         versionName = "1.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -127,6 +127,8 @@ dependencies {
     implementation(libs.ads.mediation.mintegral)
     implementation(libs.ads.mediation.pangle)
     implementation(libs.androidx.lifecycle.process)
+    // AdMob trae work-runtime 2.7.0; forzar 2.11+ evita crash de WorkDatabase con R8 full mode (AGP 9).
+    implementation(libs.androidx.work.runtime)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

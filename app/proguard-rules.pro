@@ -49,3 +49,10 @@
     @javax.inject.* <init>(...);
 }
 -keep class * extends dagger.hilt.android.internal.managers.ViewComponentManager$FragmentContextWrapper { *; }
+
+# WorkManager (transitivo vía play-services-ads): R8 full mode elimina constructores usados por reflexión.
+-keep class androidx.work.** { <init>(...); }
+-keep class * extends androidx.work.ListenableWorker {
+    public <init>(android.content.Context, androidx.work.WorkerParameters);
+}
+-keep class androidx.work.WorkerParameters

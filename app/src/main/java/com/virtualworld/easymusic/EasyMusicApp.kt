@@ -45,9 +45,15 @@ class EasyMusicApp :
         registerActivityLifecycleCallbacks(this)
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         appOpenAdManager = AppOpenAdManager(this)
+        val remoteConfigValues = EntryPointAccessors.fromApplication(
+            this,
+            FirebaseBootstrapEntryPoint::class.java,
+        ).remoteConfigValues()
         MobileAds.initialize(this) {
             isMobileAdsInitialized = true
-            appOpenAdManager.loadAd()
+            if (remoteConfigValues.isAppOpenEnabled()) {
+                appOpenAdManager.loadAd()
+            }
             synchronized(adManagerReadyListeners) {
                 adManagerReadyListeners.forEach { it(appOpenAdManager) }
                 adManagerReadyListeners.clear()
@@ -71,6 +77,11 @@ class EasyMusicApp :
 
     override fun onStart(owner: LifecycleOwner) {
         if (!isColdStartCompleted) return
+        val remoteConfigValues = EntryPointAccessors.fromApplication(
+            this,
+            FirebaseBootstrapEntryPoint::class.java,
+        ).remoteConfigValues()
+        if (!remoteConfigValues.isAppOpenEnabled()) return
         currentActivity?.let { activity ->
             appOpenAdManager.showAdIfAvailable(activity)
         }

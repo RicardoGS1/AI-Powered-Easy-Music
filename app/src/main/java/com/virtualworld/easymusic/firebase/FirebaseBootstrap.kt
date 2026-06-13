@@ -21,6 +21,8 @@ class FirebaseBootstrap @Inject constructor(
         val defaults = mapOf<String, Any>(
             // Por defecto la IA activa; en consola puedes poner false para apagarla sin actualizar la app.
             RemoteConfigKeys.ENABLE_AI_INSIGHT to true,
+            RemoteConfigKeys.ENABLE_APP_OPEN to true,
+            RemoteConfigKeys.APP_OPEN_LOAD_WAIT_MS to RemoteConfigValues.DEFAULT_APP_OPEN_LOAD_WAIT_MS,
         )
         remoteConfig.setDefaultsAsync(defaults)
         remoteConfig.fetchAndActivate()

@@ -34,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.virtualworld.easymusic.EasyMusicApp
 import com.virtualworld.easymusic.R
@@ -46,11 +47,15 @@ import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.coroutines.resume
 import kotlin.math.max
 
-private const val MAX_WAIT_MS = 15_000L
 private const val POLL_INTERVAL_MS = 200L
+private const val AD_SHOW_SAFETY_BUFFER_MS = 30_000L
+private const val DISABLED_SPLASH_DELAY_MS = 600L
 
 @Composable
-fun SplashScreen(navController: NavHostController) {
+fun SplashScreen(
+    navController: NavHostController,
+    viewModel: SplashViewModel = hiltViewModel(),
+) {
     val context = LocalContext.current
     val activity = context as? Activity
     val app = context.applicationContext as? EasyMusicApp
@@ -76,9 +81,17 @@ fun SplashScreen(navController: NavHostController) {
     LaunchedEffect(activity, app) {
         if (activity == null || app == null) {
             targetProgress = 1f
-            delay(600)
+            delay(DISABLED_SPLASH_DELAY_MS)
             navigateToPlayer()
             return@LaunchedEffect
+        }
+
+        val appOpenEnabled = viewModel.isAppOpenEnabled()
+        val loadWaitMs = viewModel.getAppOpenLoadWaitMs()
+        val maxWaitMs = if (appOpenEnabled) {
+            loadWaitMs + AD_SHOW_SAFETY_BUFFER_MS
+        } else {
+            DISABLED_SPLASH_DELAY_MS
         }
 
         targetProgress = 0.2f
@@ -86,11 +99,12 @@ fun SplashScreen(navController: NavHostController) {
 
         val progressJob = launch {
             var elapsed = 0L
-            while (!navigated && elapsed < MAX_WAIT_MS) {
+            while (!navigated && elapsed < maxWaitMs) {
                 delay(POLL_INTERVAL_MS)
                 elapsed += POLL_INTERVAL_MS
-                val t = (elapsed.toFloat() / MAX_WAIT_MS).coerceIn(0f, 1f)
+                val t = (elapsed.toFloat() / maxWaitMs).coerceIn(0f, 1f)
                 val next = when {
+                    !appOpenEnabled -> 0.2f + t * 0.8f
                     managerReady -> (0.5f + t * 0.45f).coerceAtMost(0.95f)
                     else -> 0.2f + t * 0.25f
                 }
@@ -98,13 +112,21 @@ fun SplashScreen(navController: NavHostController) {
             }
         }
 
-        withTimeoutOrNull(MAX_WAIT_MS) {
-            suspendCancellableCoroutine { continuation ->
-                app.runWhenAppOpenAdManagerReady { manager ->
-                    managerReady = true
-                    manager.showStartupAdIfAvailable(activity) {
-                        if (continuation.isActive) {
-                            continuation.resume(Unit)
+        if (!appOpenEnabled) {
+            delay(DISABLED_SPLASH_DELAY_MS)
+        } else {
+            withTimeoutOrNull(maxWaitMs) {
+                suspendCancellableCoroutine { continuation ->
+                    app.runWhenAppOpenAdManagerReady { manager ->
+                        managerReady = true
+                        manager.showStartupAdIfAvailable(
+                            activity = activity,
+                            enabled = appOpenEnabled,
+                            waitMs = loadWaitMs,
+                        ) {
+                            if (continuation.isActive) {
+                                continuation.resume(Unit)
+                            }
                         }
                     }
                 }

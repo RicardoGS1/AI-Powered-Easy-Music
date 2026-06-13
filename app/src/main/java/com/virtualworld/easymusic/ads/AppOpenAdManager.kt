@@ -57,21 +57,32 @@ class AppOpenAdManager(context: Context) {
 
     fun showStartupAdIfAvailable(
         activity: Activity,
+        enabled: Boolean,
+        waitMs: Long,
         onShowAdCompleteListener: OnShowAdCompleteListener,
     ) {
         mainScope.launch {
+            if (!enabled) {
+                Log.d(TAG, "App open ad disabled by remote config.")
+                onShowAdCompleteListener.onShowAdComplete()
+                return@launch
+            }
+
             if (!isLoadingAd && !isAdAvailable()) {
                 loadAd()
             }
 
-            var elapsed = 0L
-            while (elapsed < STARTUP_AD_WAIT_MS && !isAdAvailable()) {
-                if (!isLoadingAd) break
+            val deadline = System.currentTimeMillis() + waitMs
+            while (!isAdAvailable() && System.currentTimeMillis() < deadline) {
                 delay(POLL_INTERVAL_MS)
-                elapsed += POLL_INTERVAL_MS
             }
 
-            showAdIfAvailable(activity, onShowAdCompleteListener)
+            if (isAdAvailable()) {
+                showAdIfAvailable(activity, onShowAdCompleteListener)
+            } else {
+                Log.d(TAG, "App open ad not available after waiting ${waitMs}ms.")
+                onShowAdCompleteListener.onShowAdComplete()
+            }
         }
     }
 
@@ -157,7 +168,6 @@ class AppOpenAdManager(context: Context) {
 
     companion object {
         private const val TAG = "AppOpenAdManager"
-        private const val STARTUP_AD_WAIT_MS = 8_000L
         private const val POLL_INTERVAL_MS = 200L
     }
 }
