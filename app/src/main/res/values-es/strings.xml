@@ -128,5 +128,6 @@
     <string name="settings">Ajustes</string>
     <string name="drawer_settings">Ajustes</string>
     <string name="language">Idioma</string>
+    <string name="privacy_options">Opciones de privacidad</string>
     <string name="system_default">Predeterminado del sistema</string>
 </resources>

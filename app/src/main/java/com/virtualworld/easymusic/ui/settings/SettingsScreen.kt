@@ -1,5 +1,6 @@
 package com.virtualworld.easymusic.ui.settings
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,11 +37,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
+import com.virtualworld.easymusic.EasyMusicApp
 import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.ui.theme.DarkBackground
 import com.virtualworld.easymusic.ui.theme.DarkCard
@@ -82,6 +87,11 @@ private val SUPPORTED_LANGUAGES = listOf(
 fun SettingsScreen(
     onNavigateBack: () -> Unit
 ) {
+    val context = LocalContext.current
+    val activity = context as? Activity
+    val app = context.applicationContext as? EasyMusicApp
+    val showPrivacyOptions = app?.consentManager?.isPrivacyOptionsRequired == true
+
     val currentLocale = remember {
         AppCompatDelegate.getApplicationLocales().toLanguageTags()
     }
@@ -123,6 +133,19 @@ fun SettingsScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            if (showPrivacyOptions && activity != null) {
+                item {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    SettingsActionItem(
+                        icon = Icons.Default.PrivacyTip,
+                        label = stringResource(R.string.privacy_options),
+                        onClick = {
+                            app?.consentManager?.showPrivacyOptionsForm(activity) { _ -> }
+                        },
+                    )
+                }
+            }
+
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
@@ -166,6 +189,36 @@ fun SettingsScreen(
 
             item { Spacer(modifier = Modifier.height(16.dp)) }
         }
+    }
+}
+
+@Composable
+private fun SettingsActionItem(
+    icon: ImageVector,
+    label: String,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(DarkCard)
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = Teal400,
+            modifier = Modifier.size(24.dp),
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            color = TextWhite,
+        )
     }
 }
 

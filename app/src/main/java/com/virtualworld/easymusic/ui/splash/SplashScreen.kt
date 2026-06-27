@@ -86,7 +86,27 @@ fun SplashScreen(
             return@LaunchedEffect
         }
 
-        val appOpenEnabled = viewModel.isAppOpenEnabled()
+        targetProgress = 0.1f
+
+        suspendCancellableCoroutine { continuation ->
+            app.consentManager.gatherConsent(activity) {
+                if (continuation.isActive) {
+                    continuation.resume(Unit)
+                }
+            }
+        }
+
+        if (app.consentManager.canRequestAds()) {
+            suspendCancellableCoroutine { continuation ->
+                app.initializeMobileAdsIfNeeded {
+                    if (continuation.isActive) {
+                        continuation.resume(Unit)
+                    }
+                }
+            }
+        }
+
+        val appOpenEnabled = viewModel.isAppOpenEnabled() && app.consentManager.canRequestAds()
         val loadWaitMs = viewModel.getAppOpenLoadWaitMs()
         val maxWaitMs = if (appOpenEnabled) {
             loadWaitMs + AD_SHOW_SAFETY_BUFFER_MS

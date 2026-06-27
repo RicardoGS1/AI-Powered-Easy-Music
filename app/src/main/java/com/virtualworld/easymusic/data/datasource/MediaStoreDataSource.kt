@@ -21,6 +21,18 @@ class MediaStoreDataSource @Inject constructor(
     private val app: Application
 ) {
 
+    private fun songSelection(extra: String = ""): String {
+        val musicFilter = "${MediaStore.Audio.Media.IS_MUSIC} = 1 AND ${MediaStore.Audio.Media.DURATION} > 0"
+        val pathColumn = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Audio.Media.RELATIVE_PATH
+        } else {
+            @Suppress("DEPRECATION")
+            MediaStore.Audio.Media.DATA
+        }
+        val whatsAppFilter = " AND ($pathColumn NOT LIKE '%WhatsApp%' OR $pathColumn IS NULL)"
+        return musicFilter + whatsAppFilter + extra
+    }
+
     suspend fun querySongs(): List<Song> = withContext(Dispatchers.IO) {
         val songs = mutableListOf<Song>()
 
@@ -39,7 +51,7 @@ class MediaStoreDataSource @Inject constructor(
             MediaStore.Audio.Media.DURATION
         )
 
-        val selection = "${MediaStore.Audio.Media.IS_MUSIC} = 1 AND ${MediaStore.Audio.Media.DURATION} > 0"
+        val selection = songSelection()
         val sortOrder = "${MediaStore.Audio.Media.TITLE} ASC"
 
         contentResolver.query(collection, projection, selection, null, sortOrder)?.use { cursor ->
@@ -168,7 +180,7 @@ class MediaStoreDataSource @Inject constructor(
             MediaStore.Audio.Media.DURATION
         )
 
-        val selection = "${MediaStore.Audio.Media.IS_MUSIC} = 1 AND ${MediaStore.Audio.Media.ALBUM_ID} = ?"
+        val selection = songSelection(" AND ${MediaStore.Audio.Media.ALBUM_ID} = ?")
         val selectionArgs = arrayOf(albumId.toString())
         val sortOrder = "${MediaStore.Audio.Media.TRACK} ASC"
 

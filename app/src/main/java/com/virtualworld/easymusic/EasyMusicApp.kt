@@ -10,6 +10,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import com.virtualworld.easymusic.ads.AppOpenAdManager
+import com.virtualworld.easymusic.ads.ConsentManager
 import com.virtualworld.easymusic.di.FirebaseBootstrapEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.HiltAndroidApp
@@ -21,6 +22,9 @@ class EasyMusicApp :
     DefaultLifecycleObserver {
 
     lateinit var appOpenAdManager: AppOpenAdManager
+        private set
+
+    lateinit var consentManager: ConsentManager
         private set
 
     private var currentActivity: Activity? = null
@@ -44,7 +48,20 @@ class EasyMusicApp :
 
         registerActivityLifecycleCallbacks(this)
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
+        consentManager = ConsentManager(this)
         appOpenAdManager = AppOpenAdManager(this)
+    }
+
+    fun initializeMobileAdsIfNeeded(onComplete: (() -> Unit)? = null) {
+        if (isMobileAdsInitialized) {
+            onComplete?.invoke()
+            return
+        }
+        if (!consentManager.canRequestAds()) {
+            onComplete?.invoke()
+            return
+        }
+
         val remoteConfigValues = EntryPointAccessors.fromApplication(
             this,
             FirebaseBootstrapEntryPoint::class.java,
@@ -58,6 +75,7 @@ class EasyMusicApp :
                 adManagerReadyListeners.forEach { it(appOpenAdManager) }
                 adManagerReadyListeners.clear()
             }
+            onComplete?.invoke()
         }
     }
 
@@ -82,6 +100,7 @@ class EasyMusicApp :
             FirebaseBootstrapEntryPoint::class.java,
         ).remoteConfigValues()
         if (!remoteConfigValues.isAppOpenEnabled()) return
+        if (!consentManager.canRequestAds()) return
         currentActivity?.let { activity ->
             appOpenAdManager.showAdIfAvailable(activity)
         }

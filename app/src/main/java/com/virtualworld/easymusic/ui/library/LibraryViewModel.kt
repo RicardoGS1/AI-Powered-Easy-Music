@@ -25,7 +25,7 @@ data class LibraryUiState(
     val artists: List<Artist> = emptyList(),
     val favoriteSongIds: Set<Long> = emptySet(),
     val isLoading: Boolean = true,
-    val selectedTab: Int = 0,
+    val selectedTab: Int = LibraryViewModel.TAB_SONGS,
     val searchQuery: String = ""
 )
 

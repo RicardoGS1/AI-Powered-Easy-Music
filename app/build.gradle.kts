@@ -21,7 +21,7 @@ android {
         applicationId = "com.virtualworld.easymusic"
         minSdk = 24
         targetSdk = 36
-        versionCode = 100200102
+        versionCode = 100200103
         versionName = "1.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -124,6 +124,7 @@ dependencies {
     implementation(libs.firebase.config)
 
     implementation(libs.play.services.ads)
+    implementation(libs.user.messaging.platform)
     implementation(libs.ads.mediation.mintegral)
     implementation(libs.ads.mediation.pangle)
     implementation(libs.androidx.lifecycle.process)
