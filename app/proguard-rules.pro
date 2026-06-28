@@ -55,7 +55,6 @@
 
 # WorkManager (transitivo vía play-services-ads): R8 full mode elimina constructores usados por reflexión.
 -keep class androidx.work.** { <init>(...); }
--keep class * extends androidx.work.ListenableWorker {
-    public <init>(android.content.Context, androidx.work.WorkerParameters);
-}
+-dontwarn org.jaudiotagger.**
+-keep class org.jaudiotagger.** { *; }
 -keep class androidx.work.WorkerParameters

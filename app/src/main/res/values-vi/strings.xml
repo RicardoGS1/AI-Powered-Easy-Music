@@ -19,6 +19,9 @@
     <string name="cd_repeat">Lặp lại</string>
     <string name="cd_shuffle">Ngẫu nhiên</string>
     <string name="cd_library">Thư viện</string>
+    <string name="cd_video_library">Thư viện video</string>
+    <string name="cd_fullscreen">Toàn màn hình</string>
+    <string name="cd_exit_fullscreen">Thoát toàn màn hình</string>
     <string name="cd_hide_extra_controls">Ẩn điều khiển thêm</string>
     <string name="cd_show_extra_controls">Hiện điều khiển thêm</string>
     <string name="cd_equalizer">Bộ cân bằng</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">Không tìm thấy nghệ sĩ</string>
     <string name="no_favorites_yet">Bạn chưa có yêu thích. Đánh dấu bằng trái tim trong trình phát.</string>
     <string name="search_placeholder">Tìm bài hát, album hoặc nghệ sĩ</string>
+    <string name="video_library_title">Video</string>
+    <string name="video_library_empty">Không tìm thấy video trên thiết bị này</string>
+    <string name="video_search_hint">Tìm video…</string>
+    <string name="video_local">Video cục bộ</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">Đóng tìm kiếm</string>
     <string name="cd_back">Quay lại</string>
     <string name="play_all">Phát tất cả</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">Nghệ sĩ không xác định</string>
     <string name="unknown_album">Album không xác định</string>
 
-    <string name="permission_message">Chúng tôi cần quyền truy cập nhạc của bạn để phát</string>
+    <string name="permission_message">Chúng tôi cần quyền truy cập nhạc và video để phát</string>
     <string name="grant_permission">Cấp quyền</string>
     <string name="artist_songs_albums">%1$d bài hát · %2$d album</string>
     <string name="preset_flat">Phẳng</string>

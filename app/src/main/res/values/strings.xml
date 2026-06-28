@@ -18,7 +18,10 @@
     <string name="cd_volume">Volume</string>
     <string name="cd_repeat">Repeat</string>
     <string name="cd_shuffle">Shuffle</string>
-    <string name="cd_library">Library</string>
+    <string name="cd_library">My music</string>
+    <string name="cd_video_library">My videos</string>
+    <string name="cd_fullscreen">Fullscreen</string>
+    <string name="cd_exit_fullscreen">Exit fullscreen</string>
     <string name="cd_hide_extra_controls">Hide extra controls</string>
     <string name="cd_show_extra_controls">Show extra controls</string>
     <string name="cd_equalizer">Equalizer</string>
@@ -32,6 +35,9 @@
     <string name="cd_pause">Pause</string>
     <string name="cd_play">Play</string>
     <string name="cd_next">Next</string>
+    <string name="player_label_more">More</string>
+    <string name="player_label_less">Less</string>
+    <string name="press_back_again_to_exit">Press back again to exit. Music playback will stop.</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">Song data</string>
@@ -42,6 +48,19 @@
     <string name="insight_fun_fact">Fun fact</string>
     <string name="insight_similar_artists">Similar artists or themes</string>
     <string name="no_data">No data.</string>
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">Edit song metadata</string>
+    <string name="cd_metadata_ai_fill">Fill metadata with AI</string>
+    <string name="metadata_editor_title">Edit metadata</string>
+    <string name="metadata_field_title">Title</string>
+    <string name="metadata_field_artist">Artist</string>
+    <string name="metadata_field_album">Album</string>
+    <string name="metadata_save">Save</string>
+    <string name="metadata_fields_required">Title, artist, and album are required.</string>
+    <string name="metadata_save_failed">Could not save metadata. Check that the app can modify this file.</string>
+    <string name="metadata_ai_not_found">AI could not identify this song with enough confidence.</string>
+    <string name="metadata_permission_denied">Write permission denied. Could not modify this file.</string>
 
     <!-- Lyrics -->
     <string name="lyrics">Lyrics</string>
@@ -63,6 +82,13 @@
     <string name="no_artists_found">No artists found</string>
     <string name="no_favorites_yet">You don\'t have favorites yet. Mark them with the heart in the player.</string>
     <string name="search_placeholder">Search songs, albums, or artists</string>
+    <string name="video_library_title">Videos</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="video_library_empty">No videos found on this device</string>
+    <string name="video_search_hint">Search videos…</string>
+    <string name="video_local">Local video</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">Close search</string>
     <string name="cd_back">Back</string>
     <string name="play_all">Play all</string>
@@ -92,7 +118,7 @@
     <string name="unknown_album">Unknown album</string>
 
     <!-- Permission screen -->
-    <string name="permission_message">We need access to your music to play it</string>
+    <string name="permission_message">We need access to your music and videos to play them</string>
     <string name="grant_permission">Grant permission</string>
 
     <!-- AlbumItem / ArtistItem -->

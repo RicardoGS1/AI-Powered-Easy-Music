@@ -45,6 +45,8 @@ class PlaybackController @Inject constructor(
     private var controllerFuture: ListenableFuture<MediaController>? = null
     private var currentPlaylist: List<Song> = emptyList()
 
+    fun getPlaylist(): List<Song> = currentPlaylist
+
     fun connect() {
         if (mediaController != null) return
 
@@ -59,7 +61,7 @@ class PlaybackController @Inject constructor(
             }
             mediaController?.let { controller ->
                 _playerState.update { it.copy(isConnected = true) }
-                _audioSessionId.value = MusicPlaybackService.audioSessionId
+                syncAudioSessionId()
                 setupPlayerListener(controller)
             }
         }, MoreExecutors.directExecutor())
@@ -68,6 +70,7 @@ class PlaybackController @Inject constructor(
     private fun setupPlayerListener(controller: MediaController) {
         controller.addListener(object : Player.Listener {
             override fun onIsPlayingChanged(isPlaying: Boolean) {
+                if (isPlaying) syncAudioSessionId()
                 _playerState.update { it.copy(isPlaying = isPlaying) }
             }
 
@@ -97,7 +100,11 @@ class PlaybackController @Inject constructor(
             }
 
             override fun onAudioSessionIdChanged(audioSessionId: Int) {
-                _audioSessionId.value = audioSessionId
+                if (audioSessionId > 0) {
+                    _audioSessionId.value = audioSessionId
+                } else {
+                    syncAudioSessionId()
+                }
             }
         })
     }
@@ -245,8 +252,55 @@ class PlaybackController @Inject constructor(
         }
     }
 
+    fun updateSongInPlaylist(updatedSong: Song) {
+        currentPlaylist = currentPlaylist.map { song ->
+            if (song.id == updatedSong.id) updatedSong else song
+        }
+        mediaController?.let { controller ->
+            for (index in 0 until controller.mediaItemCount) {
+                val item = controller.getMediaItemAt(index)
+                if (item.mediaId == updatedSong.id.toString()) {
+                    val newItem = item.buildUpon()
+                        .setMediaMetadata(
+                            MediaMetadata.Builder()
+                                .setTitle(updatedSong.title)
+                                .setArtist(updatedSong.artist)
+                                .setAlbumTitle(updatedSong.album)
+                                .setArtworkUri(updatedSong.albumArtUri)
+                                .build(),
+                        )
+                        .build()
+                    controller.replaceMediaItem(index, newItem)
+                    break
+                }
+            }
+        }
+        if (_playerState.value.currentSong?.id == updatedSong.id) {
+            _playerState.update { it.copy(currentSong = updatedSong) }
+        }
+    }
+
     fun getAudioSessionId(): Int {
+        return getEffectiveAudioSessionId()
+    }
+
+    fun getEffectiveAudioSessionId(): Int {
+        val fromController = _audioSessionId.value
+        if (fromController > 0) return fromController
         return MusicPlaybackService.audioSessionId
+    }
+
+    private fun syncAudioSessionId() {
+        val sessionId = MusicPlaybackService.audioSessionId
+        if (sessionId > 0) {
+            _audioSessionId.value = sessionId
+        }
+    }
+
+    fun notifyAudioSessionId(sessionId: Int) {
+        if (sessionId > 0) {
+            _audioSessionId.value = sessionId
+        }
     }
 
     fun disconnect() {

@@ -7,6 +7,7 @@ object Routes {
     const val EQUALIZER = "equalizer"
     const val COLLECTION = "collection/{kind}/{itemId}"
     const val SETTINGS = "settings"
+    const val VIDEO_LIBRARY = "video_library"
 
     fun library(openSearch: Boolean = false): String = "library?openSearch=$openSearch"
 

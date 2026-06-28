@@ -19,6 +19,9 @@
     <string name="cd_repeat">Повтор</string>
     <string name="cd_shuffle">Випадковий порядок</string>
     <string name="cd_library">Бібліотека</string>
+    <string name="cd_video_library">Відеотека</string>
+    <string name="cd_fullscreen">На весь екран</string>
+    <string name="cd_exit_fullscreen">Вийти з повноекранного режиму</string>
     <string name="cd_hide_extra_controls">Сховати додаткові елементи</string>
     <string name="cd_show_extra_controls">Показати додаткові елементи</string>
     <string name="cd_equalizer">Еквалайзер</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">Виконавців не знайдено</string>
     <string name="no_favorites_yet">У вас ще немає обраного. Позначте серцем у плеєрі.</string>
     <string name="search_placeholder">Шукати пісні, альбоми або виконавців</string>
+    <string name="video_library_title">Відео</string>
+    <string name="video_library_empty">На пристрої не знайдено відео</string>
+    <string name="video_search_hint">Пошук відео…</string>
+    <string name="video_local">Локальне відео</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">Закрити пошук</string>
     <string name="cd_back">Назад</string>
     <string name="play_all">Відтворити все</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">Невідомий виконавець</string>
     <string name="unknown_album">Невідомий альбом</string>
 
-    <string name="permission_message">Нам потрібен доступ до вашої музики для відтворення</string>
+    <string name="permission_message">Нам потрібен доступ до музики та відео для відтворення</string>
     <string name="grant_permission">Надати дозвіл</string>
     <string name="artist_songs_albums">%1$d пісень · %2$d альбомів</string>
     <string name="preset_flat">Рівний</string>

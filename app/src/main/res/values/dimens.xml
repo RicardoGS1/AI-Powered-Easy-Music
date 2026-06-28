@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Google AdMob minimum MediaView size for native video ads -->
+    <dimen name="native_ad_media_min_size">120dp</dimen>
+    <!-- 16:9 placeholder height for full-width list native ads (~360dp width) -->
+    <dimen name="native_ad_list_media_height">203dp</dimen>
+</resources>

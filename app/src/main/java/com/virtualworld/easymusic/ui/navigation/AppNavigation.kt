@@ -12,6 +12,7 @@ import com.virtualworld.easymusic.ui.library.LibraryScreen
 import com.virtualworld.easymusic.ui.player.PlayerScreen
 import com.virtualworld.easymusic.ui.settings.SettingsScreen
 import com.virtualworld.easymusic.ui.splash.SplashScreen
+import com.virtualworld.easymusic.ui.video.VideoLibraryScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -26,6 +27,7 @@ fun AppNavigation(navController: NavHostController) {
             PlayerScreen(
                 onNavigateToLibrary = { navController.navigate(Routes.library(openSearch = false)) },
                 onNavigateToLibrarySearch = { navController.navigate(Routes.library(openSearch = true)) },
+                onNavigateToVideoLibrary = { navController.navigate(Routes.VIDEO_LIBRARY) },
                 onNavigateToEqualizer = { navController.navigate(Routes.EQUALIZER) },
                 onNavigateToSettings = { navController.navigate(Routes.SETTINGS) }
             )
@@ -73,6 +75,11 @@ fun AppNavigation(navController: NavHostController) {
         composable(Routes.SETTINGS) {
             SettingsScreen(
                 onNavigateBack = { navController.popBackStack() }
+            )
+        }
+        composable(Routes.VIDEO_LIBRARY) {
+            VideoLibraryScreen(
+                onNavigateBack = { navController.popBackStack() },
             )
         }
     }

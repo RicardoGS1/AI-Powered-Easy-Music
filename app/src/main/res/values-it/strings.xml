@@ -19,6 +19,9 @@
     <string name="cd_repeat">Ripeti</string>
     <string name="cd_shuffle">Casuale</string>
     <string name="cd_library">Libreria</string>
+    <string name="cd_video_library">Libreria video</string>
+    <string name="cd_fullscreen">Schermo intero</string>
+    <string name="cd_exit_fullscreen">Esci da schermo intero</string>
     <string name="cd_hide_extra_controls">Nascondi controlli extra</string>
     <string name="cd_show_extra_controls">Mostra controlli extra</string>
     <string name="cd_equalizer">Equalizzatore</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">Nessun artista trovato</string>
     <string name="no_favorites_yet">Non hai ancora preferiti. Segnali con il cuore nel lettore.</string>
     <string name="search_placeholder">Cerca brani, album o artisti</string>
+    <string name="video_library_title">Video</string>
+    <string name="video_library_empty">Nessun video trovato su questo dispositivo</string>
+    <string name="video_search_hint">Cerca video…</string>
+    <string name="video_local">Video locale</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">Chiudi ricerca</string>
     <string name="cd_back">Indietro</string>
     <string name="play_all">Riproduci tutto</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">Artista sconosciuto</string>
     <string name="unknown_album">Album sconosciuto</string>
 
-    <string name="permission_message">Abbiamo bisogno dell\'accesso alla tua musica per riprodurla</string>
+    <string name="permission_message">Abbiamo bisogno dell\'accesso a musica e video per riprodurli</string>
     <string name="grant_permission">Concedi autorizzazione</string>
     <string name="artist_songs_albums">%1$d brani · %2$d album</string>
     <string name="preset_flat">Piatto</string>

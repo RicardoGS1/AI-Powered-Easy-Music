@@ -11,6 +11,7 @@ import com.virtualworld.easymusic.domain.usecase.GetArtistsUseCase
 import com.virtualworld.easymusic.domain.usecase.GetSongsByAlbumUseCase
 import com.virtualworld.easymusic.domain.usecase.GetSongsUseCase
 import com.virtualworld.easymusic.playback.PlaybackController
+import com.virtualworld.easymusic.playback.VideoPlaybackController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -48,7 +49,8 @@ class CollectionSongsViewModel @Inject constructor(
     private val getAlbumsUseCase: GetAlbumsUseCase,
     private val getArtistsUseCase: GetArtistsUseCase,
     private val getSongsUseCase: GetSongsUseCase,
-    private val playbackController: PlaybackController
+    private val playbackController: PlaybackController,
+    private val videoPlaybackController: VideoPlaybackController,
 ) : ViewModel() {
 
     private val kind = CollectionKind.fromRoute(savedStateHandle.get<String>(ARG_KIND))
@@ -130,6 +132,7 @@ class CollectionSongsViewModel @Inject constructor(
     fun playAll() {
         val songs = _uiState.value.songs
         if (songs.isNotEmpty()) {
+            videoPlaybackController.clearVideo()
             playbackController.playSongs(songs, 0)
         }
     }
@@ -137,6 +140,7 @@ class CollectionSongsViewModel @Inject constructor(
     fun playFrom(song: Song) {
         val songs = _uiState.value.songs
         if (songs.isEmpty()) return
+        videoPlaybackController.clearVideo()
         val index = songs.indexOfFirst { it.id == song.id }
         playbackController.playSongs(songs, index.coerceAtLeast(0))
     }

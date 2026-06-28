@@ -11,6 +11,7 @@ import com.virtualworld.easymusic.domain.usecase.GetArtistsUseCase
 import com.virtualworld.easymusic.domain.usecase.GetSongsUseCase
 import com.virtualworld.easymusic.domain.usecase.ObserveFavoriteSongIdsUseCase
 import com.virtualworld.easymusic.playback.PlaybackController
+import com.virtualworld.easymusic.playback.VideoPlaybackController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,7 +37,8 @@ class LibraryViewModel @Inject constructor(
     private val getArtistsUseCase: GetArtistsUseCase,
     private val excludeSongFromLibraryUseCase: ExcludeSongFromLibraryUseCase,
     private val observeFavoriteSongIdsUseCase: ObserveFavoriteSongIdsUseCase,
-    private val playbackController: PlaybackController
+    private val playbackController: PlaybackController,
+    private val videoPlaybackController: VideoPlaybackController,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LibraryUiState())
@@ -84,6 +86,7 @@ class LibraryViewModel @Inject constructor(
     }
 
     fun playSong(song: Song) {
+        videoPlaybackController.clearVideo()
         val songs = songsQueueForCurrentTab()
         val index = songs.indexOfFirst { it.id == song.id }
         playbackController.playSongs(songs, index.coerceAtLeast(0))

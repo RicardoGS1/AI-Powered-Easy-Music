@@ -19,6 +19,9 @@
     <string name="cd_repeat">Повтор</string>
     <string name="cd_shuffle">Случайный порядок</string>
     <string name="cd_library">Библиотека</string>
+    <string name="cd_video_library">Видеотека</string>
+    <string name="cd_fullscreen">Полный экран</string>
+    <string name="cd_exit_fullscreen">Выйти из полного экрана</string>
     <string name="cd_hide_extra_controls">Скрыть доп. элементы управления</string>
     <string name="cd_show_extra_controls">Показать доп. элементы управления</string>
     <string name="cd_equalizer">Эквалайзер</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">Исполнители не найдены</string>
     <string name="no_favorites_yet">У вас пока нет избранного. Отметьте сердечком в плеере.</string>
     <string name="search_placeholder">Поиск песен, альбомов или исполнителей</string>
+    <string name="video_library_title">Видео</string>
+    <string name="video_library_empty">На устройстве не найдено видео</string>
+    <string name="video_search_hint">Поиск видео…</string>
+    <string name="video_local">Локальное видео</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">Закрыть поиск</string>
     <string name="cd_back">Назад</string>
     <string name="play_all">Воспроизвести все</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">Неизвестный исполнитель</string>
     <string name="unknown_album">Неизвестный альбом</string>
 
-    <string name="permission_message">Нам нужен доступ к вашей музыке для воспроизведения</string>
+    <string name="permission_message">Нам нужен доступ к музыке и видео для воспроизведения</string>
     <string name="grant_permission">Предоставить разрешение</string>
     <string name="artist_songs_albums">%1$d песен · %2$d альбомов</string>
     <string name="preset_flat">Плоский</string>

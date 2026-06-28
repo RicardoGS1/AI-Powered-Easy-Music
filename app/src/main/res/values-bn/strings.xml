@@ -19,6 +19,9 @@
     <string name="cd_repeat">পুনরাবৃত্তি</string>
     <string name="cd_shuffle">এলোমেলো</string>
     <string name="cd_library">লাইব্রেরি</string>
+    <string name="cd_video_library">ভিডিও লাইব্রেরি</string>
+    <string name="cd_fullscreen">পূর্ণ স্ক্রিন</string>
+    <string name="cd_exit_fullscreen">পূর্ণ স্ক্রিন থেকে প্রস্থান</string>
     <string name="cd_hide_extra_controls">অতিরিক্ত নিয়ন্ত্রণ লুকান</string>
     <string name="cd_show_extra_controls">অতিরিক্ত নিয়ন্ত্রণ দেখান</string>
     <string name="cd_equalizer">ইকুয়ালাইজার</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">কোনো শিল্পী পাওয়া যায়নি</string>
     <string name="no_favorites_yet">আপনার এখনো কোনো পছন্দ নেই। প্লেয়ারে হৃদয় চিহ্ন দিয়ে চিহ্নিত করুন।</string>
     <string name="search_placeholder">গান, অ্যালবাম বা শিল্পী অনুসন্ধান করুন</string>
+    <string name="video_library_title">ভিডিও</string>
+    <string name="video_library_empty">এই ডিভাইসে কোনো ভিডিও পাওয়া যায়নি</string>
+    <string name="video_search_hint">ভিডিও খুঁজুন…</string>
+    <string name="video_local">স্থানীয় ভিডিও</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">অনুসন্ধান বন্ধ করুন</string>
     <string name="cd_back">পেছনে</string>
     <string name="play_all">সব চালান</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">অজানা শিল্পী</string>
     <string name="unknown_album">অজানা অ্যালবাম</string>
 
-    <string name="permission_message">আপনার সঙ্গীত চালাতে আমাদের অ্যাক্সেস প্রয়োজন</string>
+    <string name="permission_message">চালানোর জন্য আমাদের আপনার música এবং ভিডিওতে অ্যাক্সেস প্রয়োজন</string>
     <string name="grant_permission">অনুমতি দিন</string>
     <string name="artist_songs_albums">%1$dটি গান · %2$dটি অ্যালবাম</string>
     <string name="preset_flat">সমতল</string>

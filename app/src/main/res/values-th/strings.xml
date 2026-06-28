@@ -19,6 +19,9 @@
     <string name="cd_repeat">เล่นซ้ำ</string>
     <string name="cd_shuffle">สุ่ม</string>
     <string name="cd_library">ไลบรารี</string>
+    <string name="cd_video_library">คลังวิดีโอ</string>
+    <string name="cd_fullscreen">เต็มหน้าจอ</string>
+    <string name="cd_exit_fullscreen">ออกจากเต็มหน้าจอ</string>
     <string name="cd_hide_extra_controls">ซ่อนตัวควบคุมเพิ่มเติม</string>
     <string name="cd_show_extra_controls">แสดงตัวควบคุมเพิ่มเติม</string>
     <string name="cd_equalizer">อีควอไลเซอร์</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">ไม่พบศิลปิน</string>
     <string name="no_favorites_yet">คุณยังไม่มีรายการโปรด ทำเครื่องหมายด้วยหัวใจในเครื่องเล่น</string>
     <string name="search_placeholder">ค้นหาเพลง อัลบั้ม หรือศิลปิน</string>
+    <string name="video_library_title">วิดีโอ</string>
+    <string name="video_library_empty">ไม่พบวิดีโอในอุปกรณ์นี้</string>
+    <string name="video_search_hint">ค้นหาวิดีโอ…</string>
+    <string name="video_local">วิดีโอในเครื่อง</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">ปิดการค้นหา</string>
     <string name="cd_back">ย้อนกลับ</string>
     <string name="play_all">เล่นทั้งหมด</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">ศิลปินที่ไม่ทราบ</string>
     <string name="unknown_album">อัลบั้มที่ไม่ทราบ</string>
 
-    <string name="permission_message">เราต้องการสิทธิ์เข้าถึงเพลงของคุณเพื่อเล่น</string>
+    <string name="permission_message">เราต้องการเข้าถึงเพลงและวิดีโอของคุณเพื่อเล่น</string>
     <string name="grant_permission">ให้สิทธิ์</string>
     <string name="artist_songs_albums">%1$d เพลง · %2$d อัลบั้ม</string>
     <string name="preset_flat">แบน</string>

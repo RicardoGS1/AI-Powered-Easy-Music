@@ -1,13 +1,18 @@
 package com.virtualworld.easymusic.data.repository
 
 import com.virtualworld.easymusic.data.datasource.MediaStoreDataSource
+import com.virtualworld.easymusic.data.datasource.SongMetadataUpdateAttempt
 import com.virtualworld.easymusic.data.preferences.MusicPreferences
+import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.domain.model.Album
 import com.virtualworld.easymusic.domain.model.Artist
 import com.virtualworld.easymusic.domain.model.PlaybackSession
 import com.virtualworld.easymusic.domain.model.Song
+import com.virtualworld.easymusic.domain.model.SongMetadataEdit
+import com.virtualworld.easymusic.domain.model.UpdateSongMetadataResult
 import com.virtualworld.easymusic.domain.repository.MusicRepository
 import kotlinx.coroutines.flow.Flow
+import android.app.Application
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,7 +20,8 @@ import javax.inject.Singleton
 @Singleton
 class MusicRepositoryImpl @Inject constructor(
     private val mediaStoreDataSource: MediaStoreDataSource,
-    private val musicPreferences: MusicPreferences
+    private val musicPreferences: MusicPreferences,
+    private val app: Application,
 ) : MusicRepository {
 
     private var cachedSongs: List<Song>? = null
@@ -91,6 +97,51 @@ class MusicRepositoryImpl @Inject constructor(
     }
 
     override fun favoriteSongIds(): Flow<Set<Long>> = musicPreferences.favoriteSongIds()
+
+    override suspend fun updateSongMetadata(
+        songId: Long,
+        metadata: SongMetadataEdit,
+        writeAccessConfirmed: Boolean,
+    ): UpdateSongMetadataResult {
+        val title = metadata.title.trim()
+        val artist = metadata.artist.trim()
+        val album = metadata.album.trim()
+        if (title.isEmpty() || artist.isEmpty() || album.isEmpty()) {
+            return UpdateSongMetadataResult.Error(
+                app.getString(R.string.metadata_fields_required),
+            )
+        }
+        val normalized = SongMetadataEdit(title = title, artist = artist, album = album)
+        val previousSong = mediaStoreDataSource.querySongById(songId)
+        val attempt = mediaStoreDataSource.updateSongMetadata(
+            songId = songId,
+            metadata = normalized,
+            writeAccessConfirmed = writeAccessConfirmed,
+        )
+        when (attempt) {
+            is SongMetadataUpdateAttempt.PermissionRequired -> {
+                return UpdateSongMetadataResult.NeedsWritePermission(attempt.intentSender)
+            }
+            SongMetadataUpdateAttempt.Failed -> {
+                return UpdateSongMetadataResult.Error(
+                    app.getString(R.string.metadata_save_failed),
+                )
+            }
+            SongMetadataUpdateAttempt.Updated -> Unit
+        }
+        invalidateSongsCache()
+        val refreshed = mediaStoreDataSource.querySongById(songId)
+        val updatedSong = refreshed
+            ?: previousSong?.copy(title = title, artist = artist, album = album)
+            ?: return UpdateSongMetadataResult.Error(
+                app.getString(R.string.metadata_save_failed),
+            )
+        return UpdateSongMetadataResult.Success(updatedSong)
+    }
+
+    override fun invalidateSongsCache() {
+        cachedSongs = null
+    }
 
     private fun stableArtistId(name: String): Long {
         return UUID.nameUUIDFromBytes(name.toByteArray(Charsets.UTF_8)).mostSignificantBits and Long.MAX_VALUE

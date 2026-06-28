@@ -96,33 +96,38 @@ private fun PermissionGate(
     content: @Composable () -> Unit,
 ) {
     val context = LocalContext.current
-    val requiredPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        Manifest.permission.READ_MEDIA_AUDIO
+    val requiredPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        arrayOf(
+            Manifest.permission.READ_MEDIA_AUDIO,
+            Manifest.permission.READ_MEDIA_VIDEO,
+        )
     } else {
-        Manifest.permission.READ_EXTERNAL_STORAGE
+        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
     }
 
     var hasPermission by remember {
         mutableStateOf(
-            ContextCompat.checkSelfPermission(context, requiredPermission) ==
-                PackageManager.PERMISSION_GRANTED
+            requiredPermissions.all { permission ->
+                ContextCompat.checkSelfPermission(context, permission) ==
+                    PackageManager.PERMISSION_GRANTED
+            }
         )
     }
 
     val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { granted ->
-        hasPermission = granted
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { results ->
+        hasPermission = results.values.all { it }
     }
 
     if (bypassPermissionCheck || hasPermission) {
         content()
     } else {
         PermissionRequestScreen(
-            onRequestPermission = { launcher.launch(requiredPermission) }
+            onRequestPermission = { launcher.launch(requiredPermissions) }
         )
         LaunchedEffect(Unit) {
-            launcher.launch(requiredPermission)
+            launcher.launch(requiredPermissions)
         }
     }
 }

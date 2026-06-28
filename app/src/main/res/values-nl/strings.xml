@@ -19,6 +19,9 @@
     <string name="cd_repeat">Herhalen</string>
     <string name="cd_shuffle">Willekeurig</string>
     <string name="cd_library">Bibliotheek</string>
+    <string name="cd_video_library">Videobibliotheek</string>
+    <string name="cd_fullscreen">Volledig scherm</string>
+    <string name="cd_exit_fullscreen">Volledig scherm verlaten</string>
     <string name="cd_hide_extra_controls">Extra bediening verbergen</string>
     <string name="cd_show_extra_controls">Extra bediening tonen</string>
     <string name="cd_equalizer">Equalizer</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">Geen artiesten gevonden</string>
     <string name="no_favorites_yet">Je hebt nog geen favorieten. Markeer ze met het hartje in de speler.</string>
     <string name="search_placeholder">Zoek nummers, albums of artiesten</string>
+    <string name="video_library_title">Video\'s</string>
+    <string name="video_library_empty">Geen video\'s gevonden op dit apparaat</string>
+    <string name="video_search_hint">Video\'s zoeken…</string>
+    <string name="video_local">Lokale video</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">Zoekopdracht sluiten</string>
     <string name="cd_back">Terug</string>
     <string name="play_all">Alles afspelen</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">Onbekende artiest</string>
     <string name="unknown_album">Onbekend album</string>
 
-    <string name="permission_message">We hebben toegang tot je muziek nodig om deze af te spelen</string>
+    <string name="permission_message">We hebben toegang tot je muziek en video\'s nodig om ze af te spelen</string>
     <string name="grant_permission">Toestemming verlenen</string>
     <string name="artist_songs_albums">%1$d nummers · %2$d albums</string>
     <string name="preset_flat">Vlak</string>

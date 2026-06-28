@@ -1,23 +1,35 @@
 package com.virtualworld.easymusic.ui.player
 
+import android.app.Application
+import android.content.IntentSender
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.virtualworld.easymusic.domain.model.Song
+import com.virtualworld.easymusic.domain.model.Video
 import com.virtualworld.easymusic.domain.model.LyricsResult
+import com.virtualworld.easymusic.domain.model.SongMetadataEdit
+import com.virtualworld.easymusic.domain.model.SongMetadataLookupResult
 import com.virtualworld.easymusic.domain.model.SongInsightResult
+import com.virtualworld.easymusic.domain.model.UpdateSongMetadataResult
 import com.virtualworld.easymusic.data.preferences.MusicPreferences
 import com.virtualworld.easymusic.domain.usecase.ExcludeSongFromLibraryUseCase
 import com.virtualworld.easymusic.domain.usecase.FetchSongInsightUseCase
+import com.virtualworld.easymusic.domain.usecase.FetchSongMetadataFromAiUseCase
 import com.virtualworld.easymusic.domain.usecase.FetchLyricsUseCase
 import com.virtualworld.easymusic.domain.usecase.GetPlaybackSessionUseCase
 import com.virtualworld.easymusic.domain.usecase.GetSongsUseCase
 import com.virtualworld.easymusic.domain.usecase.ObserveFavoriteSongIdsUseCase
+import com.virtualworld.easymusic.domain.usecase.ObserveFavoriteVideoIdsUseCase
 import com.virtualworld.easymusic.domain.usecase.SaveLastPlayedUseCase
 import com.virtualworld.easymusic.domain.usecase.SavePlaybackSessionUseCase
 import com.virtualworld.easymusic.domain.usecase.ToggleFavoriteSongUseCase
+import com.virtualworld.easymusic.domain.usecase.ToggleFavoriteVideoUseCase
+import com.virtualworld.easymusic.domain.usecase.UpdateSongMetadataUseCase
 import com.virtualworld.easymusic.firebase.RemoteConfigValues
+import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.playback.PlaybackController
 import com.virtualworld.easymusic.playback.PlayerState
+import com.virtualworld.easymusic.playback.VideoPlaybackController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,6 +48,7 @@ data class PlayerUiState(
     val currentPosition: Long = 0L,
     val songs: List<Song> = emptyList(),
     val favoriteSongIds: Set<Long> = emptySet(),
+    val favoriteVideoIds: Set<Long> = emptySet(),
     val isLoading: Boolean = true,
     val lyricsSheetVisible: Boolean = false,
     val lyricsLoading: Boolean = false,
@@ -47,6 +60,20 @@ data class PlayerUiState(
     /** Kill switch vía Firebase Remote Config ([RemoteConfigKeys.ENABLE_AI_INSIGHT]). */
     val aiInsightEnabled: Boolean = true,
     val skipRemoveFromQueueConfirmation: Boolean = false,
+    val activeVideo: Video? = null,
+    val playbackQueue: List<Song> = emptyList(),
+    val videoQueue: List<Video> = emptyList(),
+    val videoIsPlaying: Boolean = false,
+    val videoDuration: Long = 0L,
+    val videoFullscreen: Boolean = false,
+    val metadataEditorVisible: Boolean = false,
+    val metadataEditorTitle: String = "",
+    val metadataEditorArtist: String = "",
+    val metadataEditorAlbum: String = "",
+    val metadataAiLoading: Boolean = false,
+    val metadataSaving: Boolean = false,
+    val metadataEditorError: String? = null,
+    val metadataWritePermissionRequest: IntentSender? = null,
 )
 
 @HiltViewModel
@@ -58,23 +85,33 @@ class PlayerViewModel @Inject constructor(
     private val excludeSongFromLibraryUseCase: ExcludeSongFromLibraryUseCase,
     private val fetchLyricsUseCase: FetchLyricsUseCase,
     private val fetchSongInsightUseCase: FetchSongInsightUseCase,
+    private val fetchSongMetadataFromAiUseCase: FetchSongMetadataFromAiUseCase,
+    private val updateSongMetadataUseCase: UpdateSongMetadataUseCase,
     private val observeFavoriteSongIdsUseCase: ObserveFavoriteSongIdsUseCase,
+    private val observeFavoriteVideoIdsUseCase: ObserveFavoriteVideoIdsUseCase,
     private val toggleFavoriteSongUseCase: ToggleFavoriteSongUseCase,
+    private val toggleFavoriteVideoUseCase: ToggleFavoriteVideoUseCase,
     private val remoteConfigValues: RemoteConfigValues,
     private val musicPreferences: MusicPreferences,
-    val playbackController: PlaybackController
+    private val app: Application,
+    val playbackController: PlaybackController,
+    private val videoPlaybackController: VideoPlaybackController,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PlayerUiState())
     val uiState: StateFlow<PlayerUiState> = _uiState.asStateFlow()
     private var lyricsFetchJob: Job? = null
     private var insightFetchJob: Job? = null
+    private var metadataAiFetchJob: Job? = null
+    private var metadataSaveJob: Job? = null
+    private var metadataWriteAccessConfirmed = false
     private var sessionRestored = false
     private var lastPersistedSongId: Long? = null
 
     init {
         playbackController.connect()
         observePlayerState()
+        observeVideoState()
         startPositionUpdater()
         loadSongsAndLastPlayed()
         viewModelScope.launch {
@@ -92,6 +129,11 @@ class PlayerViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
+            observeFavoriteVideoIdsUseCase().collect { ids ->
+                _uiState.update { it.copy(favoriteVideoIds = ids) }
+            }
+        }
+        viewModelScope.launch {
             musicPreferences.skipRemoveFromQueueConfirmation().collect { skip ->
                 _uiState.update { it.copy(skipRemoveFromQueueConfirmation = skip) }
             }
@@ -105,9 +147,28 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
+    private fun observeVideoState() {
+        viewModelScope.launch {
+            videoPlaybackController.state.collectLatest { state ->
+                _uiState.update {
+                    it.copy(
+                        activeVideo = state.currentVideo,
+                        videoQueue = videoPlaybackController.getPlaylist(),
+                        videoIsPlaying = state.isPlaying,
+                        videoDuration = state.duration,
+                        videoFullscreen = state.isFullscreen,
+                    )
+                }
+            }
+        }
+    }
+
     private fun observePlayerState() {
         viewModelScope.launch {
             playbackController.playerState.collectLatest { state ->
+                if (state.isPlaying && _uiState.value.activeVideo != null) {
+                    videoPlaybackController.clearVideo()
+                }
                 _uiState.update { current ->
                     val oldId = current.playerState.currentSong?.id
                     val newId = state.currentSong?.id
@@ -115,16 +176,25 @@ class PlayerViewModel @Inject constructor(
                     if (songChanged) {
                         lyricsFetchJob?.cancel()
                         insightFetchJob?.cancel()
+                        metadataAiFetchJob?.cancel()
+                        metadataSaveJob?.cancel()
+                        metadataWriteAccessConfirmed = false
                     }
                     current.copy(
                         playerState = state,
+                        playbackQueue = playbackController.getPlaylist(),
                         lyricsSheetVisible = if (songChanged) false else current.lyricsSheetVisible,
                         lyricsLoading = if (songChanged) false else current.lyricsLoading,
                         lyricsSearchingAlternatives = if (songChanged) false else current.lyricsSearchingAlternatives,
                         lyricsResult = if (songChanged) null else current.lyricsResult,
                         insightSheetVisible = if (songChanged) false else current.insightSheetVisible,
                         insightLoading = if (songChanged) false else current.insightLoading,
-                        insightResult = if (songChanged) null else current.insightResult
+                        insightResult = if (songChanged) null else current.insightResult,
+                        metadataEditorVisible = if (songChanged) false else current.metadataEditorVisible,
+                        metadataAiLoading = if (songChanged) false else current.metadataAiLoading,
+                        metadataSaving = if (songChanged) false else current.metadataSaving,
+                        metadataEditorError = if (songChanged) null else current.metadataEditorError,
+                        metadataWritePermissionRequest = if (songChanged) null else current.metadataWritePermissionRequest,
                     )
                 }
                 state.currentSong?.let { song ->
@@ -143,9 +213,14 @@ class PlayerViewModel @Inject constructor(
             var ticksSinceLastSave = 0
             while (true) {
                 delay(500L)
-                val position = playbackController.getCurrentPosition()
+                val activeVideo = _uiState.value.activeVideo
+                val position = if (activeVideo != null) {
+                    videoPlaybackController.getCurrentPosition()
+                } else {
+                    playbackController.getCurrentPosition()
+                }
                 _uiState.update { it.copy(currentPosition = position) }
-                if (playbackController.getCurrentSession() != null) {
+                if (activeVideo == null && playbackController.getCurrentSession() != null) {
                     ticksSinceLastSave++
                     if (ticksSinceLastSave >= 4) {
                         ticksSinceLastSave = 0
@@ -187,6 +262,10 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun togglePlayPause() {
+        if (_uiState.value.activeVideo != null) {
+            videoPlaybackController.togglePlayPause()
+            return
+        }
         val state = _uiState.value
         if (state.playerState.currentSong != null && state.songs.isNotEmpty()) {
             if (!state.playerState.isConnected) return
@@ -201,11 +280,38 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
-    fun next() = playbackController.next()
-    fun previous() = playbackController.previous()
-    fun seekTo(position: Long) = playbackController.seekTo(position)
+    fun next() {
+        if (_uiState.value.activeVideo != null) {
+            videoPlaybackController.next()
+        } else {
+            playbackController.next()
+        }
+    }
+
+    fun previous() {
+        if (_uiState.value.activeVideo != null) {
+            videoPlaybackController.previous()
+        } else {
+            playbackController.previous()
+        }
+    }
+
+    fun seekTo(position: Long) {
+        if (_uiState.value.activeVideo != null) {
+            videoPlaybackController.seekTo(position)
+        } else {
+            playbackController.seekTo(position)
+        }
+    }
+
     fun toggleShuffle() = playbackController.toggleShuffle()
     fun toggleRepeatMode() = playbackController.toggleRepeatMode()
+
+    fun setVideoFullscreen(fullscreen: Boolean) {
+        videoPlaybackController.setFullscreen(fullscreen)
+    }
+
+    fun getVideoPlayer() = videoPlaybackController.getPlayer()
 
     fun excludeCurrentSongFromLibrary() {
         viewModelScope.launch {
@@ -225,6 +331,13 @@ class PlayerViewModel @Inject constructor(
         val songId = _uiState.value.playerState.currentSong?.id ?: return
         viewModelScope.launch {
             toggleFavoriteSongUseCase(songId)
+        }
+    }
+
+    fun toggleFavoriteCurrentVideo() {
+        val videoId = _uiState.value.activeVideo?.id ?: return
+        viewModelScope.launch {
+            toggleFavoriteVideoUseCase(videoId)
         }
     }
 
@@ -344,6 +457,158 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
+    fun openMetadataEditor() {
+        val song = _uiState.value.playerState.currentSong ?: return
+        metadataAiFetchJob?.cancel()
+        metadataSaveJob?.cancel()
+        metadataWriteAccessConfirmed = false
+        _uiState.update {
+            it.copy(
+                metadataEditorVisible = true,
+                metadataEditorTitle = song.title,
+                metadataEditorArtist = song.artist,
+                metadataEditorAlbum = song.album,
+                metadataAiLoading = false,
+                metadataSaving = false,
+                metadataEditorError = null,
+            )
+        }
+    }
+
+    fun dismissMetadataEditor() {
+        metadataAiFetchJob?.cancel()
+        metadataSaveJob?.cancel()
+        metadataWriteAccessConfirmed = false
+        _uiState.update {
+            it.copy(
+                metadataEditorVisible = false,
+                metadataAiLoading = false,
+                metadataSaving = false,
+                metadataEditorError = null,
+                metadataWritePermissionRequest = null,
+            )
+        }
+    }
+
+    fun clearMetadataWritePermissionRequest() {
+        _uiState.update { it.copy(metadataWritePermissionRequest = null) }
+    }
+
+    fun onMetadataWritePermissionResult(granted: Boolean) {
+        clearMetadataWritePermissionRequest()
+        if (granted) {
+            metadataWriteAccessConfirmed = true
+            saveMetadataEdits()
+        } else {
+            metadataWriteAccessConfirmed = false
+            _uiState.update {
+                it.copy(
+                    metadataSaving = false,
+                    metadataEditorError = app.getString(R.string.metadata_permission_denied),
+                )
+            }
+        }
+    }
+
+    fun updateMetadataEditorTitle(value: String) {
+        _uiState.update { it.copy(metadataEditorTitle = value, metadataEditorError = null) }
+    }
+
+    fun updateMetadataEditorArtist(value: String) {
+        _uiState.update { it.copy(metadataEditorArtist = value, metadataEditorError = null) }
+    }
+
+    fun updateMetadataEditorAlbum(value: String) {
+        _uiState.update { it.copy(metadataEditorAlbum = value, metadataEditorError = null) }
+    }
+
+    fun fetchMetadataFromAi() {
+        val snapshot = _uiState.value
+        val song = snapshot.playerState.currentSong ?: return
+        if (!remoteConfigValues.isAiInsightEnabled()) {
+            _uiState.update {
+                it.copy(aiInsightEnabled = false)
+            }
+            return
+        }
+        metadataAiFetchJob?.cancel()
+        _uiState.update { it.copy(metadataAiLoading = true, metadataEditorError = null) }
+        metadataAiFetchJob = viewModelScope.launch {
+            when (val result = fetchSongMetadataFromAiUseCase(song)) {
+                is SongMetadataLookupResult.Success -> {
+                    _uiState.update {
+                        it.copy(
+                            metadataAiLoading = false,
+                            metadataEditorTitle = result.title,
+                            metadataEditorArtist = result.artist,
+                            metadataEditorAlbum = result.album,
+                        )
+                    }
+                }
+                is SongMetadataLookupResult.NotFound -> {
+                    _uiState.update {
+                        it.copy(metadataAiLoading = false, metadataEditorError = result.message)
+                    }
+                }
+                is SongMetadataLookupResult.Error -> {
+                    _uiState.update {
+                        it.copy(metadataAiLoading = false, metadataEditorError = result.message)
+                    }
+                }
+            }
+        }
+    }
+
+    fun saveMetadataEdits() {
+        val snapshot = _uiState.value
+        val song = snapshot.playerState.currentSong ?: return
+        metadataSaveJob?.cancel()
+        _uiState.update { it.copy(metadataSaving = true, metadataEditorError = null) }
+        metadataSaveJob = viewModelScope.launch {
+            val result = updateSongMetadataUseCase(
+                songId = song.id,
+                metadata = SongMetadataEdit(
+                    title = snapshot.metadataEditorTitle,
+                    artist = snapshot.metadataEditorArtist,
+                    album = snapshot.metadataEditorAlbum,
+                ),
+                writeAccessConfirmed = metadataWriteAccessConfirmed,
+            )
+            if (!isActive) return@launch
+            when (result) {
+                is UpdateSongMetadataResult.Success -> {
+                    metadataWriteAccessConfirmed = false
+                    playbackController.updateSongInPlaylist(result.updatedSong)
+                    val songs = getSongsUseCase()
+                    _uiState.update {
+                        it.copy(
+                            songs = songs,
+                            playbackQueue = playbackController.getPlaylist(),
+                            metadataSaving = false,
+                            metadataEditorVisible = false,
+                            metadataEditorError = null,
+                            metadataWritePermissionRequest = null,
+                        )
+                    }
+                }
+                is UpdateSongMetadataResult.NeedsWritePermission -> {
+                    _uiState.update {
+                        it.copy(
+                            metadataSaving = false,
+                            metadataWritePermissionRequest = result.intentSender,
+                        )
+                    }
+                }
+                is UpdateSongMetadataResult.Error -> {
+                    metadataWriteAccessConfirmed = false
+                    _uiState.update {
+                        it.copy(metadataSaving = false, metadataEditorError = result.message)
+                    }
+                }
+            }
+        }
+    }
+
     fun loadLyricsForLrcLibId(lrcLibId: Long) {
         lyricsFetchJob?.cancel()
         _uiState.update {
@@ -356,5 +621,10 @@ class PlayerViewModel @Inject constructor(
                 it.copy(lyricsLoading = false, lyricsResult = result)
             }
         }
+    }
+
+    override fun onCleared() {
+        videoPlaybackController.release()
+        super.onCleared()
     }
 }

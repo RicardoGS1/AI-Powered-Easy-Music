@@ -19,6 +19,9 @@
     <string name="cd_repeat">Tekrarla</string>
     <string name="cd_shuffle">Karıştır</string>
     <string name="cd_library">Kütüphane</string>
+    <string name="cd_video_library">Video kütüphanesi</string>
+    <string name="cd_fullscreen">Tam ekran</string>
+    <string name="cd_exit_fullscreen">Tam ekrandan çık</string>
     <string name="cd_hide_extra_controls">Ekstra kontrolleri gizle</string>
     <string name="cd_show_extra_controls">Ekstra kontrolleri göster</string>
     <string name="cd_equalizer">Ekolayzır</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">Sanatçı bulunamadı</string>
     <string name="no_favorites_yet">Henüz favoriniz yok. Oynatıcıdaki kalp ile işaretleyin.</string>
     <string name="search_placeholder">Şarkı, albüm veya sanatçı ara</string>
+    <string name="video_library_title">Videolar</string>
+    <string name="video_library_empty">Bu cihazda video bulunamadı</string>
+    <string name="video_search_hint">Video ara…</string>
+    <string name="video_local">Yerel video</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">Aramayı kapat</string>
     <string name="cd_back">Geri</string>
     <string name="play_all">Tümünü çal</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">Bilinmeyen sanatçı</string>
     <string name="unknown_album">Bilinmeyen albüm</string>
 
-    <string name="permission_message">Müziğinizi çalmak için erişim izni gerekiyor</string>
+    <string name="permission_message">Oynatmak için müziğinize ve videolarınıza erişmemiz gerekiyor</string>
     <string name="grant_permission">İzin ver</string>
     <string name="artist_songs_albums">%1$d şarkı · %2$d albüm</string>
     <string name="preset_flat">Düz</string>

@@ -19,6 +19,9 @@
     <string name="cd_repeat">Répéter</string>
     <string name="cd_shuffle">Aléatoire</string>
     <string name="cd_library">Bibliothèque</string>
+    <string name="cd_video_library">Bibliothèque vidéo</string>
+    <string name="cd_fullscreen">Plein écran</string>
+    <string name="cd_exit_fullscreen">Quitter le plein écran</string>
     <string name="cd_hide_extra_controls">Masquer les contrôles supplémentaires</string>
     <string name="cd_show_extra_controls">Afficher les contrôles supplémentaires</string>
     <string name="cd_equalizer">Égaliseur</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">Aucun artiste trouvé</string>
     <string name="no_favorites_yet">Tu n\'as pas encore de favoris. Marque-les avec le cœur dans le lecteur.</string>
     <string name="search_placeholder">Rechercher des morceaux, albums ou artistes</string>
+    <string name="video_library_title">Vidéos</string>
+    <string name="video_library_empty">Aucune vidéo trouvée sur cet appareil</string>
+    <string name="video_search_hint">Rechercher des vidéos…</string>
+    <string name="video_local">Vidéo locale</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">Fermer la recherche</string>
     <string name="cd_back">Retour</string>
     <string name="play_all">Tout lire</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">Artiste inconnu</string>
     <string name="unknown_album">Album inconnu</string>
 
-    <string name="permission_message">Nous avons besoin d\'accéder à ta musique pour la lire</string>
+    <string name="permission_message">Nous avons besoin d\'accéder à votre musique et à vos vidéos pour les lire</string>
     <string name="grant_permission">Accorder la permission</string>
     <string name="artist_songs_albums">%1$d morceaux · %2$d albums</string>
     <string name="preset_flat">Plat</string>

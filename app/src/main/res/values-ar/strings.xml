@@ -19,6 +19,9 @@
     <string name="cd_repeat">تكرار</string>
     <string name="cd_shuffle">عشوائي</string>
     <string name="cd_library">المكتبة</string>
+    <string name="cd_video_library">مكتبة الفيديو</string>
+    <string name="cd_fullscreen">ملء الشاشة</string>
+    <string name="cd_exit_fullscreen">الخروج من ملء الشاشة</string>
     <string name="cd_hide_extra_controls">إخفاء عناصر التحكم الإضافية</string>
     <string name="cd_show_extra_controls">إظهار عناصر التحكم الإضافية</string>
     <string name="cd_equalizer">المعادل الصوتي</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">لم يتم العثور على فنانين</string>
     <string name="no_favorites_yet">ليس لديك مفضلات بعد. ضع علامة عليها بالقلب في المشغّل.</string>
     <string name="search_placeholder">بحث عن أغانٍ أو ألبومات أو فنانين</string>
+    <string name="video_library_title">فيديوهات</string>
+    <string name="video_library_empty">لم يتم العثور على فيديوهات على هذا الجهاز</string>
+    <string name="video_search_hint">البحث عن فيديوهات…</string>
+    <string name="video_local">فيديو محلي</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">إغلاق البحث</string>
     <string name="cd_back">رجوع</string>
     <string name="play_all">تشغيل الكل</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">فنان غير معروف</string>
     <string name="unknown_album">ألبوم غير معروف</string>
 
-    <string name="permission_message">نحتاج الوصول إلى موسيقاك لتشغيلها</string>
+    <string name="permission_message">نحتاج إلى الوصول إلى الموسيقى والفيديو لتشغيلها</string>
     <string name="grant_permission">منح الإذن</string>
     <string name="artist_songs_albums">%1$d أغانٍ · %2$d ألبومات</string>
     <string name="preset_flat">مسطح</string>

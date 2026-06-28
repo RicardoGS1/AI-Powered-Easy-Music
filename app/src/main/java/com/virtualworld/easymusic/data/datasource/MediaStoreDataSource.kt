@@ -1,8 +1,10 @@
 package com.virtualworld.easymusic.data.datasource
 
 import android.app.Application
+import android.app.RecoverableSecurityException
 import android.content.ContentResolver
 import android.content.ContentUris
+import android.content.ContentValues
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -10,6 +12,7 @@ import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.domain.model.Album
 import com.virtualworld.easymusic.domain.model.Artist
 import com.virtualworld.easymusic.domain.model.Song
+import com.virtualworld.easymusic.domain.model.SongMetadataEdit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -18,7 +21,8 @@ import javax.inject.Singleton
 @Singleton
 class MediaStoreDataSource @Inject constructor(
     private val contentResolver: ContentResolver,
-    private val app: Application
+    private val app: Application,
+    private val audioMetadataTagWriter: AudioMetadataTagWriter,
 ) {
 
     private fun songSelection(extra: String = ""): String {
@@ -217,5 +221,131 @@ class MediaStoreDataSource @Inject constructor(
         }
 
         songs
+    }
+
+    suspend fun querySongById(songId: Long): Song? = withContext(Dispatchers.IO) {
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+        } else {
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        }
+        val projection = arrayOf(
+            MediaStore.Audio.Media._ID,
+            MediaStore.Audio.Media.TITLE,
+            MediaStore.Audio.Media.ARTIST,
+            MediaStore.Audio.Media.ALBUM,
+            MediaStore.Audio.Media.ALBUM_ID,
+            MediaStore.Audio.Media.DURATION,
+        )
+        val selection = "${MediaStore.Audio.Media._ID} = ?"
+        val selectionArgs = arrayOf(songId.toString())
+
+        contentResolver.query(collection, projection, selection, selectionArgs, null)?.use { cursor ->
+            if (!cursor.moveToFirst()) return@use null
+            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+            val titleColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
+            val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
+            val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
+            val albumIdColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
+            val durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
+
+            val id = cursor.getLong(idColumn)
+            val albumId = cursor.getLong(albumIdColumn)
+            val contentUri = ContentUris.withAppendedId(collection, id)
+            val albumArtUri = ContentUris.withAppendedId(
+                Uri.parse("content://media/external/audio/albumart"),
+                albumId,
+            )
+            Song(
+                id = id,
+                title = cursor.getString(titleColumn) ?: app.getString(R.string.unknown),
+                artist = cursor.getString(artistColumn) ?: app.getString(R.string.unknown_artist),
+                album = cursor.getString(albumColumn) ?: app.getString(R.string.unknown_album),
+                albumId = albumId,
+                duration = cursor.getLong(durationColumn),
+                uri = contentUri,
+                albumArtUri = albumArtUri,
+            )
+        }
+    }
+
+    suspend fun updateSongMetadata(
+        songId: Long,
+        metadata: SongMetadataEdit,
+        writeAccessConfirmed: Boolean = false,
+    ): SongMetadataUpdateAttempt = withContext(Dispatchers.IO) {
+        val uri = audioContentUri(songId)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !writeAccessConfirmed) {
+            return@withContext SongMetadataUpdateAttempt.PermissionRequired(
+                MediaStore.createWriteRequest(contentResolver, listOf(uri)).intentSender,
+            )
+        }
+
+        try {
+            if (!audioMetadataTagWriter.writeTags(uri, metadata)) {
+                return@withContext if (!writeAccessConfirmed && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    permissionRequiredFor(uri)
+                } else {
+                    SongMetadataUpdateAttempt.Failed
+                }
+            }
+
+            syncMediaStoreIndex(uri, metadata)
+            SongMetadataUpdateAttempt.Updated
+        } catch (e: RecoverableSecurityException) {
+            if (writeAccessConfirmed) {
+                SongMetadataUpdateAttempt.Failed
+            } else {
+                SongMetadataUpdateAttempt.PermissionRequired(
+                    e.userAction.actionIntent.intentSender,
+                )
+            }
+        } catch (_: SecurityException) {
+            if (writeAccessConfirmed) {
+                SongMetadataUpdateAttempt.Failed
+            } else {
+                permissionRequiredFor(uri)
+            }
+        }
+    }
+
+    private fun audioContentUri(songId: Long): Uri {
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+        } else {
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        }
+        return ContentUris.withAppendedId(collection, songId)
+    }
+
+    private fun permissionRequiredFor(uri: Uri): SongMetadataUpdateAttempt {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            SongMetadataUpdateAttempt.PermissionRequired(
+                MediaStore.createWriteRequest(contentResolver, listOf(uri)).intentSender,
+            )
+        } else {
+            SongMetadataUpdateAttempt.Failed
+        }
+    }
+
+    private fun syncMediaStoreIndex(uri: Uri, metadata: SongMetadataEdit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val pending = ContentValues().apply {
+                put(MediaStore.Audio.Media.IS_PENDING, 1)
+            }
+            contentResolver.update(uri, pending, null, null)
+        }
+
+        val values = ContentValues().apply {
+            put(MediaStore.Audio.Media.TITLE, metadata.title.trim())
+            put(MediaStore.Audio.Media.ARTIST, metadata.artist.trim())
+            put(MediaStore.Audio.Media.ALBUM, metadata.album.trim())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                put(MediaStore.Audio.Media.IS_PENDING, 0)
+            }
+        }
+        contentResolver.update(uri, values, null, null)
+        contentResolver.notifyChange(uri, null)
     }
 }

@@ -30,6 +30,7 @@ class MusicPreferences @Inject constructor(
         val LAST_PLAYED_SONG_ID = longPreferencesKey("last_played_song_id")
         val EXCLUDED_SONG_IDS = stringSetPreferencesKey("excluded_song_ids")
         val FAVORITE_SONG_IDS = stringSetPreferencesKey("favorite_song_ids")
+        val FAVORITE_VIDEO_IDS = stringSetPreferencesKey("favorite_video_ids")
         val SKIP_REMOVE_FROM_QUEUE_CONFIRMATION =
             booleanPreferencesKey("skip_remove_from_queue_confirmation")
         val PLAYBACK_QUEUE_IDS = stringPreferencesKey("playback_queue_ids")
@@ -142,6 +143,19 @@ class MusicPreferences @Inject constructor(
         context.dataStore.edit { prefs ->
             val current = prefs[FAVORITE_SONG_IDS] ?: emptySet()
             prefs[FAVORITE_SONG_IDS] = current - songId.toString()
+        }
+    }
+
+    fun favoriteVideoIds(): Flow<Set<Long>> =
+        context.dataStore.data.map { prefs ->
+            prefs[FAVORITE_VIDEO_IDS]?.mapNotNull { it.toLongOrNull() }?.toSet() ?: emptySet()
+        }
+
+    suspend fun toggleFavoriteVideoId(videoId: Long) {
+        context.dataStore.edit { prefs ->
+            val current = prefs[FAVORITE_VIDEO_IDS] ?: emptySet()
+            val id = videoId.toString()
+            prefs[FAVORITE_VIDEO_IDS] = if (id in current) current - id else current + id
         }
     }
 }

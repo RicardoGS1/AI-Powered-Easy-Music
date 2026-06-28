@@ -19,6 +19,9 @@
     <string name="cd_repeat">दोहराएं</string>
     <string name="cd_shuffle">शफ़ल</string>
     <string name="cd_library">लाइब्रेरी</string>
+    <string name="cd_video_library">वीडियो लाइbrary</string>
+    <string name="cd_fullscreen">पूर्ण स्क्रीन</string>
+    <string name="cd_exit_fullscreen">पूर्ण स्क्रीन से बाहर निकलें</string>
     <string name="cd_hide_extra_controls">अतिरिक्त नियंत्रण छुपाएं</string>
     <string name="cd_show_extra_controls">अतिरिक्त नियंत्रण दिखाएं</string>
     <string name="cd_equalizer">इक्वलाइज़र</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">कोई कलाकार नहीं मिला</string>
     <string name="no_favorites_yet">आपके अभी तक कोई पसंदीदा नहीं हैं। प्लेयर में दिल से चिह्नित करें।</string>
     <string name="search_placeholder">गाने, एल्बम या कलाकार खोजें</string>
+    <string name="video_library_title">वीडियो</string>
+    <string name="video_library_empty">इस डिवाइस पर कोई वीडियो नहीं मिला</string>
+    <string name="video_search_hint">वीडियो खोजें…</string>
+    <string name="video_local">स्थानीय वीडियो</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">खोज बंद करें</string>
     <string name="cd_back">वापस</string>
     <string name="play_all">सभी चलाएं</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">अज्ञात कलाकार</string>
     <string name="unknown_album">अज्ञात एल्बम</string>
 
-    <string name="permission_message">आपका संगीत चलाने के लिए हमें एक्सेस चाहिए</string>
+    <string name="permission_message">चलाने के लिए हमें आपके संगीत और वीडियो तक पहुंच चाहिए</string>
     <string name="grant_permission">अनुमति दें</string>
     <string name="artist_songs_albums">%1$d गाने · %2$d एल्बम</string>
     <string name="preset_flat">समतल</string>

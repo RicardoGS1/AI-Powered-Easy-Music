@@ -19,6 +19,9 @@
     <string name="cd_repeat">重复</string>
     <string name="cd_shuffle">随机</string>
     <string name="cd_library">音乐库</string>
+    <string name="cd_video_library">视频库</string>
+    <string name="cd_fullscreen">全屏</string>
+    <string name="cd_exit_fullscreen">退出全屏</string>
     <string name="cd_hide_extra_controls">隐藏额外控制</string>
     <string name="cd_show_extra_controls">显示额外控制</string>
     <string name="cd_equalizer">均衡器</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">未找到艺术家</string>
     <string name="no_favorites_yet">您还没有收藏。在播放器中用心形标记。</string>
     <string name="search_placeholder">搜索歌曲、专辑或艺术家</string>
+    <string name="video_library_title">视频</string>
+    <string name="video_library_empty">此设备上未找到视频</string>
+    <string name="video_search_hint">搜索视频…</string>
+    <string name="video_local">本地视频</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">关闭搜索</string>
     <string name="cd_back">返回</string>
     <string name="play_all">全部播放</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">未知艺术家</string>
     <string name="unknown_album">未知专辑</string>
 
-    <string name="permission_message">我们需要访问您的音乐才能播放</string>
+    <string name="permission_message">我们需要访问您的音乐和视频才能播放</string>
     <string name="grant_permission">授予权限</string>
     <string name="artist_songs_albums">%1$d首歌曲 · %2$d张专辑</string>
     <string name="preset_flat">平坦</string>

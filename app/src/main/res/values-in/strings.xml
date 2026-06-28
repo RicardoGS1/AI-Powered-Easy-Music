@@ -19,6 +19,9 @@
     <string name="cd_repeat">Ulangi</string>
     <string name="cd_shuffle">Acak</string>
     <string name="cd_library">Perpustakaan</string>
+    <string name="cd_video_library">Perpustakaan video</string>
+    <string name="cd_fullscreen">Layar penuh</string>
+    <string name="cd_exit_fullscreen">Keluar layar penuh</string>
     <string name="cd_hide_extra_controls">Sembunyikan kontrol tambahan</string>
     <string name="cd_show_extra_controls">Tampilkan kontrol tambahan</string>
     <string name="cd_equalizer">Equalizer</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">Tidak ada artis ditemukan</string>
     <string name="no_favorites_yet">Anda belum memiliki favorit. Tandai dengan hati di pemutar.</string>
     <string name="search_placeholder">Cari lagu, album, atau artis</string>
+    <string name="video_library_title">Video</string>
+    <string name="video_library_empty">Tidak ada video di perangkat ini</string>
+    <string name="video_search_hint">Cari video…</string>
+    <string name="video_local">Video lokal</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">Tutup pencarian</string>
     <string name="cd_back">Kembali</string>
     <string name="play_all">Putar semua</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">Artis tidak dikenal</string>
     <string name="unknown_album">Album tidak dikenal</string>
 
-    <string name="permission_message">Kami memerlukan akses ke musik Anda untuk memutarnya</string>
+    <string name="permission_message">Kami memerlukan akses ke musik dan video Anda untuk memutarnya</string>
     <string name="grant_permission">Berikan izin</string>
     <string name="artist_songs_albums">%1$d lagu · %2$d album</string>
     <string name="preset_flat">Datar</string>

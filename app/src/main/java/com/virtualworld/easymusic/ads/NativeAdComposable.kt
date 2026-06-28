@@ -41,10 +41,16 @@ fun LibraryNativeListAd(
                 LayoutInflater.from(context)
                     .inflate(R.layout.native_ad_list_item, null, false) as NativeAdView
             },
+            onReset = { adView ->
+                adView.setTag(R.id.native_ad_bound, null)
+            },
+            onRelease = { adView ->
+                adView.setTag(R.id.native_ad_bound, null)
+            },
             update = { adView ->
-                if (adView.tag != ad) {
+                if (adView.getTag(R.id.native_ad_bound) != ad) {
                     NativeAdPopulator.populateListItem(ad, adView)
-                    adView.tag = ad
+                    adView.setTag(R.id.native_ad_bound, ad)
                 }
             },
         )
@@ -106,7 +112,7 @@ private fun rememberLoadedNativeAd(): NativeAd? {
             .withNativeAdOptions(
                 NativeAdOptions.Builder()
                     .setAdChoicesPlacement(NativeAdOptions.ADCHOICES_TOP_RIGHT)
-                    .setMediaAspectRatio(NativeAdOptions.NATIVE_MEDIA_ASPECT_RATIO_SQUARE)
+                    .setMediaAspectRatio(NativeAdOptions.NATIVE_MEDIA_ASPECT_RATIO_ANY)
                     .build(),
             )
             .build()

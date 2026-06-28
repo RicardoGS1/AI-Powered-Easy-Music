@@ -109,6 +109,7 @@ dependencies {
 
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.session)
+    implementation(libs.media3.ui.compose)
 
     implementation(libs.coil.compose)
 
@@ -117,6 +118,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp)
+    implementation(libs.jaudiotagger)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)

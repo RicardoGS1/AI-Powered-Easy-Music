@@ -79,6 +79,9 @@ class MusicPlaybackService : MediaSessionService() {
         if (sessionId == C.AUDIO_SESSION_ID_UNSET || sessionId == 0) return
         MusicPlaybackService.audioSessionId = sessionId
         equalizerManager.initialize(sessionId)
+        if (::playbackController.isInitialized) {
+            playbackController.notifyAudioSessionId(sessionId)
+        }
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? {

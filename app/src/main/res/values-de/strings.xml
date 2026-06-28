@@ -19,6 +19,9 @@
     <string name="cd_repeat">Wiederholen</string>
     <string name="cd_shuffle">Zufällig</string>
     <string name="cd_library">Bibliothek</string>
+    <string name="cd_video_library">Videobibliothek</string>
+    <string name="cd_fullscreen">Vollbild</string>
+    <string name="cd_exit_fullscreen">Vollbild beenden</string>
     <string name="cd_hide_extra_controls">Zusätzliche Steuerung ausblenden</string>
     <string name="cd_show_extra_controls">Zusätzliche Steuerung einblenden</string>
     <string name="cd_equalizer">Equalizer</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">Keine Künstler gefunden</string>
     <string name="no_favorites_yet">Du hast noch keine Favoriten. Markiere sie mit dem Herz im Player.</string>
     <string name="search_placeholder">Lieder, Alben oder Künstler suchen</string>
+    <string name="video_library_title">Videos</string>
+    <string name="video_library_empty">Keine Videos auf diesem Gerät gefunden</string>
+    <string name="video_search_hint">Videos suchen…</string>
+    <string name="video_local">Lokales Video</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">Suche schließen</string>
     <string name="cd_back">Zurück</string>
     <string name="play_all">Alle abspielen</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">Unbekannter Künstler</string>
     <string name="unknown_album">Unbekanntes Album</string>
 
-    <string name="permission_message">Wir benötigen Zugriff auf deine Musik, um sie abzuspielen</string>
+    <string name="permission_message">Wir benötigen Zugriff auf Ihre Musik und Videos, um sie abzuspielen</string>
     <string name="grant_permission">Berechtigung erteilen</string>
     <string name="artist_songs_albums">%1$d Lieder · %2$d Alben</string>
     <string name="preset_flat">Flach</string>

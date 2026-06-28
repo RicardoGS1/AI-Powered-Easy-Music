@@ -4,6 +4,8 @@ import com.virtualworld.easymusic.domain.model.Album
 import com.virtualworld.easymusic.domain.model.Artist
 import com.virtualworld.easymusic.domain.model.PlaybackSession
 import com.virtualworld.easymusic.domain.model.Song
+import com.virtualworld.easymusic.domain.model.SongMetadataEdit
+import com.virtualworld.easymusic.domain.model.UpdateSongMetadataResult
 import kotlinx.coroutines.flow.Flow
 
 interface MusicRepository {
@@ -19,4 +21,10 @@ interface MusicRepository {
     fun excludedSongIds(): Flow<Set<Long>>
     suspend fun toggleFavoriteSong(songId: Long)
     fun favoriteSongIds(): Flow<Set<Long>>
+    suspend fun updateSongMetadata(
+        songId: Long,
+        metadata: SongMetadataEdit,
+        writeAccessConfirmed: Boolean = false,
+    ): UpdateSongMetadataResult
+    fun invalidateSongsCache()
 }

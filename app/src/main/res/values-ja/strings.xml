@@ -19,6 +19,9 @@
     <string name="cd_repeat">リピート</string>
     <string name="cd_shuffle">シャッフル</string>
     <string name="cd_library">ライブラリ</string>
+    <string name="cd_video_library">動画ライブラリ</string>
+    <string name="cd_fullscreen">全画面</string>
+    <string name="cd_exit_fullscreen">全画面を終了</string>
     <string name="cd_hide_extra_controls">追加コントロールを非表示</string>
     <string name="cd_show_extra_controls">追加コントロールを表示</string>
     <string name="cd_equalizer">イコライザー</string>
@@ -63,6 +66,13 @@
     <string name="no_artists_found">アーティストが見つかりません</string>
     <string name="no_favorites_yet">まだお気に入りがありません。プレーヤーでハートマークを付けてください。</string>
     <string name="search_placeholder">曲、アルバム、アーティストを検索</string>
+    <string name="video_library_title">動画</string>
+    <string name="video_library_empty">このデバイスに動画が見つかりません</string>
+    <string name="video_search_hint">動画を検索…</string>
+    <string name="video_local">ローカル動画</string>
+    <string name="video_tab_all">All videos</string>
+    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
+    <string name="no_videos_found">No videos found</string>
     <string name="cd_close_search">検索を閉じる</string>
     <string name="cd_back">戻る</string>
     <string name="play_all">すべて再生</string>
@@ -90,7 +100,7 @@
     <string name="unknown_artist">不明なアーティスト</string>
     <string name="unknown_album">不明なアルバム</string>
 
-    <string name="permission_message">音楽を再生するにはアクセス許可が必要です</string>
+    <string name="permission_message">再生するために音楽と動画へのアクセスが必要です</string>
     <string name="grant_permission">許可する</string>
     <string name="artist_songs_albums">%1$d曲 · %2$dアルバム</string>
     <string name="preset_flat">フラット</string>

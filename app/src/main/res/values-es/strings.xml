@@ -18,7 +18,10 @@
     <string name="cd_volume">Volumen</string>
     <string name="cd_repeat">Repetir</string>
     <string name="cd_shuffle">Aleatorio</string>
-    <string name="cd_library">Biblioteca</string>
+    <string name="cd_library">Mi música</string>
+    <string name="cd_video_library">Mis videos</string>
+    <string name="cd_fullscreen">Pantalla completa</string>
+    <string name="cd_exit_fullscreen">Salir de pantalla completa</string>
     <string name="cd_hide_extra_controls">Ocultar controles extra</string>
     <string name="cd_show_extra_controls">Mostrar controles extra</string>
     <string name="cd_equalizer">Ecualizador</string>
@@ -32,6 +35,9 @@
     <string name="cd_pause">Pausar</string>
     <string name="cd_play">Reproducir</string>
     <string name="cd_next">Siguiente</string>
+    <string name="player_label_more">Más</string>
+    <string name="player_label_less">Menos</string>
+    <string name="press_back_again_to_exit">Pulsa atrás de nuevo para salir. Se detendrá la música.</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">Datos de la canción</string>
@@ -42,6 +48,19 @@
     <string name="insight_fun_fact">Dato curioso</string>
     <string name="insight_similar_artists">Artistas o temas similares</string>
     <string name="no_data">Sin datos.</string>
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">Editar metadatos de la canción</string>
+    <string name="cd_metadata_ai_fill">Rellenar metadatos con IA</string>
+    <string name="metadata_editor_title">Editar metadatos</string>
+    <string name="metadata_field_title">Título</string>
+    <string name="metadata_field_artist">Artista</string>
+    <string name="metadata_field_album">Álbum</string>
+    <string name="metadata_save">Guardar</string>
+    <string name="metadata_fields_required">Título, artista y álbum son obligatorios.</string>
+    <string name="metadata_save_failed">No se pudieron guardar los metadatos. Comprueba que la app pueda modificar este archivo.</string>
+    <string name="metadata_ai_not_found">La IA no pudo identificar esta canción con suficiente confianza.</string>
+    <string name="metadata_permission_denied">Permiso de escritura denegado. No se pudo modificar este archivo.</string>
 
     <!-- Lyrics -->
     <string name="lyrics">Letra</string>
@@ -63,6 +82,13 @@
     <string name="no_artists_found">No se encontraron artistas</string>
     <string name="no_favorites_yet">Aún no tienes favoritos. Márcalos con el corazón en el reproductor.</string>
     <string name="search_placeholder">Buscar canciones, álbumes o artistas</string>
+    <string name="video_library_title">Vídeos</string>
+    <string name="video_tab_all">Todos</string>
+    <string name="video_library_empty">No se encontraron vídeos en este dispositivo</string>
+    <string name="video_search_hint">Buscar vídeos…</string>
+    <string name="video_local">Vídeo local</string>
+    <string name="no_video_favorites_yet">Aún no tienes vídeos favoritos. Márcalos con el corazón en el reproductor o la biblioteca.</string>
+    <string name="no_videos_found">No se encontraron vídeos</string>
     <string name="cd_close_search">Cerrar búsqueda</string>
     <string name="cd_back">Volver</string>
     <string name="play_all">Reproducir todo</string>
@@ -92,7 +118,7 @@
     <string name="unknown_album">Álbum desconocido</string>
 
     <!-- Permission screen -->
-    <string name="permission_message">Necesitamos acceso a tu música para poder reproducirla</string>
+    <string name="permission_message">Necesitamos acceso a tu música y vídeos para poder reproducirlos</string>
     <string name="grant_permission">Conceder permiso</string>
 
     <!-- AlbumItem / ArtistItem -->
