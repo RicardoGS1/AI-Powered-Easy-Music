@@ -50,6 +50,7 @@ import com.virtualworld.easymusic.ui.theme.TextGray
 import com.virtualworld.easymusic.ui.theme.TextWhite
 import com.virtualworld.easymusic.domain.usecase.SavePlaybackSessionUseCase
 import com.virtualworld.easymusic.playback.PlaybackController
+import com.virtualworld.easymusic.playback.VideoPlaybackController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -59,6 +60,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var playbackController: PlaybackController
+
+    @Inject
+    lateinit var videoPlaybackController: VideoPlaybackController
 
     @Inject
     lateinit var savePlaybackSessionUseCase: SavePlaybackSessionUseCase
@@ -85,6 +89,7 @@ class MainActivity : AppCompatActivity() {
                 runBlocking { savePlaybackSessionUseCase(session) }
             }
             playbackController.stopPlaybackAndRelease()
+            videoPlaybackController.stopPlaybackAndRelease()
         }
         super.onDestroy()
     }

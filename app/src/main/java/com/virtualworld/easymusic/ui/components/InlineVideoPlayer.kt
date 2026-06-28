@@ -7,9 +7,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.media3.common.C
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -26,31 +23,12 @@ fun InlineVideoPlayer(
     useTextureView: Boolean = false,
     contentScale: ContentScale = ContentScale.Crop,
 ) {
-    val lifecycleOwner = LocalLifecycleOwner.current
     val videoScalingMode = when (contentScale) {
         ContentScale.Crop,
         ContentScale.FillBounds,
         ContentScale.FillHeight,
         ContentScale.FillWidth -> C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
         else -> C.VIDEO_SCALING_MODE_SCALE_TO_FIT
-    }
-
-    DisposableEffect(lifecycleOwner, player) {
-        val observer = LifecycleEventObserver { _, event ->
-            when (event) {
-                Lifecycle.Event.ON_STOP -> player?.pause()
-                Lifecycle.Event.ON_START -> {
-                    if (player?.playWhenReady == true) {
-                        player.play()
-                    }
-                }
-                else -> Unit
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
     }
 
     DisposableEffect(player, videoScalingMode) {

@@ -61,6 +61,8 @@
     <string name="metadata_save_failed">Could not save metadata. Check that the app can modify this file.</string>
     <string name="metadata_ai_not_found">AI could not identify this song with enough confidence.</string>
     <string name="metadata_permission_denied">Write permission denied. Could not modify this file.</string>
+    <string name="video_title_editor_title">Edit video title</string>
+    <string name="video_title_required">Title is required.</string>
 
     <!-- Lyrics -->
     <string name="lyrics">Lyrics</string>

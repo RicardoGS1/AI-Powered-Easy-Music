@@ -64,6 +64,17 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".playback.VideoPlaybackService"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback"
+            android:stopWithTask="true"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaSessionService" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

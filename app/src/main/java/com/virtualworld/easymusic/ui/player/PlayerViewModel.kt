@@ -11,6 +11,7 @@ import com.virtualworld.easymusic.domain.model.SongMetadataEdit
 import com.virtualworld.easymusic.domain.model.SongMetadataLookupResult
 import com.virtualworld.easymusic.domain.model.SongInsightResult
 import com.virtualworld.easymusic.domain.model.UpdateSongMetadataResult
+import com.virtualworld.easymusic.domain.model.UpdateVideoTitleResult
 import com.virtualworld.easymusic.data.preferences.MusicPreferences
 import com.virtualworld.easymusic.domain.usecase.ExcludeSongFromLibraryUseCase
 import com.virtualworld.easymusic.domain.usecase.FetchSongInsightUseCase
@@ -25,11 +26,13 @@ import com.virtualworld.easymusic.domain.usecase.SavePlaybackSessionUseCase
 import com.virtualworld.easymusic.domain.usecase.ToggleFavoriteSongUseCase
 import com.virtualworld.easymusic.domain.usecase.ToggleFavoriteVideoUseCase
 import com.virtualworld.easymusic.domain.usecase.UpdateSongMetadataUseCase
+import com.virtualworld.easymusic.domain.usecase.UpdateVideoTitleUseCase
 import com.virtualworld.easymusic.firebase.RemoteConfigValues
 import com.virtualworld.easymusic.R
 import com.virtualworld.easymusic.playback.PlaybackController
 import com.virtualworld.easymusic.playback.PlayerState
 import com.virtualworld.easymusic.playback.VideoPlaybackController
+import androidx.media3.common.Player
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -66,6 +69,7 @@ data class PlayerUiState(
     val videoIsPlaying: Boolean = false,
     val videoDuration: Long = 0L,
     val videoFullscreen: Boolean = false,
+    val videoPlayer: Player? = null,
     val metadataEditorVisible: Boolean = false,
     val metadataEditorTitle: String = "",
     val metadataEditorArtist: String = "",
@@ -74,6 +78,11 @@ data class PlayerUiState(
     val metadataSaving: Boolean = false,
     val metadataEditorError: String? = null,
     val metadataWritePermissionRequest: IntentSender? = null,
+    val videoTitleEditorVisible: Boolean = false,
+    val videoTitleEditorTitle: String = "",
+    val videoTitleSaving: Boolean = false,
+    val videoTitleEditorError: String? = null,
+    val videoTitleWritePermissionRequest: IntentSender? = null,
 )
 
 @HiltViewModel
@@ -87,6 +96,7 @@ class PlayerViewModel @Inject constructor(
     private val fetchSongInsightUseCase: FetchSongInsightUseCase,
     private val fetchSongMetadataFromAiUseCase: FetchSongMetadataFromAiUseCase,
     private val updateSongMetadataUseCase: UpdateSongMetadataUseCase,
+    private val updateVideoTitleUseCase: UpdateVideoTitleUseCase,
     private val observeFavoriteSongIdsUseCase: ObserveFavoriteSongIdsUseCase,
     private val observeFavoriteVideoIdsUseCase: ObserveFavoriteVideoIdsUseCase,
     private val toggleFavoriteSongUseCase: ToggleFavoriteSongUseCase,
@@ -105,11 +115,14 @@ class PlayerViewModel @Inject constructor(
     private var metadataAiFetchJob: Job? = null
     private var metadataSaveJob: Job? = null
     private var metadataWriteAccessConfirmed = false
+    private var videoTitleSaveJob: Job? = null
+    private var videoTitleWriteAccessConfirmed = false
     private var sessionRestored = false
     private var lastPersistedSongId: Long? = null
 
     init {
         playbackController.connect()
+        videoPlaybackController.connect()
         observePlayerState()
         observeVideoState()
         startPositionUpdater()
@@ -150,13 +163,25 @@ class PlayerViewModel @Inject constructor(
     private fun observeVideoState() {
         viewModelScope.launch {
             videoPlaybackController.state.collectLatest { state ->
-                _uiState.update {
-                    it.copy(
+                _uiState.update { current ->
+                    val oldId = current.activeVideo?.id
+                    val newId = state.currentVideo?.id
+                    val videoChanged = oldId != null && oldId != newId
+                    if (videoChanged) {
+                        videoTitleSaveJob?.cancel()
+                        videoTitleWriteAccessConfirmed = false
+                    }
+                    current.copy(
                         activeVideo = state.currentVideo,
                         videoQueue = videoPlaybackController.getPlaylist(),
                         videoIsPlaying = state.isPlaying,
                         videoDuration = state.duration,
                         videoFullscreen = state.isFullscreen,
+                        videoPlayer = if (state.isConnected) videoPlaybackController.getPlayer() else null,
+                        videoTitleEditorVisible = if (videoChanged) false else current.videoTitleEditorVisible,
+                        videoTitleSaving = if (videoChanged) false else current.videoTitleSaving,
+                        videoTitleEditorError = if (videoChanged) null else current.videoTitleEditorError,
+                        videoTitleWritePermissionRequest = if (videoChanged) null else current.videoTitleWritePermissionRequest,
                     )
                 }
             }
@@ -623,8 +648,98 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
-    override fun onCleared() {
-        videoPlaybackController.release()
-        super.onCleared()
+    fun openVideoTitleEditor() {
+        val video = _uiState.value.activeVideo ?: return
+        videoTitleSaveJob?.cancel()
+        videoTitleWriteAccessConfirmed = false
+        _uiState.update {
+            it.copy(
+                videoTitleEditorVisible = true,
+                videoTitleEditorTitle = video.title,
+                videoTitleSaving = false,
+                videoTitleEditorError = null,
+            )
+        }
     }
+
+    fun dismissVideoTitleEditor() {
+        videoTitleSaveJob?.cancel()
+        videoTitleWriteAccessConfirmed = false
+        _uiState.update {
+            it.copy(
+                videoTitleEditorVisible = false,
+                videoTitleSaving = false,
+                videoTitleEditorError = null,
+                videoTitleWritePermissionRequest = null,
+            )
+        }
+    }
+
+    fun clearVideoTitleWritePermissionRequest() {
+        _uiState.update { it.copy(videoTitleWritePermissionRequest = null) }
+    }
+
+    fun onVideoTitleWritePermissionResult(granted: Boolean) {
+        clearVideoTitleWritePermissionRequest()
+        if (granted) {
+            videoTitleWriteAccessConfirmed = true
+            saveVideoTitleEdits()
+        } else {
+            videoTitleWriteAccessConfirmed = false
+            _uiState.update {
+                it.copy(
+                    videoTitleSaving = false,
+                    videoTitleEditorError = app.getString(R.string.metadata_permission_denied),
+                )
+            }
+        }
+    }
+
+    fun updateVideoTitleEditorTitle(value: String) {
+        _uiState.update { it.copy(videoTitleEditorTitle = value, videoTitleEditorError = null) }
+    }
+
+    fun saveVideoTitleEdits() {
+        val snapshot = _uiState.value
+        val video = snapshot.activeVideo ?: return
+        videoTitleSaveJob?.cancel()
+        _uiState.update { it.copy(videoTitleSaving = true, videoTitleEditorError = null) }
+        videoTitleSaveJob = viewModelScope.launch {
+            val result = updateVideoTitleUseCase(
+                videoId = video.id,
+                title = snapshot.videoTitleEditorTitle,
+                writeAccessConfirmed = videoTitleWriteAccessConfirmed,
+            )
+            if (!isActive) return@launch
+            when (result) {
+                is UpdateVideoTitleResult.Success -> {
+                    videoTitleWriteAccessConfirmed = false
+                    videoPlaybackController.updateVideoInPlaylist(result.updatedVideo)
+                    _uiState.update {
+                        it.copy(
+                            videoTitleSaving = false,
+                            videoTitleEditorVisible = false,
+                            videoTitleEditorError = null,
+                            videoTitleWritePermissionRequest = null,
+                        )
+                    }
+                }
+                is UpdateVideoTitleResult.NeedsWritePermission -> {
+                    _uiState.update {
+                        it.copy(
+                            videoTitleSaving = false,
+                            videoTitleWritePermissionRequest = result.intentSender,
+                        )
+                    }
+                }
+                is UpdateVideoTitleResult.Error -> {
+                    videoTitleWriteAccessConfirmed = false
+                    _uiState.update {
+                        it.copy(videoTitleSaving = false, videoTitleEditorError = result.message)
+                    }
+                }
+            }
+        }
+    }
+
 }

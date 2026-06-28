@@ -61,6 +61,8 @@
     <string name="metadata_save_failed">No se pudieron guardar los metadatos. Comprueba que la app pueda modificar este archivo.</string>
     <string name="metadata_ai_not_found">La IA no pudo identificar esta canción con suficiente confianza.</string>
     <string name="metadata_permission_denied">Permiso de escritura denegado. No se pudo modificar este archivo.</string>
+    <string name="video_title_editor_title">Editar título del vídeo</string>
+    <string name="video_title_required">El título es obligatorio.</string>
 
     <!-- Lyrics -->
     <string name="lyrics">Letra</string>

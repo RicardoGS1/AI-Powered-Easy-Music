@@ -45,6 +45,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.PlaylistRemove
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Equalizer
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -120,6 +121,7 @@ import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.virtualworld.easymusic.ui.components.AlbumArtAsyncImage
 import com.virtualworld.easymusic.ui.components.EditSongMetadataDialog
+import com.virtualworld.easymusic.ui.components.EditVideoTitleDialog
 import com.virtualworld.easymusic.ui.components.InlineVideoPlayer
 import com.virtualworld.easymusic.ui.components.VideoThumbnailAsyncImage
 import com.virtualworld.easymusic.domain.model.LyricsLine
@@ -161,7 +163,7 @@ fun PlayerScreen(
 
     PlayerContent(
         uiState = uiState,
-        videoPlayer = viewModel.getVideoPlayer(),
+        videoPlayer = uiState.videoPlayer,
         onNavigateToLibrary = onNavigateToLibrary,
         onNavigateToLibrarySearch = onNavigateToLibrarySearch,
         onNavigateToVideoLibrary = onNavigateToVideoLibrary,
@@ -193,6 +195,12 @@ fun PlayerScreen(
         onSaveMetadata = { viewModel.saveMetadataEdits() },
         onClearMetadataWritePermissionRequest = { viewModel.clearMetadataWritePermissionRequest() },
         onMetadataWritePermissionResult = { viewModel.onMetadataWritePermissionResult(it) },
+        onOpenVideoTitleEditor = { viewModel.openVideoTitleEditor() },
+        onDismissVideoTitleEditor = { viewModel.dismissVideoTitleEditor() },
+        onVideoTitleChange = { viewModel.updateVideoTitleEditorTitle(it) },
+        onSaveVideoTitle = { viewModel.saveVideoTitleEdits() },
+        onClearVideoTitleWritePermissionRequest = { viewModel.clearVideoTitleWritePermissionRequest() },
+        onVideoTitleWritePermissionResult = { viewModel.onVideoTitleWritePermissionResult(it) },
     )
 }
 
@@ -200,7 +208,7 @@ fun PlayerScreen(
 @Composable
 fun PlayerContent(
     uiState: PlayerUiState,
-    videoPlayer: ExoPlayer?,
+    videoPlayer: Player?,
     onNavigateToLibrary: () -> Unit,
     onNavigateToLibrarySearch: () -> Unit,
     onNavigateToVideoLibrary: () -> Unit,
@@ -232,6 +240,12 @@ fun PlayerContent(
     onSaveMetadata: () -> Unit,
     onClearMetadataWritePermissionRequest: () -> Unit,
     onMetadataWritePermissionResult: (Boolean) -> Unit,
+    onOpenVideoTitleEditor: () -> Unit,
+    onDismissVideoTitleEditor: () -> Unit,
+    onVideoTitleChange: (String) -> Unit,
+    onSaveVideoTitle: () -> Unit,
+    onClearVideoTitleWritePermissionRequest: () -> Unit,
+    onVideoTitleWritePermissionResult: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val song = uiState.playerState.currentSong
@@ -254,6 +268,7 @@ fun PlayerContent(
     val pressBackAgainMessage = stringResource(R.string.press_back_again_to_exit)
     var lastBackPressTime by remember { mutableStateOf(0L) }
     var metadataPermissionDialogOpen by remember { mutableStateOf(false) }
+    var videoTitlePermissionDialogOpen by remember { mutableStateOf(false) }
 
     val metadataWritePermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult(),
@@ -262,12 +277,29 @@ fun PlayerContent(
         onMetadataWritePermissionResult(result.resultCode == Activity.RESULT_OK)
     }
 
+    val videoTitleWritePermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult(),
+    ) { result ->
+        videoTitlePermissionDialogOpen = false
+        onVideoTitleWritePermissionResult(result.resultCode == Activity.RESULT_OK)
+    }
+
     LaunchedEffect(uiState.metadataWritePermissionRequest) {
         val intentSender = uiState.metadataWritePermissionRequest ?: return@LaunchedEffect
         if (metadataPermissionDialogOpen) return@LaunchedEffect
         metadataPermissionDialogOpen = true
         onClearMetadataWritePermissionRequest()
         metadataWritePermissionLauncher.launch(
+            IntentSenderRequest.Builder(intentSender).build(),
+        )
+    }
+
+    LaunchedEffect(uiState.videoTitleWritePermissionRequest) {
+        val intentSender = uiState.videoTitleWritePermissionRequest ?: return@LaunchedEffect
+        if (videoTitlePermissionDialogOpen) return@LaunchedEffect
+        videoTitlePermissionDialogOpen = true
+        onClearVideoTitleWritePermissionRequest()
+        videoTitleWritePermissionLauncher.launch(
             IntentSenderRequest.Builder(intentSender).build(),
         )
     }
@@ -325,6 +357,7 @@ fun PlayerContent(
             !uiState.lyricsSheetVisible &&
             !uiState.insightSheetVisible &&
             !uiState.metadataEditorVisible &&
+            !uiState.videoTitleEditorVisible &&
             !showRemoveFromQueueDialog,
     ) {
         val now = System.currentTimeMillis()
@@ -517,6 +550,7 @@ fun PlayerContent(
                     onToggleFavoriteCurrentVideo = onToggleFavoriteCurrentVideo,
                     onSetVideoFullscreen = onSetVideoFullscreen,
                     onOpenMetadataEditor = onOpenMetadataEditor,
+                    onOpenVideoTitleEditor = onOpenVideoTitleEditor,
                 )
             }
             }
@@ -650,6 +684,17 @@ fun PlayerContent(
             )
         }
 
+        if (uiState.videoTitleEditorVisible) {
+            EditVideoTitleDialog(
+                title = uiState.videoTitleEditorTitle,
+                saving = uiState.videoTitleSaving,
+                errorMessage = uiState.videoTitleEditorError,
+                onTitleChange = onVideoTitleChange,
+                onSave = onSaveVideoTitle,
+                onDismiss = onDismissVideoTitleEditor,
+            )
+        }
+
         if (showRemoveFromQueueDialog) {
             AlertDialog(
                 onDismissRequest = { showRemoveFromQueueDialog = false },
@@ -729,7 +774,7 @@ private fun PlayerMediaArtworkContent(
     isVideoMode: Boolean,
     song: Song?,
     activeVideo: Video?,
-    videoPlayer: ExoPlayer?,
+    videoPlayer: Player?,
     videoFullscreen: Boolean,
     isCurrentFavorite: Boolean,
     isCurrentVideoFavorite: Boolean,
@@ -737,6 +782,7 @@ private fun PlayerMediaArtworkContent(
     onToggleFavoriteCurrentVideo: () -> Unit,
     onSetVideoFullscreen: (Boolean) -> Unit,
     onOpenMetadataEditor: () -> Unit,
+    onOpenVideoTitleEditor: () -> Unit,
 ) {
     val containerModifier = if (isWideLayout) {
         Modifier.fillMaxHeight()
@@ -761,6 +807,7 @@ private fun PlayerMediaArtworkContent(
                             contentDescription = activeVideo.title,
                             modifier = Modifier.fillMaxSize(),
                             contentScale = ContentScale.Crop,
+                            onEditMetadataClick = onOpenVideoTitleEditor,
                         )
                     } else {
                         key(activeVideo!!.id) {
@@ -772,6 +819,22 @@ private fun PlayerMediaArtworkContent(
                         }
                     }
                     if (!videoFullscreen) {
+                        IconButton(
+                            onClick = onOpenVideoTitleEditor,
+                            modifier = Modifier
+                                .align(Alignment.BottomStart)
+                                .padding(6.dp),
+                            colors = IconButtonDefaults.iconButtonColors(
+                                containerColor = Color.Black.copy(alpha = 0.45f),
+                                contentColor = Color.White,
+                            ),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = stringResource(R.string.cd_edit_metadata),
+                                tint = Color.White,
+                            )
+                        }
                         IconButton(
                             onClick = onToggleFavoriteCurrentVideo,
                             modifier = Modifier
@@ -1873,6 +1936,12 @@ fun PlayerScreenPreview() {
             onSaveMetadata = {},
             onClearMetadataWritePermissionRequest = {},
             onMetadataWritePermissionResult = {},
+            onOpenVideoTitleEditor = {},
+            onDismissVideoTitleEditor = {},
+            onVideoTitleChange = {},
+            onSaveVideoTitle = {},
+            onClearVideoTitleWritePermissionRequest = {},
+            onVideoTitleWritePermissionResult = {},
         )
     }
 }

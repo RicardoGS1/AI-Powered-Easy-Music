@@ -68,7 +68,9 @@ class MusicPlaybackService : MediaSessionService() {
 
         publishSessionAndInitEqualizer(player!!.audioSessionId)
 
-        mediaSession = MediaSession.Builder(this, player!!).build()
+        mediaSession = MediaSession.Builder(this, player!!)
+            .setId("EasyMusicMusic")
+            .build()
     }
 
     /**

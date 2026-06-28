@@ -40,6 +40,7 @@ class VideoLibraryViewModel @Inject constructor(
     val uiState: StateFlow<VideoLibraryUiState> = _uiState.asStateFlow()
 
     init {
+        videoPlaybackController.connect()
         loadVideos()
         viewModelScope.launch {
             observeFavoriteVideoIdsUseCase().collect { ids ->
