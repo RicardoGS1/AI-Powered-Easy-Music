@@ -35,6 +35,9 @@
     <string name="cd_pause">Duraklat</string>
     <string name="cd_play">Çal</string>
     <string name="cd_next">Sonraki</string>
+    <string name="player_label_more">Daha fazla</string>
+    <string name="player_label_less">Daha az</string>
+    <string name="press_back_again_to_exit">Çıkmak için tekrar geri tuşuna basın. Müzik çalma duracak.</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">Şarkı verileri</string>
@@ -45,6 +48,22 @@
     <string name="insight_fun_fact">İlginç bilgi</string>
     <string name="insight_similar_artists">Benzer sanatçılar veya temalar</string>
     <string name="no_data">Veri yok.</string>
+
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">Şarkı meta verilerini düzenle</string>
+    <string name="cd_metadata_ai_fill">Meta verileri yapay zeka ile doldur</string>
+    <string name="metadata_editor_title">Meta verileri düzenle</string>
+    <string name="metadata_field_title">Başlık</string>
+    <string name="metadata_field_artist">Sanatçı</string>
+    <string name="metadata_field_album">Albüm</string>
+    <string name="metadata_save">Kaydet</string>
+    <string name="metadata_fields_required">Başlık, sanatçı ve albüm gereklidir.</string>
+    <string name="metadata_save_failed">Meta veriler kaydedilemedi. Uygulamanın bu dosyayı değiştirip değiştiremeyeceğini kontrol edin.</string>
+    <string name="metadata_ai_not_found">Yapay zeka bu şarkıyı yeterli güvenle tanımlayamadı.</string>
+    <string name="metadata_permission_denied">Yazma izni reddedildi. Bu dosya değiştirilemedi.</string>
+    <string name="video_title_editor_title">Video başlığını düzenle</string>
+    <string name="video_title_required">Başlık gereklidir.</string>
 
     <!-- Lyrics -->
     <string name="lyrics">Şarkı sözleri</string>
@@ -70,9 +89,9 @@
     <string name="video_library_empty">Bu cihazda video bulunamadı</string>
     <string name="video_search_hint">Video ara…</string>
     <string name="video_local">Yerel video</string>
-    <string name="video_tab_all">All videos</string>
-    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
-    <string name="no_videos_found">No videos found</string>
+    <string name="video_tab_all">Tüm videolar</string>
+    <string name="no_video_favorites_yet">Henüz favori videonuz yok. Oynatıcıda veya kütüphanede kalp ile işaretleyin.</string>
+    <string name="no_videos_found">Video bulunamadı</string>
     <string name="cd_close_search">Aramayı kapat</string>
     <string name="cd_back">Geri</string>
     <string name="play_all">Tümünü çal</string>
@@ -84,6 +103,7 @@
     <string name="album_fallback">Albüm</string>
     <string name="song_count_one">1 şarkı</string>
     <string name="song_count_many">%d şarkı</string>
+    <string name="ad_attribution">Reklam</string>
 
     <!-- Equalizer -->
     <string name="equalizer_title">EKOLAYZER</string>
@@ -130,5 +150,6 @@
     <string name="settings">Ayarlar</string>
     <string name="drawer_settings">Ayarlar</string>
     <string name="language">Dil</string>
+    <string name="privacy_options">Gizlilik seçenekleri</string>
     <string name="system_default">Sistem varsayılanı</string>
 </resources>

@@ -35,6 +35,9 @@
     <string name="cd_pause">Пауза</string>
     <string name="cd_play">Воспроизвести</string>
     <string name="cd_next">Следующий</string>
+    <string name="player_label_more">Ещё</string>
+    <string name="player_label_less">Меньше</string>
+    <string name="press_back_again_to_exit">Нажмите «Назад» ещё раз для выхода. Воспроизведение музыки остановится.</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">Данные о песне</string>
@@ -45,6 +48,22 @@
     <string name="insight_fun_fact">Интересный факт</string>
     <string name="insight_similar_artists">Похожие исполнители или темы</string>
     <string name="no_data">Нет данных.</string>
+
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">Редактировать метаданные песни</string>
+    <string name="cd_metadata_ai_fill">Заполнить метаданные с помощью ИИ</string>
+    <string name="metadata_editor_title">Редактировать метаданные</string>
+    <string name="metadata_field_title">Название</string>
+    <string name="metadata_field_artist">Исполнитель</string>
+    <string name="metadata_field_album">Альбом</string>
+    <string name="metadata_save">Сохранить</string>
+    <string name="metadata_fields_required">Название, исполнитель и альбом обязательны.</string>
+    <string name="metadata_save_failed">Не удалось сохранить метаданные. Проверьте, может ли приложение изменить этот файл.</string>
+    <string name="metadata_ai_not_found">ИИ не смог определить эту песню с достаточной уверенностью.</string>
+    <string name="metadata_permission_denied">Отказано в разрешении на запись. Не удалось изменить этот файл.</string>
+    <string name="video_title_editor_title">Редактировать название видео</string>
+    <string name="video_title_required">Название обязательно.</string>
 
     <!-- Lyrics -->
     <string name="lyrics">Текст песни</string>
@@ -70,9 +89,9 @@
     <string name="video_library_empty">На устройстве не найдено видео</string>
     <string name="video_search_hint">Поиск видео…</string>
     <string name="video_local">Локальное видео</string>
-    <string name="video_tab_all">All videos</string>
-    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
-    <string name="no_videos_found">No videos found</string>
+    <string name="video_tab_all">Все видео</string>
+    <string name="no_video_favorites_yet">У вас пока нет избранных видео. Отметьте их сердечком в плеере или библиотеке.</string>
+    <string name="no_videos_found">Видео не найдены</string>
     <string name="cd_close_search">Закрыть поиск</string>
     <string name="cd_back">Назад</string>
     <string name="play_all">Воспроизвести все</string>
@@ -84,6 +103,7 @@
     <string name="album_fallback">Альбом</string>
     <string name="song_count_one">1 песня</string>
     <string name="song_count_many">%d песен</string>
+    <string name="ad_attribution">Реклама</string>
 
     <!-- Equalizer -->
     <string name="equalizer_title">ЭКВАЛАЙЗЕР</string>
@@ -130,5 +150,6 @@
     <string name="settings">Настройки</string>
     <string name="drawer_settings">Настройки</string>
     <string name="language">Язык</string>
+    <string name="privacy_options">Настройки конфиденциальности</string>
     <string name="system_default">По умолчанию системы</string>
 </resources>

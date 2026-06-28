@@ -35,6 +35,9 @@
     <string name="cd_pause">Pauzeren</string>
     <string name="cd_play">Afspelen</string>
     <string name="cd_next">Volgende</string>
+    <string name="player_label_more">Meer</string>
+    <string name="player_label_less">Minder</string>
+    <string name="press_back_again_to_exit">Druk nogmaals op terug om af te sluiten. Muziekweergave wordt gestopt.</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">Nummergegevens</string>
@@ -45,6 +48,22 @@
     <string name="insight_fun_fact">Leuk weetje</string>
     <string name="insight_similar_artists">Vergelijkbare artiesten of thema\'s</string>
     <string name="no_data">Geen gegevens.</string>
+
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">Metadata van nummer bewerken</string>
+    <string name="cd_metadata_ai_fill">Metadata invullen met AI</string>
+    <string name="metadata_editor_title">Metadata bewerken</string>
+    <string name="metadata_field_title">Titel</string>
+    <string name="metadata_field_artist">Artiest</string>
+    <string name="metadata_field_album">Album</string>
+    <string name="metadata_save">Opslaan</string>
+    <string name="metadata_fields_required">Titel, artiest en album zijn verplicht.</string>
+    <string name="metadata_save_failed">Metadata kon niet worden opgeslagen. Controleer of de app dit bestand kan wijzigen.</string>
+    <string name="metadata_ai_not_found">AI kon dit nummer niet met voldoende zekerheid identificeren.</string>
+    <string name="metadata_permission_denied">Schrijfrechten geweigerd. Dit bestand kon niet worden gewijzigd.</string>
+    <string name="video_title_editor_title">Videotitel bewerken</string>
+    <string name="video_title_required">Titel is verplicht.</string>
 
     <!-- Lyrics -->
     <string name="lyrics">Songtekst</string>
@@ -70,9 +89,9 @@
     <string name="video_library_empty">Geen video\'s gevonden op dit apparaat</string>
     <string name="video_search_hint">Video\'s zoeken…</string>
     <string name="video_local">Lokale video</string>
-    <string name="video_tab_all">All videos</string>
-    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
-    <string name="no_videos_found">No videos found</string>
+    <string name="video_tab_all">Alle video\'s</string>
+    <string name="no_video_favorites_yet">Je hebt nog geen favoriete video\'s. Markeer ze met het hart in de speler of bibliotheek.</string>
+    <string name="no_videos_found">Geen video\'s gevonden</string>
     <string name="cd_close_search">Zoekopdracht sluiten</string>
     <string name="cd_back">Terug</string>
     <string name="play_all">Alles afspelen</string>
@@ -84,6 +103,7 @@
     <string name="album_fallback">Album</string>
     <string name="song_count_one">1 nummer</string>
     <string name="song_count_many">%d nummers</string>
+    <string name="ad_attribution">Advertentie</string>
 
     <!-- Equalizer -->
     <string name="equalizer_title">EQUALIZER</string>
@@ -130,5 +150,6 @@
     <string name="settings">Instellingen</string>
     <string name="drawer_settings">Instellingen</string>
     <string name="language">Taal</string>
+    <string name="privacy_options">Privacyopties</string>
     <string name="system_default">Systeemstandaard</string>
 </resources>

@@ -35,6 +35,9 @@
     <string name="cd_pause">หยุดชั่วคราว</string>
     <string name="cd_play">เล่น</string>
     <string name="cd_next">ถัดไป</string>
+    <string name="player_label_more">เพิ่มเติม</string>
+    <string name="player_label_less">น้อยลง</string>
+    <string name="press_back_again_to_exit">กดกลับอีกครั้งเพื่อออก การเล่นเพลงจะหยุด</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">ข้อมูลเพลง</string>
@@ -45,6 +48,22 @@
     <string name="insight_fun_fact">ข้อมูลน่ารู้</string>
     <string name="insight_similar_artists">ศิลปินหรือธีมที่คล้ายกัน</string>
     <string name="no_data">ไม่มีข้อมูล</string>
+
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">แก้ไขข้อมูลเพลง</string>
+    <string name="cd_metadata_ai_fill">กรอกข้อมูลด้วย AI</string>
+    <string name="metadata_editor_title">แก้ไขข้อมูล</string>
+    <string name="metadata_field_title">ชื่อ</string>
+    <string name="metadata_field_artist">ศิลปิน</string>
+    <string name="metadata_field_album">อัลบั้ม</string>
+    <string name="metadata_save">บันทึก</string>
+    <string name="metadata_fields_required">ต้องระบุชื่อ ศิลปิน และอัลบั้ม</string>
+    <string name="metadata_save_failed">ไม่สามารถบันทึกข้อมูลได้ ตรวจสอบว่าแอปสามารถแก้ไขไฟล์นี้ได้</string>
+    <string name="metadata_ai_not_found">AI ไม่สามารถระบุเพลงนี้ได้อย่างมั่นใจเพียงพอ</string>
+    <string name="metadata_permission_denied">ปฏิเสธสิทธิ์การเขียน ไม่สามารถแก้ไขไฟล์นี้ได้</string>
+    <string name="video_title_editor_title">แก้ไขชื่อวิดีโอ</string>
+    <string name="video_title_required">ต้องระบุชื่อ</string>
 
     <!-- Lyrics -->
     <string name="lyrics">เนื้อเพลง</string>
@@ -70,9 +89,9 @@
     <string name="video_library_empty">ไม่พบวิดีโอในอุปกรณ์นี้</string>
     <string name="video_search_hint">ค้นหาวิดีโอ…</string>
     <string name="video_local">วิดีโอในเครื่อง</string>
-    <string name="video_tab_all">All videos</string>
-    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
-    <string name="no_videos_found">No videos found</string>
+    <string name="video_tab_all">วิดีโอทั้งหมด</string>
+    <string name="no_video_favorites_yet">คุณยังไม่มีวิดีโอโปรด ทำเครื่องหมายด้วยหัวใจในตัวเล่นหรือคลัง</string>
+    <string name="no_videos_found">ไม่พบวิดีโอ</string>
     <string name="cd_close_search">ปิดการค้นหา</string>
     <string name="cd_back">ย้อนกลับ</string>
     <string name="play_all">เล่นทั้งหมด</string>
@@ -84,6 +103,7 @@
     <string name="album_fallback">อัลบั้ม</string>
     <string name="song_count_one">1 เพลง</string>
     <string name="song_count_many">%d เพลง</string>
+    <string name="ad_attribution">โฆษณา</string>
 
     <!-- Equalizer -->
     <string name="equalizer_title">อีควอไลเซอร์</string>
@@ -130,5 +150,6 @@
     <string name="settings">การตั้งค่า</string>
     <string name="drawer_settings">การตั้งค่า</string>
     <string name="language">ภาษา</string>
+    <string name="privacy_options">ตัวเลือกความเป็นส่วนตัว</string>
     <string name="system_default">ค่าเริ่มต้นของระบบ</string>
 </resources>

@@ -35,6 +35,9 @@
     <string name="cd_pause">暂停</string>
     <string name="cd_play">播放</string>
     <string name="cd_next">下一首</string>
+    <string name="player_label_more">更多</string>
+    <string name="player_label_less">收起</string>
+    <string name="press_back_again_to_exit">再次按返回键退出。音乐播放将停止。</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">歌曲数据</string>
@@ -45,6 +48,22 @@
     <string name="insight_fun_fact">趣味知识</string>
     <string name="insight_similar_artists">相似艺术家或主题</string>
     <string name="no_data">暂无数据。</string>
+
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">编辑歌曲元数据</string>
+    <string name="cd_metadata_ai_fill">用 AI 填充元数据</string>
+    <string name="metadata_editor_title">编辑元数据</string>
+    <string name="metadata_field_title">标题</string>
+    <string name="metadata_field_artist">艺术家</string>
+    <string name="metadata_field_album">专辑</string>
+    <string name="metadata_save">保存</string>
+    <string name="metadata_fields_required">标题、艺术家和专辑为必填项。</string>
+    <string name="metadata_save_failed">无法保存元数据。请检查应用是否可以修改此文件。</string>
+    <string name="metadata_ai_not_found">AI 无法以足够的置信度识别此歌曲。</string>
+    <string name="metadata_permission_denied">写入权限被拒绝。无法修改此文件。</string>
+    <string name="video_title_editor_title">编辑视频标题</string>
+    <string name="video_title_required">标题为必填项。</string>
 
     <!-- Lyrics -->
     <string name="lyrics">歌词</string>
@@ -70,9 +89,9 @@
     <string name="video_library_empty">此设备上未找到视频</string>
     <string name="video_search_hint">搜索视频…</string>
     <string name="video_local">本地视频</string>
-    <string name="video_tab_all">All videos</string>
-    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
-    <string name="no_videos_found">No videos found</string>
+    <string name="video_tab_all">所有视频</string>
+    <string name="no_video_favorites_yet">您还没有收藏的视频。在播放器或媒体库中点击心形标记。</string>
+    <string name="no_videos_found">未找到视频</string>
     <string name="cd_close_search">关闭搜索</string>
     <string name="cd_back">返回</string>
     <string name="play_all">全部播放</string>
@@ -84,6 +103,7 @@
     <string name="album_fallback">专辑</string>
     <string name="song_count_one">1首歌曲</string>
     <string name="song_count_many">%d首歌曲</string>
+    <string name="ad_attribution">广告</string>
 
     <!-- Equalizer -->
     <string name="equalizer_title">均衡器</string>
@@ -130,5 +150,6 @@
     <string name="settings">设置</string>
     <string name="drawer_settings">设置</string>
     <string name="language">语言</string>
+    <string name="privacy_options">隐私选项</string>
     <string name="system_default">系统默认</string>
 </resources>

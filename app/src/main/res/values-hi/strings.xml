@@ -35,6 +35,9 @@
     <string name="cd_pause">रोकें</string>
     <string name="cd_play">चलाएं</string>
     <string name="cd_next">अगला</string>
+    <string name="player_label_more">अधिक</string>
+    <string name="player_label_less">कम</string>
+    <string name="press_back_again_to_exit">बाहर निकलने के लिए फिर से वापस दबाएँ। संगीत बजाना बंद हो जाएगा।</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">गाने का डेटा</string>
@@ -45,6 +48,22 @@
     <string name="insight_fun_fact">रोचक तथ्य</string>
     <string name="insight_similar_artists">समान कलाकार या विषय</string>
     <string name="no_data">कोई डेटा नहीं।</string>
+
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">गाने का मेटाडेटा संपादित करें</string>
+    <string name="cd_metadata_ai_fill">AI से मेटाडेटा भरें</string>
+    <string name="metadata_editor_title">मेटाडेटा संपादित करें</string>
+    <string name="metadata_field_title">शीर्षक</string>
+    <string name="metadata_field_artist">कलाकार</string>
+    <string name="metadata_field_album">एल्बम</string>
+    <string name="metadata_save">सहेजें</string>
+    <string name="metadata_fields_required">शीर्षक, कलाकार और एल्बम आवश्यक हैं।</string>
+    <string name="metadata_save_failed">मेटाडेटा सहेजा नहीं जा सका। जाँचें कि ऐप इस फ़ाइल को संशोधित कर सकता है।</string>
+    <string name="metadata_ai_not_found">AI इस गाने की पर्याप्त विश्वास के साथ पहचान नहीं कर सका।</string>
+    <string name="metadata_permission_denied">लेखन अनुमति अस्वीकृत। इस फ़ाइल को संशोधित नहीं किया जा सका।</string>
+    <string name="video_title_editor_title">वीडियो शीर्षक संपादित करें</string>
+    <string name="video_title_required">शीर्षक आवश्यक है।</string>
 
     <!-- Lyrics -->
     <string name="lyrics">गीत</string>
@@ -70,9 +89,9 @@
     <string name="video_library_empty">इस डिवाइस पर कोई वीडियो नहीं मिला</string>
     <string name="video_search_hint">वीडियो खोजें…</string>
     <string name="video_local">स्थानीय वीडियो</string>
-    <string name="video_tab_all">All videos</string>
-    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
-    <string name="no_videos_found">No videos found</string>
+    <string name="video_tab_all">सभी वीडियो</string>
+    <string name="no_video_favorites_yet">आपके पास अभी तक कोई पसंदीदा वीडियो नहीं है। प्लेयर या लाइब्रेरी में दिल से चिह्नित करें।</string>
+    <string name="no_videos_found">कोई वीडियो नहीं मिला</string>
     <string name="cd_close_search">खोज बंद करें</string>
     <string name="cd_back">वापस</string>
     <string name="play_all">सभी चलाएं</string>
@@ -84,6 +103,7 @@
     <string name="album_fallback">एल्बम</string>
     <string name="song_count_one">1 गाना</string>
     <string name="song_count_many">%d गाने</string>
+    <string name="ad_attribution">विज्ञापन</string>
 
     <!-- Equalizer -->
     <string name="equalizer_title">इक्वलाइज़र</string>
@@ -130,5 +150,6 @@
     <string name="settings">सेटिंग्स</string>
     <string name="drawer_settings">सेटिंग्स</string>
     <string name="language">भाषा</string>
+    <string name="privacy_options">गोपनीयता विकल्प</string>
     <string name="system_default">सिस्टम डिफ़ॉल्ट</string>
 </resources>

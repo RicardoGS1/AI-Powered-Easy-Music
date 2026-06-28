@@ -35,6 +35,9 @@
     <string name="cd_pause">一時停止</string>
     <string name="cd_play">再生</string>
     <string name="cd_next">次へ</string>
+    <string name="player_label_more">もっと見る</string>
+    <string name="player_label_less">閉じる</string>
+    <string name="press_back_again_to_exit">もう一度戻るを押すと終了します。音楽の再生が停止します。</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">曲のデータ</string>
@@ -45,6 +48,22 @@
     <string name="insight_fun_fact">豆知識</string>
     <string name="insight_similar_artists">類似アーティストまたはテーマ</string>
     <string name="no_data">データなし。</string>
+
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">曲のメタデータを編集</string>
+    <string name="cd_metadata_ai_fill">AIでメタデータを入力</string>
+    <string name="metadata_editor_title">メタデータを編集</string>
+    <string name="metadata_field_title">タイトル</string>
+    <string name="metadata_field_artist">アーティスト</string>
+    <string name="metadata_field_album">アルバム</string>
+    <string name="metadata_save">保存</string>
+    <string name="metadata_fields_required">タイトル、アーティスト、アルバムは必須です。</string>
+    <string name="metadata_save_failed">メタデータを保存できませんでした。このファイルを変更できるか確認してください。</string>
+    <string name="metadata_ai_not_found">AIはこの曲を十分な確信を持って特定できませんでした。</string>
+    <string name="metadata_permission_denied">書き込み権限が拒否されました。このファイルを変更できませんでした。</string>
+    <string name="video_title_editor_title">動画のタイトルを編集</string>
+    <string name="video_title_required">タイトルは必須です。</string>
 
     <!-- Lyrics -->
     <string name="lyrics">歌詞</string>
@@ -70,9 +89,9 @@
     <string name="video_library_empty">このデバイスに動画が見つかりません</string>
     <string name="video_search_hint">動画を検索…</string>
     <string name="video_local">ローカル動画</string>
-    <string name="video_tab_all">All videos</string>
-    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
-    <string name="no_videos_found">No videos found</string>
+    <string name="video_tab_all">すべての動画</string>
+    <string name="no_video_favorites_yet">お気に入りの動画はまだありません。プレーヤーまたはライブラリでハートをタップしてください。</string>
+    <string name="no_videos_found">動画が見つかりません</string>
     <string name="cd_close_search">検索を閉じる</string>
     <string name="cd_back">戻る</string>
     <string name="play_all">すべて再生</string>
@@ -84,6 +103,7 @@
     <string name="album_fallback">アルバム</string>
     <string name="song_count_one">1曲</string>
     <string name="song_count_many">%d曲</string>
+    <string name="ad_attribution">広告</string>
 
     <!-- Equalizer -->
     <string name="equalizer_title">イコライザー</string>
@@ -130,5 +150,6 @@
     <string name="settings">設定</string>
     <string name="drawer_settings">設定</string>
     <string name="language">言語</string>
+    <string name="privacy_options">プライバシーオプション</string>
     <string name="system_default">システムのデフォルト</string>
 </resources>

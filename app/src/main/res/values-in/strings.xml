@@ -35,6 +35,9 @@
     <string name="cd_pause">Jeda</string>
     <string name="cd_play">Putar</string>
     <string name="cd_next">Berikutnya</string>
+    <string name="player_label_more">Lainnya</string>
+    <string name="player_label_less">Kurang</string>
+    <string name="press_back_again_to_exit">Tekan kembali lagi untuk keluar. Pemutaran musik akan berhenti.</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">Data lagu</string>
@@ -45,6 +48,22 @@
     <string name="insight_fun_fact">Fakta menarik</string>
     <string name="insight_similar_artists">Artis atau tema serupa</string>
     <string name="no_data">Tidak ada data.</string>
+
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">Edit metadata lagu</string>
+    <string name="cd_metadata_ai_fill">Isi metadata dengan AI</string>
+    <string name="metadata_editor_title">Ubah metadata</string>
+    <string name="metadata_field_title">Judul</string>
+    <string name="metadata_field_artist">Artis</string>
+    <string name="metadata_field_album">Album</string>
+    <string name="metadata_save">Simpan</string>
+    <string name="metadata_fields_required">Judul, artis, dan album wajib diisi.</string>
+    <string name="metadata_save_failed">Tidak dapat menyimpan metadata. Periksa apakah aplikasi dapat mengubah file ini.</string>
+    <string name="metadata_ai_not_found">AI tidak dapat mengidentifikasi lagu ini dengan cukup yakin.</string>
+    <string name="metadata_permission_denied">Izin menulis ditolak. Tidak dapat mengubah file ini.</string>
+    <string name="video_title_editor_title">Edit judul video</string>
+    <string name="video_title_required">Judul wajib diisi.</string>
 
     <!-- Lyrics -->
     <string name="lyrics">Lirik</string>
@@ -70,9 +89,9 @@
     <string name="video_library_empty">Tidak ada video di perangkat ini</string>
     <string name="video_search_hint">Cari video…</string>
     <string name="video_local">Video lokal</string>
-    <string name="video_tab_all">All videos</string>
-    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
-    <string name="no_videos_found">No videos found</string>
+    <string name="video_tab_all">Semua video</string>
+    <string name="no_video_favorites_yet">Kamu belum punya video favorit. Tandai dengan hati di pemutar atau perpustakaan.</string>
+    <string name="no_videos_found">Tidak ada video ditemukan</string>
     <string name="cd_close_search">Tutup pencarian</string>
     <string name="cd_back">Kembali</string>
     <string name="play_all">Putar semua</string>
@@ -84,9 +103,10 @@
     <string name="album_fallback">Album</string>
     <string name="song_count_one">1 lagu</string>
     <string name="song_count_many">%d lagu</string>
+    <string name="ad_attribution">Iklan</string>
 
     <!-- Equalizer -->
-    <string name="equalizer_title">EQUALIZER</string>
+    <string name="equalizer_title">EKUALISER</string>
     <string name="equalizer">Equalizer</string>
     <string name="enabled">Aktif</string>
     <string name="disabled">Nonaktif</string>
@@ -117,7 +137,7 @@
     <string name="preset_latin">Latin</string>
     <string name="preset_vocal">Vokal</string>
     <string name="preset_bass">Bass</string>
-    <string name="preset_treble">Treble</string>
+    <string name="preset_treble">Nada tinggi</string>
     <string name="ai_not_available">Informasi AI tidak tersedia saat ini.</string>
     <string name="gemini_key_missing">Tambahkan GEMINI_API_KEY di local.properties (kunci Google AI Studio) dan kompilasi ulang.</string>
     <string name="error_building_request">Kesalahan internal saat membuat permintaan.</string>
@@ -130,5 +150,6 @@
     <string name="settings">Pengaturan</string>
     <string name="drawer_settings">Pengaturan</string>
     <string name="language">Bahasa</string>
+    <string name="privacy_options">Opsi privasi</string>
     <string name="system_default">Default sistem</string>
 </resources>

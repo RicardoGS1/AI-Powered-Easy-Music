@@ -35,6 +35,9 @@
     <string name="cd_pause">Tạm dừng</string>
     <string name="cd_play">Phát</string>
     <string name="cd_next">Tiếp theo</string>
+    <string name="player_label_more">Thêm</string>
+    <string name="player_label_less">Ít hơn</string>
+    <string name="press_back_again_to_exit">Nhấn quay lại lần nữa để thoát. Phát nhạc sẽ dừng.</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">Dữ liệu bài hát</string>
@@ -45,6 +48,22 @@
     <string name="insight_fun_fact">Sự thật thú vị</string>
     <string name="insight_similar_artists">Nghệ sĩ hoặc chủ đề tương tự</string>
     <string name="no_data">Không có dữ liệu.</string>
+
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">Chỉnh sửa siêu dữ liệu bài hát</string>
+    <string name="cd_metadata_ai_fill">Điền siêu dữ liệu bằng AI</string>
+    <string name="metadata_editor_title">Chỉnh sửa siêu dữ liệu</string>
+    <string name="metadata_field_title">Tiêu đề</string>
+    <string name="metadata_field_artist">Nghệ sĩ</string>
+    <string name="metadata_field_album">Album</string>
+    <string name="metadata_save">Lưu</string>
+    <string name="metadata_fields_required">Tiêu đề, nghệ sĩ và album là bắt buộc.</string>
+    <string name="metadata_save_failed">Không thể lưu siêu dữ liệu. Kiểm tra xem ứng dụng có thể sửa tệp này không.</string>
+    <string name="metadata_ai_not_found">AI không thể xác định bài hát này với đủ độ tin cậy.</string>
+    <string name="metadata_permission_denied">Quyền ghi bị từ chối. Không thể sửa tệp này.</string>
+    <string name="video_title_editor_title">Chỉnh sửa tiêu đề video</string>
+    <string name="video_title_required">Tiêu đề là bắt buộc.</string>
 
     <!-- Lyrics -->
     <string name="lyrics">Lời bài hát</string>
@@ -70,9 +89,9 @@
     <string name="video_library_empty">Không tìm thấy video trên thiết bị này</string>
     <string name="video_search_hint">Tìm video…</string>
     <string name="video_local">Video cục bộ</string>
-    <string name="video_tab_all">All videos</string>
-    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
-    <string name="no_videos_found">No videos found</string>
+    <string name="video_tab_all">Tất cả video</string>
+    <string name="no_video_favorites_yet">Bạn chưa có video yêu thích. Đánh dấu bằng trái tim trong trình phát hoặc thư viện.</string>
+    <string name="no_videos_found">Không tìm thấy video</string>
     <string name="cd_close_search">Đóng tìm kiếm</string>
     <string name="cd_back">Quay lại</string>
     <string name="play_all">Phát tất cả</string>
@@ -84,6 +103,7 @@
     <string name="album_fallback">Album</string>
     <string name="song_count_one">1 bài hát</string>
     <string name="song_count_many">%d bài hát</string>
+    <string name="ad_attribution">Quảng cáo</string>
 
     <!-- Equalizer -->
     <string name="equalizer_title">BỘ CÂN BẰNG</string>
@@ -130,5 +150,6 @@
     <string name="settings">Cài đặt</string>
     <string name="drawer_settings">Cài đặt</string>
     <string name="language">Ngôn ngữ</string>
+    <string name="privacy_options">Tùy chọn quyền riêng tư</string>
     <string name="system_default">Mặc định hệ thống</string>
 </resources>

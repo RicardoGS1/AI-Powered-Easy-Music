@@ -35,6 +35,9 @@
     <string name="cd_pause">Пауза</string>
     <string name="cd_play">Відтворити</string>
     <string name="cd_next">Наступний</string>
+    <string name="player_label_more">Більше</string>
+    <string name="player_label_less">Менше</string>
+    <string name="press_back_again_to_exit">Натисніть «Назад» ще раз для виходу. Відтворення музики зупиниться.</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">Дані про пісню</string>
@@ -45,6 +48,22 @@
     <string name="insight_fun_fact">Цікавий факт</string>
     <string name="insight_similar_artists">Схожі виконавці або теми</string>
     <string name="no_data">Немає даних.</string>
+
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">Редагувати метадані пісні</string>
+    <string name="cd_metadata_ai_fill">Заповнити метадані за допомогою ШІ</string>
+    <string name="metadata_editor_title">Редагувати метадані</string>
+    <string name="metadata_field_title">Назва</string>
+    <string name="metadata_field_artist">Виконавець</string>
+    <string name="metadata_field_album">Альбом</string>
+    <string name="metadata_save">Зберегти</string>
+    <string name="metadata_fields_required">Назва, виконавець і альбом обов\'язкові.</string>
+    <string name="metadata_save_failed">Не вдалося зберегти метадані. Перевірте, чи може додаток змінити цей файл.</string>
+    <string name="metadata_ai_not_found">ШІ не зміг визначити цю пісню з достатньою впевненістю.</string>
+    <string name="metadata_permission_denied">Відмовлено в дозволі на запис. Не вдалося змінити цей файл.</string>
+    <string name="video_title_editor_title">Редагувати назву відео</string>
+    <string name="video_title_required">Назва обов\'язкова.</string>
 
     <!-- Lyrics -->
     <string name="lyrics">Текст пісні</string>
@@ -70,9 +89,9 @@
     <string name="video_library_empty">На пристрої не знайдено відео</string>
     <string name="video_search_hint">Пошук відео…</string>
     <string name="video_local">Локальне відео</string>
-    <string name="video_tab_all">All videos</string>
-    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
-    <string name="no_videos_found">No videos found</string>
+    <string name="video_tab_all">Усі відео</string>
+    <string name="no_video_favorites_yet">У вас ще немає улюблених відео. Позначте їх серцем у плеєрі або бібліотеці.</string>
+    <string name="no_videos_found">Відео не знайдено</string>
     <string name="cd_close_search">Закрити пошук</string>
     <string name="cd_back">Назад</string>
     <string name="play_all">Відтворити все</string>
@@ -84,6 +103,7 @@
     <string name="album_fallback">Альбом</string>
     <string name="song_count_one">1 пісня</string>
     <string name="song_count_many">%d пісень</string>
+    <string name="ad_attribution">Реклама</string>
 
     <!-- Equalizer -->
     <string name="equalizer_title">ЕКВАЛАЙЗЕР</string>
@@ -130,5 +150,6 @@
     <string name="settings">Налаштування</string>
     <string name="drawer_settings">Налаштування</string>
     <string name="language">Мова</string>
+    <string name="privacy_options">Параметри конфіденційності</string>
     <string name="system_default">За замовчуванням системи</string>
 </resources>

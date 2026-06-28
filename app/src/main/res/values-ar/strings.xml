@@ -35,6 +35,9 @@
     <string name="cd_pause">إيقاف مؤقت</string>
     <string name="cd_play">تشغيل</string>
     <string name="cd_next">التالي</string>
+    <string name="player_label_more">المزيد</string>
+    <string name="player_label_less">أقل</string>
+    <string name="press_back_again_to_exit">اضغط رجوع مرة أخرى للخروج. سيتوقف تشغيل الموسيقى.</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">بيانات الأغنية</string>
@@ -45,6 +48,22 @@
     <string name="insight_fun_fact">معلومة طريفة</string>
     <string name="insight_similar_artists">فنانون أو مواضيع مشابهة</string>
     <string name="no_data">لا توجد بيانات.</string>
+
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">تعديل بيانات الأغنية</string>
+    <string name="cd_metadata_ai_fill">ملء البيانات بالذكاء الاصطناعي</string>
+    <string name="metadata_editor_title">تعديل البيانات</string>
+    <string name="metadata_field_title">العنوان</string>
+    <string name="metadata_field_artist">الفنان</string>
+    <string name="metadata_field_album">الألبوم</string>
+    <string name="metadata_save">حفظ</string>
+    <string name="metadata_fields_required">العنوان والفنان والألبوم مطلوبة.</string>
+    <string name="metadata_save_failed">تعذر حفظ البيانات. تحقق من أن التطبيق يمكنه تعديل هذا الملف.</string>
+    <string name="metadata_ai_not_found">لم يتمكن الذكاء الاصطناعي من تحديد هذه الأغنية بثقة كافية.</string>
+    <string name="metadata_permission_denied">تم رفض إذن الكتابة. تعذر تعديل هذا الملف.</string>
+    <string name="video_title_editor_title">تعديل عنوان الفيديو</string>
+    <string name="video_title_required">العنوان مطلوب.</string>
 
     <!-- Lyrics -->
     <string name="lyrics">كلمات الأغنية</string>
@@ -70,9 +89,9 @@
     <string name="video_library_empty">لم يتم العثور على فيديوهات على هذا الجهاز</string>
     <string name="video_search_hint">البحث عن فيديوهات…</string>
     <string name="video_local">فيديو محلي</string>
-    <string name="video_tab_all">All videos</string>
-    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
-    <string name="no_videos_found">No videos found</string>
+    <string name="video_tab_all">جميع الفيديوهات</string>
+    <string name="no_video_favorites_yet">ليس لديك فيديوهات مفضلة بعد. ضع علامة عليها بالقلب في المشغل أو المكتبة.</string>
+    <string name="no_videos_found">لم يتم العثور على فيديوهات</string>
     <string name="cd_close_search">إغلاق البحث</string>
     <string name="cd_back">رجوع</string>
     <string name="play_all">تشغيل الكل</string>
@@ -84,6 +103,7 @@
     <string name="album_fallback">ألبوم</string>
     <string name="song_count_one">أغنية واحدة</string>
     <string name="song_count_many">%d أغانٍ</string>
+    <string name="ad_attribution">إعلان</string>
 
     <!-- Equalizer -->
     <string name="equalizer_title">المعادل الصوتي</string>
@@ -130,5 +150,6 @@
     <string name="settings">الإعدادات</string>
     <string name="drawer_settings">الإعدادات</string>
     <string name="language">اللغة</string>
+    <string name="privacy_options">خيارات الخصوصية</string>
     <string name="system_default">الافتراضي للنظام</string>
 </resources>

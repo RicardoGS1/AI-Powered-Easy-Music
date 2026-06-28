@@ -35,6 +35,9 @@
     <string name="cd_pause">일시정지</string>
     <string name="cd_play">재생</string>
     <string name="cd_next">다음</string>
+    <string name="player_label_more">더보기</string>
+    <string name="player_label_less">접기</string>
+    <string name="press_back_again_to_exit">뒤로를 한 번 더 누르면 종료됩니다. 음악 재생이 중지됩니다.</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">곡 데이터</string>
@@ -45,6 +48,22 @@
     <string name="insight_fun_fact">재미있는 사실</string>
     <string name="insight_similar_artists">유사한 아티스트 또는 주제</string>
     <string name="no_data">데이터 없음.</string>
+
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">노래 메타데이터 편집</string>
+    <string name="cd_metadata_ai_fill">AI로 메타데이터 채우기</string>
+    <string name="metadata_editor_title">메타데이터 편집</string>
+    <string name="metadata_field_title">제목</string>
+    <string name="metadata_field_artist">아티스트</string>
+    <string name="metadata_field_album">앨범</string>
+    <string name="metadata_save">저장</string>
+    <string name="metadata_fields_required">제목, 아티스트, 앨범은 필수입니다.</string>
+    <string name="metadata_save_failed">메타데이터를 저장할 수 없습니다. 앱이 이 파일을 수정할 수 있는지 확인하세요.</string>
+    <string name="metadata_ai_not_found">AI가 이 노래를 충분한 확신으로 식별하지 못했습니다.</string>
+    <string name="metadata_permission_denied">쓰기 권한이 거부되었습니다. 이 파일을 수정할 수 없습니다.</string>
+    <string name="video_title_editor_title">동영상 제목 편집</string>
+    <string name="video_title_required">제목은 필수입니다.</string>
 
     <!-- Lyrics -->
     <string name="lyrics">가사</string>
@@ -70,9 +89,9 @@
     <string name="video_library_empty">이 기기에서 동영상을 찾을 수 없습니다</string>
     <string name="video_search_hint">동영상 검색…</string>
     <string name="video_local">로컬 동영상</string>
-    <string name="video_tab_all">All videos</string>
-    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
-    <string name="no_videos_found">No videos found</string>
+    <string name="video_tab_all">모든 동영상</string>
+    <string name="no_video_favorites_yet">아직 즐겨찾는 동영상이 없습니다. 플레이어 또는 라이브러리에서 하트로 표시하세요.</string>
+    <string name="no_videos_found">동영상을 찾을 수 없습니다</string>
     <string name="cd_close_search">검색 닫기</string>
     <string name="cd_back">뒤로</string>
     <string name="play_all">모두 재생</string>
@@ -84,6 +103,7 @@
     <string name="album_fallback">앨범</string>
     <string name="song_count_one">1곡</string>
     <string name="song_count_many">%d곡</string>
+    <string name="ad_attribution">광고</string>
 
     <!-- Equalizer -->
     <string name="equalizer_title">이퀄라이저</string>
@@ -130,5 +150,6 @@
     <string name="settings">설정</string>
     <string name="drawer_settings">설정</string>
     <string name="language">언어</string>
+    <string name="privacy_options">개인정보 옵션</string>
     <string name="system_default">시스템 기본값</string>
 </resources>

@@ -35,6 +35,9 @@
     <string name="cd_pause">Pausa</string>
     <string name="cd_play">Riproduci</string>
     <string name="cd_next">Successivo</string>
+    <string name="player_label_more">Altro</string>
+    <string name="player_label_less">Meno</string>
+    <string name="press_back_again_to_exit">Premi di nuovo indietro per uscire. La riproduzione musicale si interromperà.</string>
 
     <!-- Song Insight (AI) -->
     <string name="song_data">Dati del brano</string>
@@ -45,6 +48,22 @@
     <string name="insight_fun_fact">Curiosità</string>
     <string name="insight_similar_artists">Artisti o temi simili</string>
     <string name="no_data">Nessun dato.</string>
+
+
+    <!-- Song metadata editor -->
+    <string name="cd_edit_metadata">Modifica metadati del brano</string>
+    <string name="cd_metadata_ai_fill">Compila metadati con IA</string>
+    <string name="metadata_editor_title">Modifica metadati</string>
+    <string name="metadata_field_title">Titolo</string>
+    <string name="metadata_field_artist">Artista</string>
+    <string name="metadata_field_album">Album</string>
+    <string name="metadata_save">Salva</string>
+    <string name="metadata_fields_required">Titolo, artista e album sono obbligatori.</string>
+    <string name="metadata_save_failed">Impossibile salvare i metadati. Verifica che l\'app possa modificare questo file.</string>
+    <string name="metadata_ai_not_found">L\'IA non è riuscita a identificare questo brano con sufficiente sicurezza.</string>
+    <string name="metadata_permission_denied">Permesso di scrittura negato. Impossibile modificare questo file.</string>
+    <string name="video_title_editor_title">Modifica titolo video</string>
+    <string name="video_title_required">Il titolo è obbligatorio.</string>
 
     <!-- Lyrics -->
     <string name="lyrics">Testo</string>
@@ -70,9 +89,9 @@
     <string name="video_library_empty">Nessun video trovato su questo dispositivo</string>
     <string name="video_search_hint">Cerca video…</string>
     <string name="video_local">Video locale</string>
-    <string name="video_tab_all">All videos</string>
-    <string name="no_video_favorites_yet">You don\'t have favorite videos yet. Mark them with the heart in the player or library.</string>
-    <string name="no_videos_found">No videos found</string>
+    <string name="video_tab_all">Tutti i video</string>
+    <string name="no_video_favorites_yet">Non hai ancora video preferiti. Segnalali con il cuore nel lettore o nella libreria.</string>
+    <string name="no_videos_found">Nessun video trovato</string>
     <string name="cd_close_search">Chiudi ricerca</string>
     <string name="cd_back">Indietro</string>
     <string name="play_all">Riproduci tutto</string>
@@ -84,6 +103,7 @@
     <string name="album_fallback">Album</string>
     <string name="song_count_one">1 brano</string>
     <string name="song_count_many">%d brani</string>
+    <string name="ad_attribution">Annuncio</string>
 
     <!-- Equalizer -->
     <string name="equalizer_title">EQUALIZZATORE</string>
@@ -130,5 +150,6 @@
     <string name="settings">Impostazioni</string>
     <string name="drawer_settings">Impostazioni</string>
     <string name="language">Lingua</string>
+    <string name="privacy_options">Opzioni privacy</string>
     <string name="system_default">Predefinito di sistema</string>
 </resources>
